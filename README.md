@@ -1,4 +1,4 @@
-# Angular2D3V4
+# FundIT
 
 This project was generated with [angular/cli](https://github.com/angular/angular-cli) 
 
