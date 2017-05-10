@@ -109,32 +109,33 @@ export class ScatterplotComponent implements OnInit, OnChanges {
   }
 
   updateChart() {
-    // update scales & axis
-    // this.xScale.domain(this.data.map(d => d[0]));
-    // this.yScale.domain([0, d3.max(this.data, d => d[1])]);
-    // this.colors.domain([0, this.data.length]);
+    console.log("update")
+    // // update scales & axis
+    // this.xScale.domain(this.data.map(d => d.cx));
+    // this.yScale.domain([0, d3.max(this.data, d => d.cy)]);
+    // //this.colors.domain([0, this.data.length]);
     // this.xAxis.transition().call(d3.axisBottom(this.xScale));
     // this.yAxis.transition().call(d3.axisLeft(this.yScale));
 
-    let update = this.chart.selectAll('.circle')
-      .data(this.data);
+    // let update = this.chart.selectAll('.circle')
+    //   .data(this.data);
 
-    // remove exiting bars
-    update.exit().remove();
+    // // remove exiting bars
+    // update.exit().remove();
 
-    // update existing bars
-    this.chart.selectAll('.circle').transition()
-      .attr('cx', (d) => this.xScale(d.cx))
-      .attr('cy', (d) => this.yScale(d.cy))
-      .attr('fill', this.fillColor)
+    // // update existing bars
+    // this.chart.selectAll('.circle').transition()
+    //   .attr('cx', (d) => this.xScale(d.cx))
+    //   .attr('cy', (d) => this.yScale(d.cy))
+    //   .attr('fill', this.fillColor)
 
     // add new bars
-    update
-      .enter()
-      .append('rect')
-      .attr('class', 'circle')
-      .attr('cx', (d) => this.xScale(d.cx))
-      .attr('cy', (d) => this.yScale(d.cy))
-      .attr('fill', this.fillColor)
+    // update
+    //   .enter()
+    //   .append('circle')
+    //   .attr('class', 'circle')
+    //   .attr('cx', (d) => this.xScale(d.cx))
+    //   .attr('cy', (d) => this.yScale(d.cy))
+    //   .attr('fill', this.fillColor)
   }
 }

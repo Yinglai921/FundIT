@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Topic } from '../modal/topic';
+import { TopicService } from '../services/topic.service';
 
 @Component({
   selector: 'app-test',
@@ -6,50 +8,46 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./test.component.css']
 })
 export class TestComponent implements OnInit {
+  
+  // initial topic data from http, haven't used it now
+  topics: Topic[] = [];
+  
   // data for chart
   private chartData: Array<any>;
- 
-  // initial data
-  
 
 
-  constructor() {}
+  constructor(private topicService: TopicService) {}
 
-  ngOnInit() {
-    // give everything a chance to get loaded before starting the animation to reduce choppiness
+
+  ngOnInit(): void{
     setTimeout(() => {
       this.generateData();
-
-      // change the data periodically
-      setInterval(() => this.generateData(), 3000);
     }, 1000);
   }
 
-  generateData() {
-    this.chartData = [
-      { cx: 100, cy: 110, radius: 5 },
-      { cx: 83,  cy: 43, radius: 5  },
-      { cx: 92,  cy: 28, radius: 5  },
-      { cx: 49,  cy: 74, radius: 5  },
-      { cx: 51,  cy: 10, radius: 5  },
-      { cx: 25,  cy: 98, radius: 5  },
-      { cx: 77,  cy: 30, radius: 5  },
-      { cx: 20,  cy: 83, radius: 5  },
-      { cx: 11,  cy: 63, radius: 5  },
-      { cx:  4,  cy: 55, radius: 5  },
-      { cx:  0,  cy: 0, radius: 5   },
-      { cx: 85,  cy: 100, radius: 5 },
-      { cx: 60,  cy: 40, radius: 5  },
-      { cx: 70,  cy: 80, radius: 5  },
-      { cx: 10,  cy: 20, radius: 5  },
-      { cx: 40,  cy: 50, radius: 5  },
-      { cx: 25,  cy: 31, radius: 5  }
-      ];
-    // for (let i = 0; i < (8 + Math.floor(Math.random() * 10)); i++) {
-    //   this.chartData.push([
-    //     `Index ${i}`,
-    //     Math.floor(Math.random() * 100)
-    //   ]);
-    // }
+  generateData(): void{
+
+    let topicData = [
+      {id: 0, topicName:'xxx', complexity: 0.5, budget: 100, deadline: 1, partners: 30},
+      {id: 1, topicName:'xxx', complexity: 0.6, budget: 200, deadline: 2, partners: 20},
+      {id: 2, topicName:'xxx', complexity: 0.2, budget: 400, deadline: 3, partners: 3},
+      {id: 3, topicName:'xxx', complexity: 0.1, budget: 500, deadline: 4, partners: 2},
+      {id: 4, topicName:'xxx', complexity: 0.7, budget: 230, deadline: 5, partners: 1},
+      {id: 5, topicName:'xxx', complexity: 0.3, budget: 150, deadline: 6, partners: 4},
+      {id: 6, topicName:'xxx', complexity: 0.7, budget: 600, deadline: 7, partners: 3},
+      {id: 7, topicName:'xxx', complexity: 0.8, budget: 970, deadline: 8, partners: 2},
+      {id: 8, topicName:'xxx', complexity: 0.1, budget: 50, deadline: 9, partners: 2},
+      {id: 9, topicName:'xxx', complexity: 0.9, budget: 600, deadline: 10, partners: 2}
+    ];
+    this.chartData = [];
+
+    for (let i = 0; i < topicData.length; i++){
+        let item = {
+              cx: topicData[i].budget,
+              cy: topicData[i].deadline,
+              radius: i
+        }
+        this.chartData.push(item);
+      }
   }
 }
