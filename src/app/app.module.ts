@@ -32,8 +32,8 @@ import { TopicService } from './services/topic.service';
     FormsModule,
     HttpModule,
     routing,
-    BsDropdownModule.forRoot()
-    //InMemoryWebApiModule.forRoot(InMemoryDataService),
+    BsDropdownModule.forRoot(),
+    InMemoryWebApiModule.forRoot(InMemoryDataService)
   ],
   providers: [appRoutingProviders, TopicService ],
   bootstrap: [AppComponent]

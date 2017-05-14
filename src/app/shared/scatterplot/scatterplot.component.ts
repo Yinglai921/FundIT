@@ -114,17 +114,18 @@ export class ScatterplotComponent implements OnInit, OnChanges {
   }
 
   updateChart() {
-    console.log("update")
+
     // update scales & axis
-    this.xScale.domain(this.data.map(d => d.cx));
-    this.yScale.domain([0, d3.max(this.data, d => d.cy)]);
+    this.xScale.domain(d3.extent(this.data, (d) => d.cx));
+    this.yScale.domain(d3.extent(this.data, (d) => d.cy));
     //this.colors.domain([0, this.data.length]);
     this.xAxis.transition().call(d3.axisBottom(this.xScale));
     this.yAxis.transition().call(d3.axisLeft(this.yScale));
 
-    let update = this.chart.selectAll('circle')
+    let update = this.chart.selectAll('.circle')
       .data(this.data);
 
+    console.log(this.data)
     // remove exiting bars
     update.exit().remove();
 
@@ -144,7 +145,7 @@ export class ScatterplotComponent implements OnInit, OnChanges {
       .attr('cx', this.xScale(0))
       .attr('cy', this.yScale(0))
       .attr('r', 5)
-      .attr('fill', this.fillColor)
+      .attr('fill', '#666')
 
     circles.transition()
       .delay(function (d, i) {

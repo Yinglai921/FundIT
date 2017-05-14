@@ -1,7 +1,7 @@
 export class Topic{
     id: number;
     topicName: string;
-    compexity: number;
+    complexity: number;
     budget: number;
     deadline: number;
     partners: number
