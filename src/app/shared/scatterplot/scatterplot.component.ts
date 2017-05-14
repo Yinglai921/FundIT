@@ -70,8 +70,13 @@ export class ScatterplotComponent implements OnInit, OnChanges {
       .attr('width', element.offsetWidth)
       .attr('height', element.offsetHeight);
     
-    let mainGroup = svg.append('g').attr('id', 'mainGroup')
-                       .attr('transform', 'translate(' + this.margin.left + ', ' + this.margin.top + ')');
+    // chart plot area
+    this.chart = svg.append('g')
+      .attr('class', 'circles')
+      .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
+
+    // let mainGroup = svg.append('g').attr('id', 'mainGroup')
+    //                    .attr('transform', 'translate(' + this.margin.left + ', ' + this.margin.top + ')');
 
     
         // x & y axis
@@ -89,14 +94,57 @@ export class ScatterplotComponent implements OnInit, OnChanges {
     this.fillColor = '#8D95C9';
 
     // transition visualization
-    const circles = mainGroup.selectAll('circle')
-      .data(this.data)
+    // const circles = mainGroup.selectAll('circle')
+    //   .data(this.data)
+    //   .enter()
+    //   .append('circle')
+    //     .attr('cx', this.xScale(0))
+    //     .attr('cy', this.yScale(0))
+    //     .attr('r', 5)
+    //     .attr('fill', this.fillColor)
+
+    // circles.transition()
+    //   .delay(function (d, i) {
+    //     return i * 50;
+    //   })
+    //   .duration(1500)
+    //   .attr('cx', (d) => this.xScale(d.cx))
+    //   .attr('cy', (d) => this.yScale(d.cy))
+
+  }
+
+  updateChart() {
+    console.log("update")
+    // update scales & axis
+    this.xScale.domain(this.data.map(d => d.cx));
+    this.yScale.domain([0, d3.max(this.data, d => d.cy)]);
+    //this.colors.domain([0, this.data.length]);
+    this.xAxis.transition().call(d3.axisBottom(this.xScale));
+    this.yAxis.transition().call(d3.axisLeft(this.yScale));
+
+    let update = this.chart.selectAll('circle')
+      .data(this.data);
+
+    // remove exiting bars
+    update.exit().remove();
+
+    // update existing bars
+
+    this.chart.selectAll('circle').transition()
+      .attr('cx', this.xScale(0))
+      .attr('cy', this.yScale(0))
+      .attr('r', 5)
+      .attr('fill', this.fillColor)
+
+    //add new bars
+    let circles = update
       .enter()
       .append('circle')
-        .attr('cx', this.xScale(0))
-        .attr('cy', this.yScale(0))
-        .attr('r', 5)
-        .attr('fill', this.fillColor)
+      .attr('class', 'circle')
+      .attr('cx', this.xScale(0))
+      .attr('cy', this.yScale(0))
+      .attr('r', 5)
+      .attr('fill', this.fillColor)
 
     circles.transition()
       .delay(function (d, i) {
@@ -105,37 +153,5 @@ export class ScatterplotComponent implements OnInit, OnChanges {
       .duration(1500)
       .attr('cx', (d) => this.xScale(d.cx))
       .attr('cy', (d) => this.yScale(d.cy))
-
-  }
-
-  updateChart() {
-    console.log("update")
-    // // update scales & axis
-    // this.xScale.domain(this.data.map(d => d.cx));
-    // this.yScale.domain([0, d3.max(this.data, d => d.cy)]);
-    // //this.colors.domain([0, this.data.length]);
-    // this.xAxis.transition().call(d3.axisBottom(this.xScale));
-    // this.yAxis.transition().call(d3.axisLeft(this.yScale));
-
-    // let update = this.chart.selectAll('.circle')
-    //   .data(this.data);
-
-    // // remove exiting bars
-    // update.exit().remove();
-
-    // // update existing bars
-    // this.chart.selectAll('.circle').transition()
-    //   .attr('cx', (d) => this.xScale(d.cx))
-    //   .attr('cy', (d) => this.yScale(d.cy))
-    //   .attr('fill', this.fillColor)
-
-    // add new bars
-    // update
-    //   .enter()
-    //   .append('circle')
-    //   .attr('class', 'circle')
-    //   .attr('cx', (d) => this.xScale(d.cx))
-    //   .attr('cy', (d) => this.yScale(d.cy))
-    //   .attr('fill', this.fillColor)
   }
 }

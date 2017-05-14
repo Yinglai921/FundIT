@@ -5,19 +5,29 @@
         <h4>{{topic.topicName}}</h4>
     </li>
 </ul>-->
+
 <div class="btn-group" dropdown>
+    Y Axis: 
   <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
-    Button dropdown <span class="caret"></span>
+    {{yAxisCriteria}} <span class="caret"></span>
   </button>
-  <ul *dropdownMenu class="dropdown-menu" role="menu">
-    <li role="menuitem"><a class="dropdown-item" href="#">Action</a></li>
-    <li role="menuitem"><a class="dropdown-item" href="#">Another action</a></li>
-    <li role="menuitem"><a class="dropdown-item" href="#">Something else here</a></li>
-    <li class="divider dropdown-divider"></li>
-    <li role="menuitem"><a class="dropdown-item" href="#">Separated link</a>
+  <ul *dropdownMenu class="dropdown-menu" role="menu" >
+    <li role="menuitem" *ngFor="let criteria of criterion">
+        <span class="dropdown-item" (click)="onSelectY(criteria)" >{{criteria}}</span>
     </li>
   </ul>
 </div>
 
 <app-scatterplot *ngIf="chartData" [data]="chartData"></app-scatterplot>
 
+<div class="btn-group" dropdown>
+    X Axis: 
+  <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+    {{xAxisCriteria}} <span class="caret"></span>
+  </button>
+  <ul *dropdownMenu class="dropdown-menu" role="menu" >
+    <li role="menuitem" *ngFor="let criteria of criterion">
+        <span class="dropdown-item" (click)="onSelectX(criteria)" >{{criteria}}</span>
+    </li>
+  </ul>
+</div>
