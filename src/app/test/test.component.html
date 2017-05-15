@@ -6,7 +6,7 @@
     </li>
 </ul>-->
 
-<div class="btn-group" dropdown>
+<div class="btn-group" id="scatterYAxis" dropdown>
     Y Axis: 
   <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
     {{yAxisCriteria}} <span class="caret"></span>
@@ -20,7 +20,7 @@
 
 <app-scatterplot *ngIf="chartData" [data]="chartData"></app-scatterplot>
 
-<div class="btn-group" dropdown>
+<div class="btn-group" id="scatterXAxis" dropdown>
     X Axis: 
   <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
     {{xAxisCriteria}} <span class="caret"></span>
