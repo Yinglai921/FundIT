@@ -19,6 +19,7 @@ export class ScatterplotComponent implements OnInit, OnChanges {
   private xScale: any;
   private yScale: any;
   private colorScale: any;
+  private colorize;
   private xAxis: any;
   private yAxis: any;
 
@@ -64,7 +65,9 @@ export class ScatterplotComponent implements OnInit, OnChanges {
     let yRange = [this.height, 0];
     this.yScale = d3.scaleLinear().domain(yDomain).range(yRange).nice(5);
 
-
+    // plot colors
+    this.colorScale = d3.scaleLinear().domain(d3.extent(this.data, (d) => d.radius)).range(<any[]>['red', 'blue']);
+    //this.colorize = d3.scaleSequential(d3.interpolateRdPu);
     // svg group hierarchy
     this.svg = d3.select(element).append('svg')
       .attr('id', 'scatterplot')
@@ -119,7 +122,7 @@ export class ScatterplotComponent implements OnInit, OnChanges {
     // update scales & axis
     this.xScale.domain(d3.extent(this.data, (d) => d.cx));
     this.yScale.domain(d3.extent(this.data, (d) => d.cy));
-    //this.colors.domain([0, this.data.length]);
+    this.colorScale.domain(d3.extent(this.data, (d) => d.radius));
     this.xAxis.transition().call(d3.axisBottom(this.xScale));
     this.yAxis.transition().call(d3.axisLeft(this.yScale));
 
@@ -136,7 +139,10 @@ export class ScatterplotComponent implements OnInit, OnChanges {
       .attr('cx', (d) => this.xScale(d.cx))
       .attr('cy', (d) => this.yScale(d.cy))
       .attr('r', 5)
-      .attr('fill', this.fillColor)
+      .attr('fill',(d, i) => this.colorScale(i))
+      // .on('mouseover', (d) => { 
+      //       console.log("hi");
+      // })
 
     //add new bars
     let circles = update
@@ -146,7 +152,10 @@ export class ScatterplotComponent implements OnInit, OnChanges {
       .attr('cx', this.xScale(0))
       .attr('cy', this.yScale(0))
       .attr('r', 5)
-      .attr('fill', this.fillColor)
+      .attr('fill',(d, i) => this.colorScale(i))
+      .on('mouseover', (d) => { 
+            console.log("hi");
+      })
 
     circles.transition()
       .delay(function (d, i) {
