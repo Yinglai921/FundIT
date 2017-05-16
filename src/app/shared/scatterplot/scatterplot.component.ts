@@ -1,5 +1,6 @@
 import { Component, OnInit, OnChanges, ViewChild, ElementRef, Input, ViewEncapsulation } from '@angular/core';
 import * as d3 from 'd3';
+//import d3Tip from '@types/d3-tip'
 
 @Component({
   selector: 'app-scatterplot',
@@ -14,6 +15,7 @@ export class ScatterplotComponent implements OnInit, OnChanges {
   private margin: any = { top: 40, right: 20, bottom: 60, left: 60};
   private chart: any;
   private svg: any;
+  private tip: any;
   private width: number;
   private height: number;
   private xScale: any;
@@ -66,7 +68,7 @@ export class ScatterplotComponent implements OnInit, OnChanges {
     this.yScale = d3.scaleLinear().domain(yDomain).range(yRange).nice(5);
 
     // plot colors
-    this.colorScale = d3.scaleLinear().domain(d3.extent(this.data, (d) => d.radius)).range(<any[]>['red', 'blue']);
+    this.colorScale = d3.scaleLinear().domain(d3.extent(this.data, (d) => d.radius * 10)).range(<any[]>['yellow', 'red']);
     //this.colorize = d3.scaleSequential(d3.interpolateRdPu);
     // svg group hierarchy
     this.svg = d3.select(element).append('svg')
@@ -82,8 +84,14 @@ export class ScatterplotComponent implements OnInit, OnChanges {
     // let mainGroup = svg.append('g').attr('id', 'mainGroup')
     //                    .attr('transform', 'translate(' + this.margin.left + ', ' + this.margin.top + ')');
 
-    
-        // x & y axis
+
+    // Define the div for the tooltip
+    this.tip = d3.select("body").append("div")	
+        .attr("class", "tooltip")				
+        .style("opacity", 0);
+
+
+      // x & y axis
     this.xAxis = this.svg.append('g')
       .attr('class', 'axis axis-x')
       .attr('transform', `translate(${this.margin.left}, ${this.margin.top + this.height})`)
@@ -122,14 +130,15 @@ export class ScatterplotComponent implements OnInit, OnChanges {
     // update scales & axis
     this.xScale.domain(d3.extent(this.data, (d) => d.cx));
     this.yScale.domain(d3.extent(this.data, (d) => d.cy));
-    this.colorScale.domain(d3.extent(this.data, (d) => d.radius));
+    this.colorScale.domain(d3.extent(this.data, (d) => d.radius * 10));
     this.xAxis.transition().call(d3.axisBottom(this.xScale));
     this.yAxis.transition().call(d3.axisLeft(this.yScale));
 
     let update = this.svg.select('g').selectAll('circle')
       .data(this.data);
 
-    console.log(this.data)
+
+    
     // remove exiting bars
     update.exit().remove();
 
@@ -138,11 +147,8 @@ export class ScatterplotComponent implements OnInit, OnChanges {
     this.chart.selectAll('circle').transition()
       .attr('cx', (d) => this.xScale(d.cx))
       .attr('cy', (d) => this.yScale(d.cy))
-      .attr('r', 5)
-      .attr('fill',(d, i) => this.colorScale(i))
-      // .on('mouseover', (d) => { 
-      //       console.log("hi");
-      // })
+      .attr('r', 10)
+      .attr('fill',(d) => this.colorScale(d.radius * 10))
 
     //add new bars
     let circles = update
@@ -151,10 +157,20 @@ export class ScatterplotComponent implements OnInit, OnChanges {
       .attr('class', 'circle')
       .attr('cx', this.xScale(0))
       .attr('cy', this.yScale(0))
-      .attr('r', 5)
-      .attr('fill',(d, i) => this.colorScale(i))
-      .on('mouseover', (d) => { 
-            console.log("hi");
+      .attr('r', 10)
+      .attr('fill',(d) => this.colorScale(d.radius * 10))
+      .on('mouseover', (d) =>{
+            this.tip.transition()		
+                .duration(200)		
+                .style("opacity", .9);		
+            this.tip.html(d.topicName)	
+                .style("left", (d3.event.pageX) + "px")		
+                .style("top", (d3.event.pageY - 28) + "px");	
+            })										
+      .on('mouseout', (d) =>{
+          this.tip.transition()		
+                  .duration(500)		
+                  .style("opacity", 0);	
       })
 
     circles.transition()

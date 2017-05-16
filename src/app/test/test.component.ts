@@ -53,7 +53,7 @@ export class TestComponent implements OnInit , AfterContentInit{
     this.chartData = [];
 
     for (let i = 0; i < this.topics.length; i++){
-        let item = {cx: 0, cy: 0, radius: i}
+        let item = {cx: 0, cy: 0, radius: i, topicName: 'NaN'}
         switch(xCriteria) { 
                 case "Complexity": { 
                     item.cx = this.topics[i].complexity;
@@ -99,6 +99,9 @@ export class TestComponent implements OnInit , AfterContentInit{
                     break;              
                 } 
               }
+        
+        item.topicName = this.topics[i].topicName;
+        item.radius = this.topics[i].complexity;
         this.chartData.push(item);
       }
   }

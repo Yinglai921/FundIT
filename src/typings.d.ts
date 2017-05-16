@@ -34,6 +34,7 @@ declare module 'd3' {
   export * from 'd3-time';
   export * from 'd3-time-format';
   export * from 'd3-timer';
+  export * from 'd3-tip';
   export * from 'd3-transition';
   export * from 'd3-voronoi';
   export * from 'd3-zoom';

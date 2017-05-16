@@ -2,8 +2,8 @@ import { InMemoryDbService } from 'angular-in-memory-web-api';
 export class InMemoryDataService implements InMemoryDbService {
   createDb() {
     let topics = [
-      {id: 0, topicName:'xxx', complexity: 0.5, budget: 100, deadline: 10, partners: 30},
-      {id: 1, topicName:'xxx', complexity: 0.6, budget: 200, deadline: 6, partners: 20},
+      {id: 0, topicName:'xxx', complexity: 0.5, budget: 100, deadline: 10, partners: 3},
+      {id: 1, topicName:'xxx', complexity: 0.6, budget: 200, deadline: 6, partners: 2},
       {id: 2, topicName:'xxx', complexity: 0.2, budget: 400, deadline: 20, partners: 3},
       {id: 3, topicName:'xxx', complexity: 0.1, budget: 500, deadline: 30, partners: 2},
       {id: 4, topicName:'xxx', complexity: 0.7, budget: 230, deadline: 42, partners: 1},
