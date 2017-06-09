@@ -2,6 +2,7 @@
   "name": "fundit",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://yinglai921.github.io/FundIT/",
   "dependencies": {
     "bootstrap": "^4.0.0-alpha.6",
     "react": "^15.5.4",
@@ -24,4 +25,5 @@
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public"
   }
+  
 }
