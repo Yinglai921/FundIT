@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+
 class TopicsList extends Component {
 
     renderTopic(topic){
         return(
-            <tr key={topic.title}>
+            <tr key={topic.identifier}>
                 <td><a href={topic.url}>{topic.title}</a></td>
                 <td>{topic.callStatus}</td>
                 <td>{topic.plannedOpeningDate}</td>
@@ -16,7 +17,7 @@ class TopicsList extends Component {
 
     render(){
         return(
-            <div className="col-md-12">
+            <div className="col-md-10">
                 <table className="table">
                     <thead>
                     <tr>
