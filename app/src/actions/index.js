@@ -28,12 +28,22 @@ term: the search input word, string;
 scopes: the searched scope { 'title' : 'false', 'keywords' : 'false'...}
 filters: the filters like openTopics, calls { 'opened' : 'false'...}
 */
-export function searchTopics(topics, term, scopes, filters){
+export function searchTopics(topics, term, scopes, filters, ifCheckbox){
 
-    // find keys through scopes, keys = ['title', 'keywords' ...]
-    let currentScopes = Object.keys(scopes).filter((scope) => {
-        return scopes[scope] == true;
-    });
+
+    let currentScopes = []
+    if(!ifCheckbox){
+            // find keys through scopes, keys = ['title', 'keywords' ...]
+        currentScopes = Object.keys(scopes).filter((scope) => {
+            return scopes[scope] == true;
+        });
+    }else{
+        currentScopes = scopes;
+    }
+
+
+    console.log("current scope: " + currentScopes)
+
 
     // search 
     let options = {
@@ -62,7 +72,6 @@ export function searchTopics(topics, term, scopes, filters){
     // })
 
     if (currentFilters.length > 0){
-        console.log("filtered")
         let filteredResult = [];
         currentFilters.forEach((filter) => {
             result.forEach((topic) => {
@@ -102,10 +111,22 @@ export function changeFilterState(filters, name, state){
     }
 }
 
-export function changeSearchScope(scopes, list){
+export function changeSearchScope(list){
+    let scopes = {
+        "title": false,
+        "keywords": false,
+        "tags": false,
+        "desc": false
+    }
     list.forEach((name) => {           
         scopes[name] = true;
     })
+
+    console.log("changetitle: " + scopes['title']);
+    console.log("changekeywords: " + scopes['keywords']);
+    console.log("changetags: " + scopes['tags']);
+    console.log("changedesc: " + scopes['desc']);
+    console.log("")
 
     return{
         type: CHANGE_SEARCH_SCOPE,

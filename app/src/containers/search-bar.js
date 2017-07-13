@@ -20,6 +20,7 @@ class SearchBar extends Component{
     // get all the topics after the render
     componentDidMount(){
         this.props.fetchTopics();
+        this.props.changeSearchScope(this.state.scopes);
     }
 
     onInputChange(event){
@@ -31,7 +32,7 @@ class SearchBar extends Component{
         // set search term globally 
         this.props.setSearchTerm(this.state.term);
         // search topics
-        this.props.searchTopics(this.props.topics, this.state.term, this.props.scopes, this.props.filters);
+        this.props.searchTopics(this.props.topics, this.state.term, this.props.scopes, this.props.filters, false);
     } 
 
     onSearchScopeChange(event){
@@ -51,8 +52,8 @@ class SearchBar extends Component{
         this.setState({
             scopes: keys
         })
-        this.props.changeSearchScope(this.props.scopes, this.state.scopes);
-        this.props.searchTopics(this.props.topics, this.state.term, this.props.scopes, this.props.filters);
+        this.props.changeSearchScope(this.state.scopes);
+        this.props.searchTopics(this.props.topics, this.state.term, this.state.scopes, this.props.filters, true);
     }
 
     render(){

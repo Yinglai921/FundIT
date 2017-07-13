@@ -17,7 +17,7 @@ class FilterSidebar extends Component{
         }else{
             this.props.changeFilterState(this.props.filters, event.target.value, false);
         }
-        this.props.searchTopics(this.props.topics, this.props.searchTerm, this.props.scopes, this.props.filters);
+        this.props.searchTopics(this.props.topics, this.props.searchTerm, this.props.scopes, this.props.filters, false);
     }
 
     render(){
