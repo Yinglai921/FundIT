@@ -18,6 +18,9 @@ class TopicsList extends Component {
     render(){
         return(
             <div className="col-md-10">
+                <div>
+                    topics number: {this.props.searchedTopics.length}
+                </div>
                 <table className="table">
                     <thead>
                     <tr>
@@ -28,7 +31,7 @@ class TopicsList extends Component {
                     </tr>
                     </thead>
                     <tbody>
-                        {this.props.topics.map(this.renderTopic)}
+                        {this.props.searchedTopics.map(this.renderTopic)}
                     </tbody>
                 </table>
             </div>
@@ -39,7 +42,7 @@ class TopicsList extends Component {
 
 
 function mapStateToProps(state){
-    return{ topics: state.topics };
+    return{ searchedTopics: state.searchedTopics };
 }
 
 export default connect(mapStateToProps)(TopicsList);

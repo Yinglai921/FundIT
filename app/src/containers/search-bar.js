@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchTopics } from '../actions/index';
+import { fetchTopics, searchTopics, setSearchTerm, changeSearchScope } from '../actions/index';
 
 class SearchBar extends Component{
     constructor(props){
@@ -9,12 +9,17 @@ class SearchBar extends Component{
 
         this.state = {
             term: "",
-            keys: ["title"]
+            scopes: ["title"]
         };
 
         this.onInputChange = this.onInputChange.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);
         this.onSearchScopeChange = this.onSearchScopeChange.bind(this);
+    }
+
+    // get all the topics after the render
+    componentDidMount(){
+        this.props.fetchTopics();
     }
 
     onInputChange(event){
@@ -23,14 +28,15 @@ class SearchBar extends Component{
 
     onFormSubmit(event){
         event.preventDefault();
-        // we need to go and fetch weather data
-        this.props.fetchTopics(this.state.term, this.state.keys);
-        // this.setState({term: ''});
+        // set search term globally 
+        this.props.setSearchTerm(this.state.term);
+        // search topics
+        this.props.searchTopics(this.props.topics, this.state.term, this.props.scopes, this.props.filters);
     } 
 
     onSearchScopeChange(event){
         let scope = event.target.value;
-        let keys = this.state.keys;
+        let keys = this.state.scopes;
         if(event.target.checked){
             if(keys.includes(scope)){
                 return;
@@ -43,10 +49,10 @@ class SearchBar extends Component{
             }
         }
         this.setState({
-            keys: keys
+            scopes: keys
         })
-
-        this.props.fetchTopics(this.state.term, this.state.keys)
+        this.props.changeSearchScope(this.props.scopes, this.state.scopes);
+        this.props.searchTopics(this.props.topics, this.state.term, this.props.scopes, this.props.filters);
     }
 
     render(){
@@ -105,9 +111,16 @@ class SearchBar extends Component{
     }
 }
 
-
+function mapStatetoProps(state){
+    return { 
+        topics: state.topics,
+        scopes: state.scopes,
+        filters: state.filters,
+        searchTerm: state.searchTerm
+     }
+}
 function mapDispatchToProps(dispatch){
-    return bindActionCreators({fetchTopics}, dispatch);
+    return bindActionCreators({fetchTopics, searchTopics, setSearchTerm, changeSearchScope}, dispatch);
 }
 
-export default connect(null, mapDispatchToProps)(SearchBar);
+export default connect(mapStatetoProps, mapDispatchToProps)(SearchBar);

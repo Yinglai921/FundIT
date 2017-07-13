@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { filterOpenTopics } from '../actions/index';
+import { changeFilterState } from '../actions/index';
+import { searchTopics } from '../actions/index';
 
 class FilterSidebar extends Component{
      constructor(props){
@@ -12,10 +13,11 @@ class FilterSidebar extends Component{
 
     onCheckboxChange(event){
         if(event.target.checked){
-            this.props.filterOpenTopics(this.props.topics, true);
+            this.props.changeFilterState(this.props.filters, event.target.value, true);           
         }else{
-            this.props.filterOpenTopics(this.props.topics, false);
+            this.props.changeFilterState(this.props.filters, event.target.value, false);
         }
+        this.props.searchTopics(this.props.topics, this.props.searchTerm, this.props.scopes, this.props.filters);
     }
 
     render(){
@@ -25,6 +27,7 @@ class FilterSidebar extends Component{
                     <div className="checkbox">
                         <label>
                             <input type="checkbox" 
+                                value="Open"
                                 onChange={this.onCheckboxChange}
                             /> Only open topics
                         </label>
@@ -37,11 +40,16 @@ class FilterSidebar extends Component{
 
 
 function mapStateToProps(state){
-    return{ topics: state.topics };
+    return{ 
+        topics: state.topics,
+        scopes: state.scopes,
+        filters: state.filters,
+        searchTerm: state.searchTerm
+    };
 }
 
 function mapDispatchToProps(dispatch){
-    return bindActionCreators({filterOpenTopics}, dispatch);
+    return bindActionCreators({searchTopics, changeFilterState}, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilterSidebar);

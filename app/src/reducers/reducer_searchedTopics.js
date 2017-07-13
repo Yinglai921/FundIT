@@ -2,7 +2,7 @@ import { FETCH_TOPICS, SEARCH_TOPICS, FILTER_OPEN_TOPICS } from '../actions/inde
 
 export default function(state = [], action){
     switch(action.type){
-        case FETCH_TOPICS:
+        case SEARCH_TOPICS:
             return action.payload;
     }
     return state;
