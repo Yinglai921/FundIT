@@ -122,12 +122,6 @@ export function changeSearchScope(list){
         scopes[name] = true;
     })
 
-    console.log("changetitle: " + scopes['title']);
-    console.log("changekeywords: " + scopes['keywords']);
-    console.log("changetags: " + scopes['tags']);
-    console.log("changedesc: " + scopes['desc']);
-    console.log("")
-
     return{
         type: CHANGE_SEARCH_SCOPE,
         payload: scopes

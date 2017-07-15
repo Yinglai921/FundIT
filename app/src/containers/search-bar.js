@@ -9,7 +9,8 @@ class SearchBar extends Component{
 
         this.state = {
             term: "",
-            scopes: ["title"]
+            scopes: ["title"],
+            chkbox: "checked"
         };
 
         this.onInputChange = this.onInputChange.bind(this);
@@ -39,9 +40,21 @@ class SearchBar extends Component{
         let scope = event.target.value;
         let keys = this.state.scopes;
         if(event.target.checked){
+            // only for 'title'
+            if (scope == 'title'){
+                this.setState({
+                    chkbox: ''
+                })
+            }
             if(keys.includes(scope)){
                 return;
             }else{
+                // only for 'title'
+                if (scope == 'title'){
+                    this.setState({
+                        chkbox: 'checked'
+                    })
+                }
                 keys.push(scope);
             }
         }else{
@@ -80,7 +93,7 @@ class SearchBar extends Component{
                 <form className="form-inline row">
                     <div className="checkbox col-2">
                         <label>
-                            <input type="checkbox" value="title" checked
+                            <input type="checkbox" value="title" defaultChecked={this.state.chkbox}
                                 onChange={this.onSearchScopeChange}
                             /> In title
                         </label>

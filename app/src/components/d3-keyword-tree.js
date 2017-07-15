@@ -11,19 +11,22 @@ import keywords from '../data/keywords.json';
 class D3KeywordTree extends Component{
     constructor(props){
       super(props)
-      this.createTreeChart = this.createTreeChart.bind(this)
+      this.createTreeChart = this.createTreeChart.bind(this);
+	  this.state = {
+		  keyword: ''
+	  }
     }
 
    componentDidMount() {
       const mountNode = ReactDOM.findDOMNode(this);
-      this.createTreeChart(mountNode)
+      this.createTreeChart(mountNode, this.props.onChangeKeyword)
    }
 
    componentDidUpdate() {
       //this.createTreeChart(ReactDOM.findDOMNode(this));
    }
 
-   createTreeChart(svgDomNode) {
+   createTreeChart(svgDomNode, onChangeKeyword) {
 
 		function searchTree(obj,search,path){
 			if(obj.data.name === search){ //if search is found return, add the object to the path and return it
@@ -59,9 +62,6 @@ class D3KeywordTree extends Component{
 	        }
 	        return [index,leaves];
 		}	
-
-
-
 	    // draw tree
         // Set the dimensions and margins of the diagram
 		var margin = {top: 20, right: 90, bottom: 30, left: 90},
@@ -129,6 +129,7 @@ class D3KeywordTree extends Component{
 
 		//root = keywords;
 		select2_data = extract_select2_data(keywords,[],0)[1];//I know, not the prettiest...
+		select2_data.unshift({id: 0, text: "select a keyword"})
 		//root.x0 = height / 2;
 		//root.y0 = 0;
 		//root.children.forEach(collapse);
@@ -137,7 +138,6 @@ class D3KeywordTree extends Component{
 		//init search box
 		$("#search").select2({
 			placeholder: "Select a keyword",
-			allowClear: true,
 			data: select2_data
 			//containerCssClass: "search"
 		});
@@ -147,7 +147,6 @@ class D3KeywordTree extends Component{
 		$("select").on("select2:select", function(e) {
 			var text = $("#select2-search-container").attr("title").toString();
 			var paths = searchTree(root,text,[]);
-			console.log(paths)
 			if(typeof(paths) !== "undefined"){
 				openPaths(paths);
 			}
@@ -199,7 +198,9 @@ class D3KeywordTree extends Component{
 			.attr("text-anchor", function(d) {
 				return d.children || d._children ? "end" : "start";
 			})
-			.text(function(d) { return d.data.name; });
+			.text(function(d) { return d.data.name; })
+			.attr('cursor', 'pointer')
+			.on('click', setSearchWord);
 
 		// UPDATE
 		var nodeUpdate = nodeEnter.merge(node);
@@ -215,7 +216,18 @@ class D3KeywordTree extends Component{
 		nodeUpdate.select('circle.node')
 			.attr('r', 10)
 			.style("fill", function(d) {
-				return d._children ? "lightsteelblue" : "#fff";
+				if(d.class === "found"){
+					return "#ff4136"; // red
+				}else if(d._children){
+					return "lightsteelblue"
+				}else{
+					return "#fff"
+				}
+			})
+			.style("stroke", function(d) {
+				if(d.class === 'found'){
+					return '#ff4136' //red
+				}
 			})
 			.attr('cursor', 'pointer');
 
@@ -256,7 +268,12 @@ class D3KeywordTree extends Component{
 		// Transition back to the parent element position
 		linkUpdate.transition()
 			.duration(duration)
-			.attr('d', function(d){ return diagonal(d, d.parent) });
+			.attr('d', function(d){return diagonal(d, d.parent) })
+			.style('stroke', function(d){
+				if(d.class === 'found'){
+					return '#ff4136';
+				}
+			});
 
 		// Remove any exiting links
 		var linkExit = link.exit().transition()
@@ -294,7 +311,12 @@ class D3KeywordTree extends Component{
 				d._children = null;
 			}
 			update(d);
+			}
 		}
+
+		// click to setSearchWord
+		function setSearchWord(d){
+			onChangeKeyword(d.data.name);
 		}
    }
     render() {
