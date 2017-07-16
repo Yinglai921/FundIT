@@ -5,9 +5,10 @@ import { connect } from 'react-redux';
 class TopicsList extends Component {
 
     renderTopic(topic){
+        let identifier = topic.identifier.toLowerCase();
         return(
-            <tr key={topic.identifier}>
-                <td><a href={topic.url}>{topic.title}</a></td>
+            <tr key={topic.topicId}>
+                <td><a href={`http://ec.europa.eu/research/participants/portal4/desktop/en/opportunities/h2020/topics/${identifier}.html`}>{topic.title}</a></td>
                 <td>{topic.callStatus}</td>
                 <td>{topic.plannedOpeningDate}</td>
                 <td>{topic.deadlineDates[0]}</td>
@@ -16,6 +17,10 @@ class TopicsList extends Component {
     }
 
     render(){
+
+        if(!this.props.searchedTopics){
+            return <div> Loading... </div>
+        }
         return(
             <div className="col-md-10">
                 <div>

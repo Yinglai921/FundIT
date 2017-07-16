@@ -1,6 +1,6 @@
 import Fuse from 'fuse.js';
-//const TOPICS_URL = 'http://ec.europa.eu/research/participants/portal/data/call/h2020/topics.json';
-import topics from '../data/topics.json';
+import axios from 'axios';
+//import topics from '../data/topics.json';
 
 export const FETCH_TOPICS = 'FETCH_TOPICS';
 export const CHANGE_FILTER_STATE = 'CHANGE_FILTER_STATE'; 
@@ -9,10 +9,12 @@ export const SET_SEARCH_TERM = 'SET_SEARCH_TERM';
 export const CHANGE_SEARCH_SCOPE = 'CHANGE_SEARCH_SCOPE';
 
 // fetch all the topics from the start
+const TOPICS_URL = 'http://127.0.0.1:5000/fundit/api/topics';
 export function fetchTopics(){
+    const request = axios.get(TOPICS_URL)
     return{
         type: FETCH_TOPICS,
-        payload: topics
+        payload: request
     }
 }
 
