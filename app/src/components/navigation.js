@@ -12,6 +12,9 @@ export default class Navigation extends Component {
             <li className="nav-item">
                 <Link to="/keywords" className="nav-link"> Keywords </Link>
             </li>
+            <li className="nav-item">
+                <Link to="/tags" className="nav-link"> tags </Link>
+            </li>
         </ul>
     );
   }

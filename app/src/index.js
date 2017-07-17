@@ -12,6 +12,7 @@ import registerServiceWorker from './registerServiceWorker';
 import reducers from './reducers';
 import Index from './components/index';
 import KeywordTree from './components/keyword-tree'
+import TagsGraph from './components/tags-graph'
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
@@ -21,6 +22,7 @@ ReactDOM.render(
             <div>
                 <Switch>
                     <Route path="/keywords" component={KeywordTree} />
+                    <Route path="/tags" component={TagsGraph} />
                     <Route path="/" component={Index} />
                 </Switch>
             </div>

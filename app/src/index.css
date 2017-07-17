@@ -34,3 +34,9 @@ body {
 .search {
 	width: 100%;
 }
+
+
+/* bubble - graph */
+.bubble {
+  stroke-width: 0px; 
+}
