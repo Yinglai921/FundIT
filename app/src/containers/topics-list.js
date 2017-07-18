@@ -30,16 +30,19 @@ class TopicsList extends Component {
                 title: 240,
                 plannedOpeningDate: 100,
                 deadlineDates: 100,
-                callStatus: 50,
+                callStatus: 80,
                 keywords: 200,
                 tags: 200
 
             },
+            cols:[]
             
         };
 
         this._onColumnResizeEndCallback = this._onColumnResizeEndCallback.bind(this);
         this._onFilterChange = this._onFilterChange.bind(this);
+        this.onColumnHeaderChange = this.onColumnHeaderChange.bind(this);
+        this.renderColumn = this.renderColumn.bind(this)
     }
 
     componentDidUpdate(){
@@ -74,7 +77,7 @@ class TopicsList extends Component {
         this.setState({
             filterTerm: e.target.value
         })
-        
+
         var filterBy = e.target.value.toLowerCase();
         var size = this.props.searchedTopics.length;
         var filteredIndexes = [];
@@ -103,10 +106,49 @@ class TopicsList extends Component {
             onFilterChange: true
         });
     }
+    
+    onColumnHeaderChange(event){
+        let col = event.target.value;
+        let cols = this.state.cols;
+        if(event.target.checked){
+            if(cols.includes(col)){
+                return;
+            }else{
+                cols.push(col)
+            }
+        }else{
+            if(cols.includes(col)){
+                cols.splice(cols.indexOf(col), 1);
+            }
+        }
+        this.setState({
+            cols: cols
+        })
+    }
+
+    renderColumn(col, filteredTopics, columnWidths){
+        
+        console.log(col)
+        console.log(filteredTopics.length);
+        console.log(columnWidths[col])
+        console.log("")
+
+        return(
+            <Column
+                columnKey={col}
+                header={<Cell>{col}</Cell>}
+                cell={<TextCell data={filteredTopics}/>}
+                fixed={true}
+                width={columnWidths[col]}
+                isResizable={true}
+            />         
+        )
+        
+    }
 
     render(){
 
-        const { columnWidths, filteredTopics, onFilterChange } = this.state;
+        const { columnWidths, filteredTopics, onFilterChange, cols } = this.state;
 
         return(
             <div>
@@ -118,6 +160,36 @@ class TopicsList extends Component {
                 />
                 <br />
                 <p> Number of topics: {filteredTopics.length} </p>
+                <form className="form-inline row">
+                    <div className="checkbox col-2">
+                        <label>
+                            <input type="checkbox" value="plannedOpeningDate" 
+                                onChange={this.onColumnHeaderChange}
+                            /> plannedOpeningDate
+                        </label>
+                    </div>
+                    <div className="checkbox col-2">
+                        <label>
+                            <input type="checkbox" value="deadlineDates"
+                                onChange={this.onColumnHeaderChange}
+                            /> deadlineDates
+                        </label>
+                    </div>
+                     <div className="checkbox col-2">
+                        <label>
+                            <input type="checkbox" value="tags"
+                                onChange={this.onColumnHeaderChange}
+                            /> tags
+                        </label>
+                    </div> 
+                    <div className="checkbox col-2">
+                        <label>
+                            <input type="checkbox" value="keywords"
+                                onChange={this.onColumnHeaderChange}
+                            /> keywords
+                        </label>
+                    </div>
+                </form>
                 <Table
                     rowHeight={80}
                     headerHeight={50}
@@ -135,48 +207,16 @@ class TopicsList extends Component {
                         fixed={true}
                         width={columnWidths.title}
                         isResizable={true}
-                    />
-                    <Column
-                        columnKey="plannedOpeningDate"
-                        header={<Cell>PlannedOpeningDate</Cell>}
-                        cell={<TextCell data={filteredTopics}/>}
-                        fixed={true}
-                        width={columnWidths.plannedOpeningDate}
-                        isResizable={true}
-                    />
-                    <Column
-                        columnKey="deadlineDates"
-                        header={<Cell>DeadlineDates</Cell>}
-                        cell={<TextCell data={filteredTopics}/>}
-                        fixed={true}
-                        width={columnWidths.deadlineDates}
-                        isResizable={true}
-                    />
-                    <Column
-                        columnKey="callStatus"
-                        header={<Cell>CallStatus</Cell>}
-                        cell={<TextCell data={filteredTopics}/>}
-                        fixed={true}
-                        width={columnWidths.callStatus}
-                        isResizable={true}
-                    />
-                    <Column
-                        columnKey="keywords"
-                        header={<Cell>Keywords</Cell>}
-                        cell={<TextCell data={filteredTopics}/>}
-                        fixed={true}
-                        width={columnWidths.keywords}
-                        isResizable={true}
-                    />
-                    <Column
-                        columnKey="tags"
-                        header={<Cell>Tags</Cell>}
-                        cell={<TextCell data={filteredTopics}/>}
-                        fixed={true}
-                        width={columnWidths.tags}
-                        isResizable={true}
-                    />
+                    /> 
+
+                     {this.renderColumn("callStatus", filteredTopics, columnWidths)}
+                    
+                    {cols.map((col) => {
+                        return this.renderColumn(col, filteredTopics, columnWidths)
+                    })}
+
                 </Table>
+
             </div>
         )
     }
