@@ -6,12 +6,14 @@ class TopicsList extends Component {
 
     renderTopic(topic){
         let identifier = topic.identifier.toLowerCase();
+		console.log(topic);
         return(
             <tr key={topic.topicId}>
                 <td><a href={`http://ec.europa.eu/research/participants/portal4/desktop/en/opportunities/h2020/topics/${identifier}.html`}>{topic.title}</a></td>
                 <td>{topic.callStatus}</td>
                 <td>{topic.plannedOpeningDate}</td>
                 <td>{topic.deadlineDates[0]}</td>
+				<td>{topic.callTitle}</td>
             </tr>
         )
     }
@@ -33,6 +35,7 @@ class TopicsList extends Component {
                         <th>Call Status</th>
                         <th>Open Date</th>
                         <th>Close Date</th>
+						<th>Call</th>
                     </tr>
                     </thead>
                     <tbody>
