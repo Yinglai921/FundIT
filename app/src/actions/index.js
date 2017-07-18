@@ -7,6 +7,7 @@ export const CHANGE_FILTER_STATE = 'CHANGE_FILTER_STATE';
 export const SEARCH_TOPICS = 'SEARCH_TOPICS';
 export const SET_SEARCH_TERM = 'SET_SEARCH_TERM';
 export const CHANGE_SEARCH_SCOPE = 'CHANGE_SEARCH_SCOPE';
+export const CHANGE_FILTER_TERM = 'CHANGE_FILTER_TERM';
 
 // fetch all the topics from the start
 const TOPICS_URL = 'http://127.0.0.1:5000/fundit/api/topics';
@@ -131,3 +132,11 @@ export function changeSearchScope(list){
     }
 }
 
+export function changeFilterTerm(keyword, callback){
+
+    //callback()
+    return{
+        type: CHANGE_FILTER_TERM,
+        payload: keyword
+    }
+}

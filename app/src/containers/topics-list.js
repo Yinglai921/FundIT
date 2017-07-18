@@ -25,6 +25,7 @@ class TopicsList extends Component {
         this.state = {
             filteredTopics: this.props.searchedTopics,
             onFilterChange: false,
+            filterTerm: this.props.filterTerm,
             columnWidths: {
                 title: 240,
                 plannedOpeningDate: 100,
@@ -41,7 +42,19 @@ class TopicsList extends Component {
         this._onFilterChange = this._onFilterChange.bind(this);
     }
 
-    
+    componentDidUpdate(){
+        const { filteredTopics, onFilterChange } = this.state;
+        console.log("searched topics:" + this.props.searchedTopics.length)
+        console.log("filtered topics:" + filteredTopics.length)
+        if( !onFilterChange ){
+            if(this.props.searchedTopics !== filteredTopics){
+                this.setState({
+                    filteredTopics: this.props.searchedTopics
+                })
+            }
+        }
+    }
+
     _onColumnResizeEndCallback(newColumnWidth, columnKey) {
         this.setState(({columnWidths}) => ({
         columnWidths: {
@@ -58,6 +71,10 @@ class TopicsList extends Component {
             });
         }
 
+        this.setState({
+            filterTerm: e.target.value
+        })
+        
         var filterBy = e.target.value.toLowerCase();
         var size = this.props.searchedTopics.length;
         var filteredIndexes = [];
@@ -91,22 +108,13 @@ class TopicsList extends Component {
 
         const { columnWidths, filteredTopics, onFilterChange } = this.state;
 
-        console.log("searched topics:" + this.props.searchedTopics.length)
-        console.log("filtered topics:" + filteredTopics.length)
-        if( !onFilterChange ){
-            if(this.props.searchedTopics !== filteredTopics){
-                this.setState({
-                    filteredTopics: this.props.searchedTopics
-                })
-            }
-        }
-
         return(
             <div>
                 <label> Filter by keywords: </label>
                 <input
                 onChange={this._onFilterChange}
                 placeholder="Filter by keywords"
+                value={this.state.filterTerm}
                 />
                 <br />
                 <p> Number of topics: {filteredTopics.length} </p>
@@ -180,7 +188,8 @@ class TopicsList extends Component {
 
 function mapStateToProps(state){
     return{ 
-        searchedTopics: state.searchedTopics
+        searchedTopics: state.searchedTopics,
+        filterTerm: state.filterTerm
     };
 }
 

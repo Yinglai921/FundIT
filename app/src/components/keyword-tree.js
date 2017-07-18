@@ -1,19 +1,26 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Link } from 'react-router-dom';
 
 import D3KeywordThree from './d3-keyword-tree';
 import Navigation from './navigation';
+import { changeFilterTerm } from '../actions';
 
-export default class KeywordTree extends Component {
+class KeywordTree extends Component {
   constructor(props){
     super(props);
     this.state = {
-      keyword: ''
+      keyword:""
     }
     this.changeKeyword = this.changeKeyword.bind(this);
   }
   
   changeKeyword(keyword){
     //console.log(keyword)
+    this.props.changeFilterTerm(keyword, () => {
+      this.props.history.push('/')
+    });
     this.setState({keyword: keyword});
   }
   render() {
@@ -24,10 +31,19 @@ export default class KeywordTree extends Component {
             <select id="search" className="search"></select>
             <D3KeywordThree onChangeKeyword={this.changeKeyword}/>
             <div className="container">
-               Search keyword: {this.state.keyword} 
-               <button className="btn btn-primary"> Search </button>
+               keyword: {this.state.keyword} 
+               <button className="btn btn-primary"> Set Filter Keyword </button>
             </div>
       </div>
     );
   }
 }
+
+
+
+
+function mapDispatchToProps(dispatch){
+    return bindActionCreators({changeFilterTerm}, dispatch);
+}
+
+export default connect(null, mapDispatchToProps)(KeywordTree);
