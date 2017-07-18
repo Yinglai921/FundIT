@@ -112,13 +112,13 @@ class SearchBar extends Component{
                             /> In tags
                         </label>
                     </div>
-                    <div className="checkbox col-2">
+                    {/* <div className="checkbox col-2">
                         <label>
                             <input type="checkbox" value="desc"
                                 onChange={this.onSearchScopeChange}
                             /> In descriptions
                         </label>
-                    </div>
+                    </div> */}
                 </form>
             </div>
         )

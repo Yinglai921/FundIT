@@ -10,7 +10,7 @@ import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 
 import reducers from './reducers';
-import Index from './components/index';
+import Index from './containers/index';
 import KeywordTree from './components/keyword-tree'
 import TagsGraph from './components/tags-graph'
 

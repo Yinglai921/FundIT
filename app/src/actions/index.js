@@ -44,7 +44,7 @@ export function searchTopics(topics, term, scopes, filters, ifCheckbox){
         currentScopes = scopes;
     }
 
-
+    console.log(topics.length)
     console.log("current scope: " + currentScopes)
 
 

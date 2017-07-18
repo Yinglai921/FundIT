@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.16.2",
     "d3": "^4.9.1",
+    "fixed-data-table": "^0.6.4",
     "fuse.js": "^3.0.5",
     "jquery": "^3.2.1",
     "react": "^15.6.1",
