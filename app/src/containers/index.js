@@ -14,7 +14,12 @@ class Index extends Component {
       return(
         <div className="container">
           <Navigation />
-          <SearchBar />
+          <div className="row">
+            <SearchBar />
+          </div>
+          <div className="row">
+            <FilterSidebar />
+          </div>
           <p> No result </p>
         </div>
       )
@@ -25,8 +30,8 @@ class Index extends Component {
         <Navigation />
         <SearchBar />
         <div className="row">
-            <TopicsList />
             <FilterSidebar />
+            <TopicsList />
         </div>
       </div>
     );

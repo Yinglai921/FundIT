@@ -45,8 +45,11 @@ export function searchTopics(topics, term, scopes, filters, ifCheckbox){
         currentScopes = scopes;
     }
 
-    console.log(topics.length)
+    console.log("topics length: " + topics.length)
     console.log("current scope: " + currentScopes)
+    console.log("searched term: " + term)
+    console.log("filters: " + filters)
+    
 
 
     // search 
@@ -62,18 +65,11 @@ export function searchTopics(topics, term, scopes, filters, ifCheckbox){
 
     let fuse = new Fuse(topics, options);
     let result = fuse.search(term);
-
+    console.log("search result length: " + result.length)
+    
     // filter the search result 
-    let currentFilters = Object.keys(filters); //['Open']
-    currentFilters.forEach((filter) =>{
-        if(filters[filter] === false){
-            currentFilters.splice(currentFilters.indexOf(filter), 1);
-        }
-    })
 
-    // currentFilters.filter((filter) =>{
-    //     return filters[filter] === true;
-    // })
+    let currentFilters = filters; //['Open']
 
     if (currentFilters.length > 0){
         let filteredResult = [];
@@ -86,17 +82,10 @@ export function searchTopics(topics, term, scopes, filters, ifCheckbox){
         })
         result = filteredResult;
     }
-    // if(currentFilters.length > 0){
-    //     console.log("filted")
-    //     currentFilters.map((filter) => {
-    //         return result.filter((topic) => {
-    //             if(topic.callStatus == filter){
-    //                 console.log("equal")
-    //             }
-    //             return topic.callStatus == filter;
-    //         })
-    //     })
-    // }
+
+    console.log("filter result length: " + result.length)
+    console.log("")
+
     return{
         type: SEARCH_TOPICS,
         payload: result
@@ -105,9 +94,7 @@ export function searchTopics(topics, term, scopes, filters, ifCheckbox){
 
 
 // change filters reducer true/false
-export function changeFilterState(filters, name, state){
-
-    filters[name] = state;
+export function changeFilterState(filters){
 
     return{
         type: CHANGE_FILTER_STATE,
@@ -132,6 +119,7 @@ export function changeSearchScope(list){
     }
 }
 
+// for connecting /keywords with /
 export function changeFilterTerm(keyword, callback){
 
     //callback()

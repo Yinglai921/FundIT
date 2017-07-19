@@ -32,7 +32,7 @@ class KeywordTree extends Component {
             <D3KeywordThree onChangeKeyword={this.changeKeyword}/>
             <div className="container">
                keyword: {this.state.keyword} 
-               <button className="btn btn-primary"> Set Filter Keyword </button>
+               <button className="btn btn-primary"> Set search keyword </button>
             </div>
       </div>
     );

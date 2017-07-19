@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import FixedDataTable from 'fixed-data-table';
-
+import FilterSidebar from './filter-sidebar';
 
 const { Table, Column, Cell } = FixedDataTable;
 
@@ -12,9 +12,9 @@ const TextCell = ({rowIndex, data, columnKey, ...props}) => (
 );
 
 const LinkCell = ({rowIndex, data, columnKey, linkKey, ...props}) => (
-  //let identifier = topic.identifier.toLowerCase();
+//   identifier = topic.identifier.toLowerCase();
   <Cell {...props}>
-    <a href={`http://ec.europa.eu/research/participants/portal4/desktop/en/opportunities/h2020/topics/${data[rowIndex][linkKey]}.html`}>{data[rowIndex][columnKey]}</a>
+    <a href={`http://ec.europa.eu/research/participants/portal4/desktop/en/opportunities/h2020/topics/${data[rowIndex][linkKey].toLowerCase()}.html`}>{data[rowIndex][columnKey]}</a>
   </Cell>
 );
 
@@ -84,10 +84,12 @@ class TopicsList extends Component {
         for (var index = 0; index < size; index++) {
             var { keywords } = this.props.searchedTopics[index];
             var keywordString = " "
-            if(keywords !== " "){
-                keywords.forEach((keyword) => {
+            if(keywords !== undefined){
+                if(keywords.length > 0){
+                    keywords.forEach((keyword) => {
                     keywordString += keyword
-                })
+                  })
+                }
             }
 
             if (keywordString.indexOf(filterBy) !== -1) {
@@ -152,72 +154,72 @@ class TopicsList extends Component {
         const { columnWidths, filteredTopics, onFilterChange, cols } = this.state;
 
         return(
-            <div>
-                <label> Filter by keywords: </label>
-                <input
-                onChange={this._onFilterChange}
-                placeholder="Filter by keywords"
-                value={this.state.filterTerm}
-                />
-                <br />
-                <p> Number of topics: {filteredTopics.length} </p>
-                <form className="form-inline row">
-                    <div className="checkbox col-2">
-                        <label>
-                            <input type="checkbox" value="plannedOpeningDate" 
-                                onChange={this.onColumnHeaderChange}
-                            /> plannedOpeningDate
-                        </label>
-                    </div>
-                    <div className="checkbox col-2">
-                        <label>
-                            <input type="checkbox" value="deadlineDates"
-                                onChange={this.onColumnHeaderChange}
-                            /> deadlineDates
-                        </label>
-                    </div>
-                     <div className="checkbox col-2">
-                        <label>
-                            <input type="checkbox" value="tags"
-                                onChange={this.onColumnHeaderChange}
-                            /> tags
-                        </label>
-                    </div> 
-                    <div className="checkbox col-2">
-                        <label>
-                            <input type="checkbox" value="keywords"
-                                onChange={this.onColumnHeaderChange}
-                            /> keywords
-                        </label>
-                    </div>
-                </form>
-                <Table
-                    rowHeight={80}
-                    headerHeight={50}
-                    rowsCount={filteredTopics.length}
-                    onColumnResizeEndCallback={this._onColumnResizeEndCallback}
-                    isColumnResizing={false}
-                    width={1020}
-                    height={600}
-                    {...this.props}>
+            <div className="row">
+                <div className="search-bar col-sm-12">
+                    <p> Number of topics: {filteredTopics.length} </p>
+                    <label> Filter by keywords: </label>
+                    <input
+                    onChange={this._onFilterChange}
+                    placeholder="Filter by keywords"
+                    />
+                    <br />
+                    <form className="form-inline row">
+                        <div className="checkbox col-3">
+                            <label>
+                                <input type="checkbox" value="plannedOpeningDate" 
+                                    onChange={this.onColumnHeaderChange}
+                                /> plannedOpeningDate
+                            </label>
+                        </div>
+                        <div className="checkbox col-2">
+                            <label>
+                                <input type="checkbox" value="deadlineDates"
+                                    onChange={this.onColumnHeaderChange}
+                                /> deadlineDates
+                            </label>
+                        </div>
+                        <div className="checkbox col-2">
+                            <label>
+                                <input type="checkbox" value="tags"
+                                    onChange={this.onColumnHeaderChange}
+                                /> tags
+                            </label>
+                        </div> 
+                        <div className="checkbox col-2">
+                            <label>
+                                <input type="checkbox" value="keywords"
+                                    onChange={this.onColumnHeaderChange}
+                                /> keywords
+                            </label>
+                        </div>
+                    </form>
+                    <Table
+                        rowHeight={80}
+                        headerHeight={50}
+                        rowsCount={filteredTopics.length}
+                        onColumnResizeEndCallback={this._onColumnResizeEndCallback}
+                        isColumnResizing={false}
+                        width={1020}
+                        height={600}
+                        {...this.props}>
 
-                    <Column
-                        columnKey="title"
-                        header={<Cell>Title</Cell>}
-                        cell={<LinkCell data={filteredTopics} linkKey="identifier"/>}
-                        fixed={true}
-                        width={columnWidths.title}
-                        isResizable={true}
-                    /> 
+                        <Column
+                            columnKey="title"
+                            header={<Cell>Title</Cell>}
+                            cell={<LinkCell data={filteredTopics} linkKey="identifier"/>}
+                            fixed={true}
+                            width={columnWidths.title}
+                            isResizable={true}
+                        /> 
 
-                     {this.renderColumn("callStatus", filteredTopics, columnWidths)}
-                    
-                    {cols.map((col) => {
-                        return this.renderColumn(col, filteredTopics, columnWidths)
-                    })}
+                        {this.renderColumn("callStatus", filteredTopics, columnWidths)}
+                        
+                        {cols.map((col) => {
+                            return this.renderColumn(col, filteredTopics, columnWidths)
+                        })}
 
-                </Table>
-
+                    </Table>
+                </div>
             </div>
         )
     }
@@ -229,8 +231,7 @@ class TopicsList extends Component {
 
 function mapStateToProps(state){
     return{ 
-        searchedTopics: state.searchedTopics,
-        filterTerm: state.filterTerm
+        searchedTopics: state.searchedTopics
     };
 }
 
