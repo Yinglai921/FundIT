@@ -142,6 +142,7 @@ class TopicsList extends Component {
                 width={columnWidths[col]}
                 isResizable={true}
             />         
+
         )
         
     }
