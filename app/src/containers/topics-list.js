@@ -1,22 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import FixedDataTable from 'fixed-data-table';
+//import FixedDataTable from 'fixed-data-table';
 import FilterSidebar from './filter-sidebar';
+import { BootstrapTable, TableHeaderColumn, BSTable } from 'react-bootstrap-table';
 
-const { Table, Column, Cell } = FixedDataTable;
+let order = 'desc';
 
-const TextCell = ({rowIndex, data, columnKey, ...props}) => (
-    <Cell {...props}>
-        {data[rowIndex][columnKey]}
-    </Cell>
-);
+// order planedOpenDate, not a good solution, but can't write it more general because of the data structure
 
-const LinkCell = ({rowIndex, data, columnKey, linkKey, ...props}) => (
-//   identifier = topic.identifier.toLowerCase();
-  <Cell {...props}>
-    <a href={`http://ec.europa.eu/research/participants/portal4/desktop/en/opportunities/h2020/topics/${data[rowIndex][linkKey].toLowerCase()}.html`}>{data[rowIndex][columnKey]}</a>
-  </Cell>
-);
 
 class TopicsList extends Component {
     constructor(props) {
@@ -26,23 +17,11 @@ class TopicsList extends Component {
             filteredTopics: this.props.searchedTopics,
             onFilterChange: false,
             filterTerm: this.props.filterTerm,
-            columnWidths: {
-                title: 240,
-                plannedOpeningDate: 100,
-                deadlineDates: 100,
-                callStatus: 80,
-                keywords: 200,
-                tags: 200
-
-            },
-            cols:[]
-            
+            cols:[] 
         };
 
-        this._onColumnResizeEndCallback = this._onColumnResizeEndCallback.bind(this);
-        this._onFilterChange = this._onFilterChange.bind(this);
-        this.onColumnHeaderChange = this.onColumnHeaderChange.bind(this);
-        this.renderColumn = this.renderColumn.bind(this)
+        this._onColumnHeaderChange = this._onColumnHeaderChange.bind(this);
+
     }
 
     componentDidUpdate(){
@@ -57,59 +36,8 @@ class TopicsList extends Component {
             }
         }
     }
-
-    _onColumnResizeEndCallback(newColumnWidth, columnKey) {
-        this.setState(({columnWidths}) => ({
-        columnWidths: {
-            ...columnWidths,
-            [columnKey]: newColumnWidth,
-        }
-        }));
-    }
-    _onFilterChange(e) {
-        if (!e.target.value) {
-            this.setState({
-                filteredTopics: this.props.searchedTopics,
-                onFilterChange: false
-            });
-        }
-
-        this.setState({
-            filterTerm: e.target.value
-        })
-
-        var filterBy = e.target.value.toLowerCase();
-        var size = this.props.searchedTopics.length;
-        var filteredIndexes = [];
-        for (var index = 0; index < size; index++) {
-            var { keywords } = this.props.searchedTopics[index];
-            var keywordString = " "
-            if(keywords !== undefined){
-                if(keywords.length > 0){
-                    keywords.forEach((keyword) => {
-                    keywordString += keyword
-                  })
-                }
-            }
-
-            if (keywordString.indexOf(filterBy) !== -1) {
-                    filteredIndexes.push(index);
-                }
-        }
-
-        console.log(filteredIndexes)
-
-        var filteredTopics = [];
-        filteredIndexes.forEach((index) => {
-            filteredTopics.push(this.props.searchedTopics[index]);
-        })
-        this.setState({
-            filteredTopics: filteredTopics,
-            onFilterChange: true
-        });
-    }
     
-    onColumnHeaderChange(event){
+    _onColumnHeaderChange(event){
         let col = event.target.value;
         let cols = this.state.cols;
         if(event.target.checked){
@@ -128,103 +56,115 @@ class TopicsList extends Component {
         })
     }
 
-    renderColumn(col, filteredTopics, columnWidths){
+    revertSortOpenDate(a, b, order) {   
+    a = new Date(a.plannedOpeningDate);
+    b = new Date(b.plannedOpeningDate);
+    if (order === 'desc') {
+        return a - b;
+    } else {
+        return b - a;
+    }
+    }
+
+    revertSortDeadlineDate(a, b, order) {   
+        a = new Date(a.deadlineDates[0]);
+        b = new Date(b.deadlineDates[0]);
+        if (order === 'desc') {
+            return a - b;
+        } else {
+            return b - a;
+        }
+    }
+
+
+    renderColumn(col){
         
-        console.log(col)
-        console.log(filteredTopics.length);
-        console.log(columnWidths[col])
-        console.log("")
-
-        return(
-            <Column
-                columnKey={col}
-                header={<Cell>{col}</Cell>}
-                cell={<TextCell data={filteredTopics}/>}
-                fixed={true}
-                width={columnWidths[col]}
-                isResizable={true}
-            />         
-
-        )
+        if(col === 'plannedOpeningDate'){
+            return(
+                <TableHeaderColumn dataField={col} dataSort sortFunc={ this.revertSortOpenDate }>{col}</TableHeaderColumn>
+            ) 
+        }
+        else if(col === 'deadlineDates'){
+            return(
+                <TableHeaderColumn dataField={col} dataSort sortFunc={ this.revertSortDeadlineDate }>{col}</TableHeaderColumn>
+            )
+        }
+        
+        else{
+            return(
+                <TableHeaderColumn dataField={col} filter={ { type: 'RegexFilter', delay: 1000 } } >{col}</TableHeaderColumn>      
+            )
+        }
         
     }
 
+    // isExpandableRow(row) {
+    // if (row.callStatus === 'Open') return true;
+    // else return false;
+    // }
+
+    // expandComponent(row) {
+    //     return (
+    //     <BSTable data={ row.tags } />
+    //     );
+    // }
+
     render(){
+        const { filteredTopics, onFilterChange, cols } = this.state;
+        const options = {
+            expandRowBgColor: 'rgb(242, 255, 163)'
+            };
+        return (
 
-        const { columnWidths, filteredTopics, onFilterChange, cols } = this.state;
-
-        return(
             <div className="row">
                 <div className="search-bar col-sm-12">
                     <p> Number of topics: {filteredTopics.length} </p>
-                    <label> Filter by keywords: </label>
-                    <input
-                    onChange={this._onFilterChange}
-                    placeholder="Filter by keywords"
-                    />
                     <br />
                     <form className="form-inline row">
                         <div className="checkbox col-3">
                             <label>
                                 <input type="checkbox" value="plannedOpeningDate" 
-                                    onChange={this.onColumnHeaderChange}
+                                    onChange={this._onColumnHeaderChange}
                                 /> plannedOpeningDate
                             </label>
                         </div>
                         <div className="checkbox col-2">
                             <label>
                                 <input type="checkbox" value="deadlineDates"
-                                    onChange={this.onColumnHeaderChange}
+                                    onChange={this._onColumnHeaderChange}
                                 /> deadlineDates
                             </label>
                         </div>
                         <div className="checkbox col-2">
                             <label>
                                 <input type="checkbox" value="tags"
-                                    onChange={this.onColumnHeaderChange}
+                                    onChange={this._onColumnHeaderChange}
                                 /> tags
                             </label>
                         </div> 
                         <div className="checkbox col-2">
                             <label>
                                 <input type="checkbox" value="keywords"
-                                    onChange={this.onColumnHeaderChange}
+                                    onChange={this._onColumnHeaderChange}
                                 /> keywords
                             </label>
                         </div>
                     </form>
-                    <Table
-                        rowHeight={80}
-                        headerHeight={50}
-                        rowsCount={filteredTopics.length}
-                        onColumnResizeEndCallback={this._onColumnResizeEndCallback}
-                        isColumnResizing={false}
-                        width={1020}
-                        height={600}
-                        {...this.props}>
-
-                        <Column
-                            columnKey="title"
-                            header={<Cell>Title</Cell>}
-                            cell={<LinkCell data={filteredTopics} linkKey="identifier"/>}
-                            fixed={true}
-                            width={columnWidths.title}
-                            isResizable={true}
-                        /> 
-
-                        {this.renderColumn("callStatus", filteredTopics, columnWidths)}
+                    <BootstrapTable 
+                        data={ filteredTopics }
+                            striped
+                        >
                         
+                        <TableHeaderColumn dataField='title' isKey>Title</TableHeaderColumn>
+                        <TableHeaderColumn dataField='callStatus' dataSort>Call Status</TableHeaderColumn>
                         {cols.map((col) => {
-                            return this.renderColumn(col, filteredTopics, columnWidths)
+                            return this.renderColumn(col)
                         })}
-
-                    </Table>
+                    </BootstrapTable>
                 </div>
             </div>
-        )
+        );
     }
-
-
 
 }
 
@@ -236,47 +176,3 @@ function mapStateToProps(state){
 }
 
 export default connect(mapStateToProps)(TopicsList);
-
-
-
-    // renderTopic(topic){
-    //     let identifier = topic.identifier.toLowerCase();
-    //     return(
-    //         <tr key={topic.topicId}>
-    //             <td><a href={`http://ec.europa.eu/research/participants/portal4/desktop/en/opportunities/h2020/topics/${identifier}.html`}>{topic.title}</a></td>
-    //             <td>{topic.callStatus}</td>
-    //             <td>{topic.plannedOpeningDate}</td>
-    //             <td>{topic.deadlineDates[0]}</td>
-    //         </tr>
-    //     )
-    // }
-
-
-
-
-    // render(){
-
-    //     if(!this.props.searchedTopics){
-    //         return <div> Loading... </div>
-    //     }
-    //     return(
-    //         <div className="col-md-10">
-    //             <div>
-    //                 topics number: {this.props.searchedTopics.length}
-    //             </div>
-    //             <table className="table">
-    //                 <thead>
-    //                 <tr>
-    //                     <th>Title</th>
-    //                     <th>Call Status</th>
-    //                     <th>Open Date</th>
-    //                     <th>Close Date</th>
-    //                 </tr>
-    //                 </thead>
-    //                 <tbody>
-    //                     {this.props.searchedTopics.map(this.renderTopic)}
-    //                 </tbody>
-    //             </table>
-    //         </div>
-    //     )
-    // }
