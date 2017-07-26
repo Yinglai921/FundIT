@@ -122,7 +122,7 @@ class TopicsList extends Component {
                     sortFunc={ this.revertSortOpenDate } 
                     expandable={ false }
                     >
-                    {col}
+                    Planned Opening Date
                     </TableHeaderColumn>
                 );
             case 'deadlineDates':
@@ -133,7 +133,7 @@ class TopicsList extends Component {
                     sortFunc={ this.revertSortDeadlineDate }
                     expandable={ false }
                     >
-                    {col}
+                    Deadline Dates
                     </TableHeaderColumn>
                 );
             case 'keywords':
@@ -143,7 +143,7 @@ class TopicsList extends Component {
                     filter={ { type: 'RegexFilter', delay: 1000 } } 
                     expandable={ true }
                     >
-                    {col}
+                    Keywords
                     </TableHeaderColumn> 
                 );
             case 'tags':
@@ -153,7 +153,18 @@ class TopicsList extends Component {
                     filter={ { type: 'RegexFilter', delay: 1000 } } 
                     expandable={ true }
                     >
-                    {col}
+                    Tags
+                    </TableHeaderColumn> 
+                );
+            case 'callTitle':
+                return(
+                    <TableHeaderColumn 
+                    dataField={col}
+                    tdStyle={ { whiteSpace: 'normal' } } 
+                    filter={ { type: 'RegexFilter', delay: 1000 } } 
+                    expandable={ false }
+                    >
+                    Call Title
                     </TableHeaderColumn> 
                 );
         }
@@ -193,28 +204,35 @@ class TopicsList extends Component {
                             <label>
                                 <input type="checkbox" value="plannedOpeningDate" 
                                     onChange={this._onColumnHeaderChange}
-                                /> plannedOpeningDate
+                                /> Planned Opening Date
                             </label>
                         </div>
                         <div className="checkbox col-2">
                             <label>
                                 <input type="checkbox" value="deadlineDates"
                                     onChange={this._onColumnHeaderChange}
-                                /> deadlineDates
+                                /> Deadline Dates
                             </label>
                         </div>
                         <div className="checkbox col-2">
                             <label>
                                 <input type="checkbox" value="tags"
                                     onChange={this._onColumnHeaderChange}
-                                /> tags
+                                /> Tags
                             </label>
                         </div> 
                         <div className="checkbox col-2">
                             <label>
                                 <input type="checkbox" value="keywords"
                                     onChange={this._onColumnHeaderChange}
-                                /> keywords
+                                /> Keywords
+                            </label>
+                        </div>
+                        <div className="checkbox col-2">
+                            <label>
+                                <input type="checkbox" value="callTitle"
+                                    onChange={this._onColumnHeaderChange}
+                                /> Call Title
                             </label>
                         </div>
                     </form>
