@@ -80,7 +80,7 @@ class SearchBar extends Component{
     render(){
         return(
 
-            <div className="search-bar col-sm-12">
+            <div className="search-bar col-sm-10">
                 <form onSubmit={this.onFormSubmit}>
                     <div className="form-group row">
                         <label className="col-sm-2 col-form-label">Search topics: </label>

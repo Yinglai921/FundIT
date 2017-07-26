@@ -2,21 +2,63 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 //import FixedDataTable from 'fixed-data-table';
 import FilterSidebar from './filter-sidebar';
-import { BootstrapTable, TableHeaderColumn, BSTable } from 'react-bootstrap-table';
+import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
-let order = 'desc';
 
-// order planedOpenDate, not a good solution, but can't write it more general because of the data structure
-
+class BSTable extends React.Component {
+    render() {
+        if (this.props.data.keywords && this.props.data.tags) {
+            return (
+                <div className="row">
+                    <div className="col-md-6">
+                        <p> Keywords </p>
+                        <ul className="list-group">
+                            {this.props.data.keywords.map((keyword) =>{ return( <li className="list-group-item"> {keyword} </li> )})}
+                        </ul>
+                    </div>
+                    <div className="col-md-6">
+                        <p> Tags </p>
+                        <ul className="list-group">
+                            {this.props.data.tags.map((tag) => { return( <li className="list-group-item"> {tag} </li> )})}
+                        </ul>
+                    </div>
+                </div>
+            )
+        } else if( this.props.data.keywords && !this.props.data.tags){
+            return (
+                <div className="row">
+                    <div className="col-md-6">
+                        <p> Keywords </p>
+                        <ul className="list-group">
+                            {this.props.data.keywords.map((keyword) =>{ return( <li className="list-group-item"> {keyword} </li> )})}
+                        </ul>
+                    </div>
+                </div>
+            )
+        } else if(!this.props.data.keywords && this.props.data.tags){
+            return (
+                <div className="row">
+                    <div className="col-md-6">
+                        <p> Tags </p>
+                        <ul className="list-group">
+                            {this.props.data.tags.map((tag) =>{ return( <li className="list-group-item"> {tag} </li> )})}
+                        </ul>
+                    </div>
+                </div>
+            )
+        }
+        
+        else {
+            return (<p>?</p>);
+        }
+    }
+}
 
 class TopicsList extends Component {
     constructor(props) {
         super(props);
         
         this.state = {
-            filteredTopics: this.props.searchedTopics,
-            onFilterChange: false,
-            filterTerm: this.props.filterTerm,
             cols:[] 
         };
 
@@ -24,101 +66,127 @@ class TopicsList extends Component {
 
     }
 
-    componentDidUpdate(){
-        const { filteredTopics, onFilterChange } = this.state;
-        console.log("searched topics:" + this.props.searchedTopics.length)
-        console.log("filtered topics:" + filteredTopics.length)
-        if( !onFilterChange ){
-            if(this.props.searchedTopics !== filteredTopics){
-                this.setState({
-                    filteredTopics: this.props.searchedTopics
-                })
-            }
-        }
-    }
-    
+    // change the headers of the columns, checkboxes event
     _onColumnHeaderChange(event){
         let col = event.target.value;
-        let cols = this.state.cols;
+        let currentCols = this.state.cols;
         if(event.target.checked){
-            if(cols.includes(col)){
+            if(currentCols.includes(col)){
                 return;
             }else{
-                cols.push(col)
+                currentCols.push(col)
             }
         }else{
-            if(cols.includes(col)){
-                cols.splice(cols.indexOf(col), 1);
+            if(currentCols.includes(col)){
+                currentCols.splice(currentCols.indexOf(col), 1);
             }
         }
+        currentCols.sort();
         this.setState({
-            cols: cols
+            cols: currentCols
         })
     }
 
+    // --- sort by date
     revertSortOpenDate(a, b, order) {   
-    a = new Date(a.plannedOpeningDate);
-    b = new Date(b.plannedOpeningDate);
-    if (order === 'desc') {
-        return a - b;
-    } else {
-        return b - a;
-    }
+        a = new Date(a.plannedOpeningDate);
+        b = new Date(b.plannedOpeningDate);
+        if (order === 'asc') {
+            return b - a;
+        } else {
+            return a - b;
+        }
     }
 
     revertSortDeadlineDate(a, b, order) {   
         a = new Date(a.deadlineDates[0]);
         b = new Date(b.deadlineDates[0]);
-        if (order === 'desc') {
-            return a - b;
-        } else {
+        if (order === 'asc') {
             return b - a;
+        } else {
+            return a - b;
         }
     }
 
+    // --- end of sort by date functions
 
+    // render column according to the checkboxes
     renderColumn(col){
-        
-        if(col === 'plannedOpeningDate'){
-            return(
-                <TableHeaderColumn dataField={col} dataSort sortFunc={ this.revertSortOpenDate }>{col}</TableHeaderColumn>
-            ) 
+
+        switch (col){
+            case 'plannedOpeningDate':
+                return(
+                    <TableHeaderColumn 
+                    dataField={col} 
+                    dataSort 
+                    sortFunc={ this.revertSortOpenDate } 
+                    expandable={ false }
+                    >
+                    {col}
+                    </TableHeaderColumn>
+                );
+            case 'deadlineDates':
+                return(
+                    <TableHeaderColumn 
+                    dataField={col} 
+                    dataSort 
+                    sortFunc={ this.revertSortDeadlineDate }
+                    expandable={ false }
+                    >
+                    {col}
+                    </TableHeaderColumn>
+                );
+            case 'keywords':
+                return(
+                    <TableHeaderColumn 
+                    dataField={col} 
+                    filter={ { type: 'RegexFilter', delay: 1000 } } 
+                    expandable={ true }
+                    >
+                    {col}
+                    </TableHeaderColumn> 
+                );
+            case 'tags':
+                return(
+                    <TableHeaderColumn 
+                    dataField={col} 
+                    filter={ { type: 'RegexFilter', delay: 1000 } } 
+                    expandable={ true }
+                    >
+                    {col}
+                    </TableHeaderColumn> 
+                );
         }
-        else if(col === 'deadlineDates'){
-            return(
-                <TableHeaderColumn dataField={col} dataSort sortFunc={ this.revertSortDeadlineDate }>{col}</TableHeaderColumn>
-            )
-        }
-        
-        else{
-            return(
-                <TableHeaderColumn dataField={col} filter={ { type: 'RegexFilter', delay: 1000 } } >{col}</TableHeaderColumn>      
-            )
-        }
-        
+
     }
 
-    // isExpandableRow(row) {
-    // if (row.callStatus === 'Open') return true;
-    // else return false;
-    // }
+    expandComponent(row) {
+        let data = {keywords: [], tags: []}
+        data.keywords = row.keywords;
+        data.tags = row.tags;
+        return (
+            <BSTable data={ data } />
+        );
+    }
 
-    // expandComponent(row) {
-    //     return (
-    //     <BSTable data={ row.tags } />
-    //     );
-    // }
+    linkFormatter(cell, row) {
+        return <a href={`http://ec.europa.eu/research/participants/portal4/desktop/en/opportunities/h2020/topics/${row.topicFileName}.html`}>{cell}</a>
+    }
+
 
     render(){
-        const { filteredTopics, onFilterChange, cols } = this.state;
+        const { searchedTopics } = this.props;
+        const { cols } = this.state;
         const options = {
-            expandRowBgColor: 'rgb(242, 255, 163)'
+            expandRowBgColor: 'rgb(255, 255, 255)',
+            expandBy: 'column'  // Currently, available value is row and column, default is row
             };
+        console.log("render: ", cols)
         return (
 
             <div className="row">
                 <div className="search-bar col-sm-12">
-                    <p> Number of topics: {filteredTopics.length} </p>
+                    <p> Number of topics: {searchedTopics.length} </p>
                     <br />
                     <form className="form-inline row">
                         <div className="checkbox col-3">
@@ -151,21 +219,47 @@ class TopicsList extends Component {
                         </div>
                     </form>
                     <BootstrapTable 
-                        data={ filteredTopics }
-                            striped
+                        data={ searchedTopics }
+                            //striped
+                            replace
+                            pagination
+                        options={ options }
+                        expandableRow={ () => { return true; } }
+                        expandComponent={ this.expandComponent }
                         >
-                        
-                        <TableHeaderColumn dataField='title' isKey>Title</TableHeaderColumn>
-                        <TableHeaderColumn dataField='callStatus' dataSort>Call Status</TableHeaderColumn>
+                        <TableHeaderColumn 
+                            dataField='topicId' 
+                            isKey
+                            hidden
+                            >
+                            ID
+                        </TableHeaderColumn>
+                        <TableHeaderColumn 
+                            dataField='title' 
+                            expandable={ false } 
+                            tdStyle={ { whiteSpace: 'normal' } }
+                            dataFormat={ this.linkFormatter }
+                            >
+                            Title
+                        </TableHeaderColumn>
+                        <TableHeaderColumn 
+                            dataField='callStatus' 
+                            expandable={ false }
+                            dataSort 
+                            width='150'
+                            >
+                            Call Status
+                        </TableHeaderColumn>
+
                         {cols.map((col) => {
                             return this.renderColumn(col)
                         })}
+
                     </BootstrapTable>
                 </div>
             </div>
         );
     }
-
 }
 
 

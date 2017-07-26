@@ -65,7 +65,7 @@ class FilterSidebar extends Component{
 
     render(){
         return (
-            <div className="search-bar col-sm-12">
+            <div className="search-bar col-sm-2">
                 <form className="form">
                     <div className="checkbox">
                         <label>
