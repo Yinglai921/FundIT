@@ -39,6 +39,7 @@ class SearchBar extends Component{
             scopes: currentScopes
         })
         //console.log(this.state.scopes)
+        this.props.searchTopics(this.props.topics, this.state.term, this.props.scopes, this.props.filters, false);
 
     }
 

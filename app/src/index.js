@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import promise from 'redux-promise';
 
 import './index.css';
+import './styles/sidebar.css';
 //import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 

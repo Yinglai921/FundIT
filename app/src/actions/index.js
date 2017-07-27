@@ -119,10 +119,8 @@ export function changeSearchScope(list){
     }
 }
 
-// for connecting /keywords with /
-export function changeFilterTerm(keyword, callback){
-
-    //callback()
+// for connecting '/keywords' with '/'
+export function changeFilterTerm(keyword){
     return{
         type: CHANGE_FILTER_TERM,
         payload: keyword

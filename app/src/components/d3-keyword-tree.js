@@ -149,6 +149,7 @@ class D3KeywordTree extends Component{
 			var paths = searchTree(root,text,[]);
 			if(typeof(paths) !== "undefined"){
 				openPaths(paths);
+				setSearchWord(text);
 			}
 			else{
 				alert(text+" not found!");
@@ -198,9 +199,7 @@ class D3KeywordTree extends Component{
 			.attr("text-anchor", function(d) {
 				return d.children || d._children ? "end" : "start";
 			})
-			.text(function(d) { return d.data.name; })
-			.attr('cursor', 'pointer')
-			.on('click', setSearchWord);
+			.text(function(d) { return d.data.name; });
 
 		// UPDATE
 		var nodeUpdate = nodeEnter.merge(node);
@@ -316,7 +315,7 @@ class D3KeywordTree extends Component{
 
 		// click to setSearchWord
 		function setSearchWord(d){
-			onChangeKeyword(d.data.name);
+			onChangeKeyword(d);
 		}
    }
     render() {

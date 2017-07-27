@@ -11,30 +11,49 @@ class KeywordTree extends Component {
   constructor(props){
     super(props);
     this.state = {
-      keyword:""
+      keyword:"",
+      toggle: false
     }
     this.changeKeyword = this.changeKeyword.bind(this);
+    this.jumpToIndex = this.jumpToIndex.bind(this);
+    this.toggleMenu = this.toggleMenu.bind(this);
   }
   
+  toggleMenu(e){
+    e.preventDefault();
+    const currentState = this.state.toggle;
+    this.setState({toggle: !currentState});
+  }
+
   changeKeyword(keyword){
     //console.log(keyword)
-    this.props.changeFilterTerm(keyword, () => {
-      this.props.history.push('/')
-    });
+    this.props.changeFilterTerm(keyword);
     this.setState({keyword: keyword});
+  }
+
+  jumpToIndex(){
+    this.props.history.push('/')
   }
   render() {
     return (
-      <div className="container">
+
+      <div id="wrapper" className={this.state.toggle ? "toggled" : null}>
             <Navigation />
-            <h3>Keyword tree</h3>
-            <select id="search" className="search"></select>
-            <D3KeywordThree onChangeKeyword={this.changeKeyword}/>
-            <div className="container">
-               keyword: {this.state.keyword} 
-               <button className="btn btn-primary"> Set search keyword </button>
-            </div>
-      </div>
+            <div id="page-content-wrapper">
+              <div class="container-fluid">
+                  <div class="row">
+                      <a href="#menu-toggle" className="btn btn-default" id="menu-toggle" onClick={this.toggleMenu}>Toggle Menu</a>
+                      <h3>Keyword tree</h3>
+                      <select id="search" className="search"></select>
+                      <D3KeywordThree onChangeKeyword={this.changeKeyword}/>
+                      <div className="container">
+                        keyword: {this.state.keyword} 
+                        <button className="btn btn-primary" onClick={this.jumpToIndex}> Set search keyword </button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </div>
     );
   }
 }
