@@ -12,7 +12,7 @@ class KeywordTree extends Component {
     super(props);
     this.state = {
       keyword:"",
-      toggle: false
+      toggle: true
     }
     this.changeKeyword = this.changeKeyword.bind(this);
     this.jumpToIndex = this.jumpToIndex.bind(this);
@@ -26,7 +26,10 @@ class KeywordTree extends Component {
   }
 
   changeKeyword(keyword){
-    //console.log(keyword)
+    let index = keyword.indexOf('(') - 1;
+    keyword = keyword.slice(0, index)
+    
+    console.log(index, keyword)
     this.props.changeFilterTerm(keyword);
     this.setState({keyword: keyword});
   }

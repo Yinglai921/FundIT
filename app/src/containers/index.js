@@ -13,7 +13,7 @@ class Index extends Component {
     super(props);
     this.toggleMenu = this.toggleMenu.bind(this);
     this.state ={
-      toggle: false
+      toggle: true
     }
   }
 

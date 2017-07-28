@@ -29,7 +29,14 @@ class D3KeywordTree extends Component{
    createTreeChart(svgDomNode, onChangeKeyword) {
 
 		function searchTree(obj,search,path){
-			if(obj.data.name === search){ //if search is found return, add the object to the path and return it
+			var name;
+			if(obj.data.value){
+				name = `${obj.data.name} (${obj.data.value})`
+			}else{
+				name = `${obj.data.name} (0)`
+			}
+			
+			if(name === search){ //if search is found return, add the object to the path and return it
 				path.push(obj);
 				return path;
 			}
@@ -58,7 +65,13 @@ class D3KeywordTree extends Component{
 	            }
 	        }
 	        else {
-	            leaves.push({id:++index,text:node.name});
+				if(node.value){
+					var name = `${node.name} (${node.value})`;
+					leaves.push({id:++index,text:name});
+				}else{
+					var name = `${node.name} (0)`;
+					leaves.push({id:++index,text:name});	
+				}
 	        }
 	        return [index,leaves];
 		}	
