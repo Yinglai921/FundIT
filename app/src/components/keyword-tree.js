@@ -7,6 +7,9 @@ import D3KeywordThree from './d3-keyword-tree';
 import Navigation from './navigation';
 import { changeFilterTerm } from '../actions';
 
+import ToggleMenuButton from '../components/buttons/toggle-menu-button';
+
+
 class KeywordTree extends Component {
   constructor(props){
     super(props);
@@ -37,6 +40,8 @@ class KeywordTree extends Component {
   jumpToIndex(){
     this.props.history.push('/')
   }
+
+
   render() {
     return (
 
@@ -45,13 +50,13 @@ class KeywordTree extends Component {
             <div id="page-content-wrapper">
               <div class="container-fluid">
                   <div class="row">
-                      <a href="#menu-toggle" className="btn btn-default" id="menu-toggle" onClick={this.toggleMenu}>Toggle Menu</a>
+                      <ToggleMenuButton toggleMenu={this.toggleMenu} />
                       <h3>Keyword tree</h3>
                       <select id="search" className="search"></select>
                       <D3KeywordThree onChangeKeyword={this.changeKeyword}/>
                       <div className="container">
                         keyword: {this.state.keyword} 
-                        <button className="btn btn-primary" onClick={this.jumpToIndex}> Set search keyword </button>
+                        <button className="btn btn-primary" onClick={this.jumpToIndex} style={{marginLeft: '20px'}}> Set search keyword </button>
                       </div>
                   </div>
               </div>

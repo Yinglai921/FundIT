@@ -65,9 +65,7 @@ class FilterSidebar extends Component{
 
     render(){
         return (
-            <div className="search-bar col-sm-2">
-                <form className="form">
-                    <div className="checkbox">
+                    <div className="checkbox col-3">
                         <label>
                             <input type="checkbox" 
                                 value="Open"
@@ -76,8 +74,6 @@ class FilterSidebar extends Component{
                             /> Only open topics
                         </label>
                     </div>
-                </form>
-            </div>
         )
     }
 }

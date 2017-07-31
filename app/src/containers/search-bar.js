@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchTopics, searchTopics, setSearchTerm, changeSearchScope } from '../actions/index';
+import FilterSidebar from './filter-sidebar';
 
 class SearchBar extends Component{
     constructor(props){
@@ -81,7 +82,7 @@ class SearchBar extends Component{
     render(){
         return(
 
-            <div className="search-bar col-sm-10">
+            <div className="search-bar col-sm-12">
                 <form onSubmit={this.onFormSubmit}>
                     <div className="form-group row">
                         <label className="col-sm-2 col-form-label">Search topics: </label>
@@ -128,6 +129,7 @@ class SearchBar extends Component{
                             /> In descriptions
                         </label>
                     </div> */}
+                    <FilterSidebar />
                 </form>
             </div>
         )

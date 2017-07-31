@@ -57,7 +57,7 @@ export function searchTopics(topics, term, scopes, filters, ifCheckbox){
         shouldSort: true,
         threshold: 0.1,
         location: 0,
-        distance: 100,
+        distance: 0,
         maxPatternLength: 60,
         minMatchCharLength: 1,
         keys: currentScopes

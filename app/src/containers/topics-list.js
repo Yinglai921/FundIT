@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 //import FixedDataTable from 'fixed-data-table';
 import FilterSidebar from './filter-sidebar';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-
+import { Collapse, Button, CardBlock, Card } from 'reactstrap';
 
 class BSTable extends React.Component {
     render() {
@@ -59,11 +59,17 @@ class TopicsList extends Component {
         super(props);
         
         this.state = {
-            cols:[] 
+            cols:[],
+            collapse: false
         };
 
         this._onColumnHeaderChange = this._onColumnHeaderChange.bind(this);
+        this.toggle = this.toggle.bind(this);
 
+    }
+
+    toggle(){
+        this.setState({ collapse: !this.state.collapse });
     }
 
     // change the headers of the columns, checkboxes event
@@ -199,43 +205,55 @@ class TopicsList extends Component {
                 <div className="search-bar col-sm-12">
                     <p> Number of topics: {searchedTopics.length} </p>
                     <br />
-                    <form className="form-inline row">
-                        <div className="checkbox col-3">
-                            <label>
-                                <input type="checkbox" value="plannedOpeningDate" 
-                                    onChange={this._onColumnHeaderChange}
-                                /> Planned Opening Date
-                            </label>
-                        </div>
-                        <div className="checkbox col-2">
-                            <label>
-                                <input type="checkbox" value="deadlineDates"
-                                    onChange={this._onColumnHeaderChange}
-                                /> Deadline Dates
-                            </label>
-                        </div>
-                        <div className="checkbox col-2">
-                            <label>
-                                <input type="checkbox" value="tags"
-                                    onChange={this._onColumnHeaderChange}
-                                /> Tags
-                            </label>
-                        </div> 
-                        <div className="checkbox col-2">
-                            <label>
-                                <input type="checkbox" value="keywords"
-                                    onChange={this._onColumnHeaderChange}
-                                /> Keywords
-                            </label>
-                        </div>
-                        <div className="checkbox col-2">
-                            <label>
-                                <input type="checkbox" value="callTitle"
-                                    onChange={this._onColumnHeaderChange}
-                                /> Call Title
-                            </label>
-                        </div>
-                    </form>
+                    <div>
+                        <Button onClick={this.toggle} style={{ marginBottom: '1rem'}}>
+                            <span className="fa fa-cog" aria-hidden="true"></span>
+                        </Button>
+                        <Collapse isOpen={this.state.collapse}>
+                            <Card>
+                                <CardBlock>
+                                    <form className="form-inline row">
+                                        <div className="checkbox col-3">
+                                            <label>
+                                                <input type="checkbox" value="plannedOpeningDate" 
+                                                    onChange={this._onColumnHeaderChange}
+                                                /> Planned Opening Date
+                                            </label>
+                                        </div>
+                                        <div className="checkbox col-2">
+                                            <label>
+                                                <input type="checkbox" value="deadlineDates"
+                                                    onChange={this._onColumnHeaderChange}
+                                                /> Deadline Dates
+                                            </label>
+                                        </div>
+                                        <div className="checkbox col-2">
+                                            <label>
+                                                <input type="checkbox" value="tags"
+                                                    onChange={this._onColumnHeaderChange}
+                                                /> Tags
+                                            </label>
+                                        </div> 
+                                        <div className="checkbox col-2">
+                                            <label>
+                                                <input type="checkbox" value="keywords"
+                                                    onChange={this._onColumnHeaderChange}
+                                                /> Keywords
+                                            </label>
+                                        </div>
+                                        <div className="checkbox col-2">
+                                            <label>
+                                                <input type="checkbox" value="callTitle"
+                                                    onChange={this._onColumnHeaderChange}
+                                                /> Call Title
+                                            </label>
+                                        </div>
+                                    </form>
+                                </CardBlock>
+                            </Card>
+                        </Collapse>
+                    </div>
+
                     <BootstrapTable 
                         data={ searchedTopics }
                             //striped

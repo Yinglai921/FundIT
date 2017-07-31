@@ -6,6 +6,7 @@ import TopicsList from './topics-list';
 import FilterSidebar from './filter-sidebar';
 
 import Navigation from '../components/navigation';
+import ToggleMenuButton from '../components/buttons/toggle-menu-button';
 
 class Index extends Component {
 
@@ -30,11 +31,10 @@ class Index extends Component {
         <div id="wrapper" className={this.state.toggle ? "toggled" : null}>
             <Navigation />
             <div id="page-content-wrapper">
-              <div class="container-fluid">
-                  <div class="row">
-                      <a href="#menu-toggle" className="btn btn-default" id="menu-toggle" onClick={this.toggleMenu}>Toggle Menu</a>
-                      <SearchBar />
-                      <FilterSidebar />
+              <div className="container-fluid">
+                  <div className="row">
+                    <ToggleMenuButton toggleMenu={this.toggleMenu} />
+                    <SearchBar />
                   </div>
                   <div className="row">
                     <p> No result </p>
@@ -49,11 +49,10 @@ class Index extends Component {
       <div id="wrapper" className={this.state.toggle ? "toggled" : null}>
             <Navigation />
             <div id="page-content-wrapper">
-              <div class="container-fluid">
-                  <div class="row">
-                      <a href="#menu-toggle" className="btn btn-default" id="menu-toggle" onClick={this.toggleMenu}>Toggle Menu</a>
+              <div className="container-fluid">
+                  <div className="row">
+                      <ToggleMenuButton toggleMenu={this.toggleMenu} />
                       <SearchBar />
-                      <FilterSidebar />
                   </div>
                   <div className="row">
                     <TopicsList />

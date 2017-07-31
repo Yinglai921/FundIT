@@ -51,3 +51,12 @@ body {
   left: 0;
   height: 100px;
 }
+
+/* Others */
+.react-bootstrap-table-page-btns-ul{
+  float:none;
+}
+
+.react-bs-table-sizePerPage-dropdown{
+  visibility: hidden !important;
+}

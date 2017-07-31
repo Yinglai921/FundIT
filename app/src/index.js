@@ -7,6 +7,7 @@ import promise from 'redux-promise';
 
 import './index.css';
 import './styles/sidebar.css';
+import './styles/font-awesome/css/font-awesome.min.css';
 //import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
