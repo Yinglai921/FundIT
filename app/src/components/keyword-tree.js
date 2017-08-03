@@ -48,8 +48,8 @@ class KeywordTree extends Component {
       <div id="wrapper" className={this.state.toggle ? "toggled" : null}>
             <Navigation />
             <div id="page-content-wrapper">
-              <div class="container-fluid">
-                  <div class="row">
+              <div className="container-fluid">
+                  <div className="row">
                       <ToggleMenuButton toggleMenu={this.toggleMenu} />
                       <h3>Keyword tree</h3>
                       <select id="search" className="search"></select>

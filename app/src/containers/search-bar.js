@@ -100,28 +100,25 @@ class SearchBar extends Component{
                     </div>
                 </form>
                 
-                <form className="form-inline row">
-                    <div className="checkbox col-2">
-                        <label>
+                <div>
+                        <label className="checkbox-inline">
                             <input type="checkbox" value="title" defaultChecked={this.props.scopes.title}
                                 onChange={this.onSearchScopeChange}
                             /> In title
                         </label>
-                    </div>
-                    <div className="checkbox col-2">
-                        <label>
+
+                        <label className="checkbox-inline">
                             <input type="checkbox" value="keywords" defaultChecked={this.props.scopes.keywords}
                                 onChange={this.onSearchScopeChange}
                             /> In keywords
                         </label>
-                    </div>
-                    <div className="checkbox col-2">
-                        <label>
+
+                        <label className="checkbox-inline">
                             <input type="checkbox" value="tags" defaultChecked={this.props.scopes.tags}
                                 onChange={this.onSearchScopeChange}
                             /> In tags
                         </label>
-                    </div>
+
                     {/* <div className="checkbox col-2">
                         <label>
                             <input type="checkbox" value="desc"
@@ -130,7 +127,7 @@ class SearchBar extends Component{
                         </label>
                     </div> */}
                     <FilterSidebar />
-                </form>
+                </div>
             </div>
         )
     }

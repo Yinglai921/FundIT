@@ -9,14 +9,37 @@ export const SET_SEARCH_TERM = 'set_search_term';
 export const CHANGE_SEARCH_SCOPE = 'change_search_scope';
 export const CHANGE_FILTER_TERM = 'change_filter_term';
 export const CHANGE_COLUMNSETTINGS = 'change_columnsettings';
+export const SET_FILTER_NUMBER = 'set_filter_number';
 // fetch all the topics from the start
 const TOPICS_URL = 'http://127.0.0.1:5000/fundit/api/topics';
+
+function dateFormatCovert(time){
+    let currTime = new Date(time);
+    let date = currTime.getDate();
+    let month = currTime.getMonth();
+    let year = currTime.getFullYear();
+    let newTime = `${year}-${month}-${date}`;
+    return newTime;
+}
 export function fetchTopics(){
     //const request = axios.get(TOPICS_URL)
+    // cover date to a new format
+    let currentTopics = topics;
+    currentTopics.forEach((topic) => {
+        if(topic.plannedOpeningDate !== null){
+            topic.plannedOpeningDate = dateFormatCovert(topic.plannedOpeningDate);
+        }
+        if(topic.deadlineDates.length !== 0){
+            for(let i = 0; i < topic.deadlineDates.length; i++){
+                topic.deadlineDates[i] = dateFormatCovert(topic.deadlineDates[i])
+            }
+        }     
+    })
+
     return{
         type: FETCH_TOPICS,
         //payload: request
-        payload: topics
+        payload: currentTopics
     }
 }
 
@@ -144,4 +167,12 @@ export function changeFilterTerm(keyword){
         type: CHANGE_FILTER_TERM,
         payload: keyword
     }
+}
+
+export function setFilterNumber(length){
+    return{
+        type: SET_FILTER_NUMBER,
+        payload: length
+    }
+
 }

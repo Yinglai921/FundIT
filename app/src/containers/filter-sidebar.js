@@ -65,15 +65,15 @@ class FilterSidebar extends Component{
 
     render(){
         return (
-                    <div className="checkbox col-3">
-                        <label>
+
+                        <label className="checkbox-inline">
                             <input type="checkbox" 
                                 value="Open"
                                 defaultChecked={this.state.open}
                                 onChange={this.onCheckboxChange}
                             /> Only open topics
                         </label>
-                    </div>
+
         )
     }
 }

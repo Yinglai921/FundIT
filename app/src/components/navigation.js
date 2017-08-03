@@ -22,7 +22,7 @@ export default class Navigation extends Component {
                     <Link className="nav-item nav-link" to="/keywords" className="nav-link"> Keywords </Link>
                 </li>
                 <li>
-                   <Link className="nav-item nav-link" to="/tags" className="nav-link"> tags </Link>
+                   {/* <Link className="nav-item nav-link" to="/tags" className="nav-link"> tags </Link> */}
                 </li>
             </ul>
         </div>

@@ -88,6 +88,7 @@
 .sidebar-nav > .sidebar-brand {
     font-size: 18px;
     line-height: 60px;
+    margin-bottom: 60px;
 }
 
 .sidebar-nav li img{

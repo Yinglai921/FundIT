@@ -4,7 +4,8 @@ import { bindActionCreators } from 'redux';
 //import FixedDataTable from 'fixed-data-table';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import { Collapse, Button, CardBlock, Card } from 'reactstrap';
-import { changeColumnSettings } from '../actions/index';
+import { changeColumnSettings, setFilterNumber } from '../actions/index';
+import TopicsNumber from './topics-number';
 
 class BSTable extends React.Component {
     render() {
@@ -61,11 +62,13 @@ class TopicsList extends Component {
         
         this.state = {
             cols:[],
-            collapse: false
+            collapse: false,
+            filterNumber: this.props.searchedTopics.length
         };
 
         this.onColumnHeaderChange = this.onColumnHeaderChange.bind(this);
         this.toggle = this.toggle.bind(this);
+        this.afterColumnFilter = this.afterColumnFilter.bind(this);
 
     }
 
@@ -75,7 +78,7 @@ class TopicsList extends Component {
 
     // set the columns according to the columnSettings if has one
     componentWillMount(){
-        const { columnSettings } = this.props;
+        const { columnSettings, searchedTopics } = this.props;
         let cols = [];
         if (columnSettings !== null){
             if (columnSettings.callTitle)
@@ -90,6 +93,8 @@ class TopicsList extends Component {
                 cols.push('tags')
         }
         this.setState({cols:cols})
+
+        this.props.setFilterNumber(searchedTopics.length)
     }
 
     // change the headers of the columns, checkboxes event
@@ -217,21 +222,30 @@ class TopicsList extends Component {
         return <a href={`http://ec.europa.eu/research/participants/portal4/desktop/en/opportunities/h2020/topics/${row.topicFileName}.html`}>{cell}</a>
     }
 
+    afterColumnFilter(filterConds, result) {
+        // if (result.length < this.props.searchedTopics.length) {
+        //     this.props.setFilterNumber(result.length);
+        // }
+        
+        this.props.setFilterNumber(result.length) // !!! it may lower the time, seems this callback will keep running 
+    }
 
     render(){
         const { searchedTopics } = this.props;
-        const { cols } = this.state;
+        const { cols, filterNumber } = this.state;
+
+        // some custom settings for react-bootstrap-table
         const options = {
             expandRowBgColor: 'rgb(255, 255, 255)',
-            expandBy: 'column'  // Currently, available value is row and column, default is row
+            expandBy: 'column',  // Currently, available value is row and column, default is row
+            afterColumnFilter: this.afterColumnFilter // a callback to get filtered result
             };
+
         console.log("render: ", cols)
         return (
-
             <div className="row">
-                <div className="search-bar col-sm-12">
-                    <p> Number of topics: {searchedTopics.length} </p>
-                    <br />
+                <div className="topics-list col-sm-12">
+                    <TopicsNumber />
                     <div>
                         <Button onClick={this.toggle} style={{ marginBottom: '1rem'}}>
                             <span className="fa fa-cog" aria-hidden="true"></span>
@@ -239,53 +253,45 @@ class TopicsList extends Component {
                         <Collapse isOpen={this.state.collapse}>
                             <Card>
                                 <CardBlock>
-                                    <form className="form-inline row">
-                                        <div className="checkbox col-2">
-                                            <label>
+
+                                            <label className="checkbox-inline">
                                                 <input type="checkbox" value="callTitle" defaultChecked={this.props.columnSettings.callTitle}
                                                     onChange={this.onColumnHeaderChange}
                                                 /> Call Title
                                             </label>
-                                        </div>
-                                        <div className="checkbox col-3">
-                                            <label>
+
+  
+                                            <label className="checkbox-inline">
                                                 <input type="checkbox" value="plannedOpeningDate" defaultChecked={this.props.columnSettings.plannedOpeningDate}
                                                     onChange={this.onColumnHeaderChange}
                                                 /> Planned Opening Date
                                             </label>
-                                        </div>
-                                        <div className="checkbox col-2">
-                                            <label>
+
+                                            <label className="checkbox-inline">
                                                 <input type="checkbox" value="deadlineDates" defaultChecked={this.props.columnSettings.deadlineDates}
                                                     onChange={this.onColumnHeaderChange}
                                                 /> Deadline Dates
                                             </label>
-                                        </div>
-                                        <div className="checkbox col-2">
-                                            <label>
+
+                                            <label className="checkbox-inline">
                                                 <input type="checkbox" value="keywords" defaultChecked={this.props.columnSettings.keywords}
                                                     onChange={this.onColumnHeaderChange}
                                                 /> Keywords
                                             </label>
-                                        </div>
-                                        <div className="checkbox col-2">
-                                            <label>
+
+                                            <label className="checkbox-inline">
                                                 <input type="checkbox" value="tags" defaultChecked={this.props.columnSettings.tags}
                                                     onChange={this.onColumnHeaderChange}
                                                 /> Tags
                                             </label>
-                                        </div> 
-                                    </form>
                                 </CardBlock>
                             </Card>
                         </Collapse>
                     </div>
-
                     <BootstrapTable 
                         data={ searchedTopics }
-                            //striped
-                            replace
-                            pagination
+                        replace
+                        pagination
                         options={ options }
                         expandableRow={ () => { return true; } }
                         expandComponent={ this.expandComponent }
@@ -334,7 +340,7 @@ function mapStateToProps(state){
 }
 
 function mapDispatchToProps(dispatch){
-    return bindActionCreators({changeColumnSettings}, dispatch);
+    return bindActionCreators({changeColumnSettings, setFilterNumber}, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopicsList);
