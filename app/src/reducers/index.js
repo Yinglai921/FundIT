@@ -4,6 +4,8 @@ import ScopesReducer from './reducer_scopes';
 import FiltersReducer from './reducer_filters';
 import SearchTermReducer from './reducer_searchTerm';
 import SearchedTopicsReducer from './reducer_searchedTopics';
+import ColumnSettingsReducer from './reducer_columnSettings';
+
 
 const rootReducer = combineReducers({
   topics: TopicsReducer,
@@ -11,6 +13,7 @@ const rootReducer = combineReducers({
   filters: FiltersReducer,
   searchTerm: SearchTermReducer,
   searchedTopics: SearchedTopicsReducer,
+  columnSettings: ColumnSettingsReducer
 });
 
 export default rootReducer;

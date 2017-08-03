@@ -2,13 +2,13 @@ import Fuse from 'fuse.js';
 import axios from 'axios';
 import topics from '../data/topics.json';
 
-export const FETCH_TOPICS = 'FETCH_TOPICS';
-export const CHANGE_FILTER_STATE = 'CHANGE_FILTER_STATE'; 
-export const SEARCH_TOPICS = 'SEARCH_TOPICS';
-export const SET_SEARCH_TERM = 'SET_SEARCH_TERM';
-export const CHANGE_SEARCH_SCOPE = 'CHANGE_SEARCH_SCOPE';
-export const CHANGE_FILTER_TERM = 'CHANGE_FILTER_TERM';
-
+export const FETCH_TOPICS = 'fetch_topics';
+export const CHANGE_FILTER_STATE = 'change_filter_state'; 
+export const SEARCH_TOPICS = 'search_topics';
+export const SET_SEARCH_TERM = 'set_search_term';
+export const CHANGE_SEARCH_SCOPE = 'change_search_scope';
+export const CHANGE_FILTER_TERM = 'change_filter_term';
+export const CHANGE_COLUMNSETTINGS = 'change_columnsettings';
 // fetch all the topics from the start
 const TOPICS_URL = 'http://127.0.0.1:5000/fundit/api/topics';
 export function fetchTopics(){
@@ -118,6 +118,25 @@ export function changeSearchScope(list){
         payload: scopes
     }
 }
+
+export function changeColumnSettings(list){
+    let settings = {
+        "callTitle": false,
+        "plannedOpeningDate": false,
+        "deadlineDates": false,
+        "keywords": false,
+        "tags": false
+    }
+    list.forEach((name) => {
+        settings[name] = true;
+    })
+
+    return{
+        type: CHANGE_COLUMNSETTINGS,
+        payload: settings
+    }
+}
+
 
 // for connecting '/keywords' with '/'
 export function changeFilterTerm(keyword){

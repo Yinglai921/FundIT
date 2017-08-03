@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 //import FixedDataTable from 'fixed-data-table';
-import FilterSidebar from './filter-sidebar';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import { Collapse, Button, CardBlock, Card } from 'reactstrap';
+import { changeColumnSettings } from '../actions/index';
 
 class BSTable extends React.Component {
     render() {
@@ -63,7 +64,7 @@ class TopicsList extends Component {
             collapse: false
         };
 
-        this._onColumnHeaderChange = this._onColumnHeaderChange.bind(this);
+        this.onColumnHeaderChange = this.onColumnHeaderChange.bind(this);
         this.toggle = this.toggle.bind(this);
 
     }
@@ -72,8 +73,27 @@ class TopicsList extends Component {
         this.setState({ collapse: !this.state.collapse });
     }
 
+    // set the columns according to the columnSettings if has one
+    componentWillMount(){
+        const { columnSettings } = this.props;
+        let cols = [];
+        if (columnSettings !== null){
+            if (columnSettings.callTitle)
+                cols.push('callTitle')
+            if (columnSettings.plannedOpeningDate)
+                cols.push('plannedOpeningDate')
+            if (columnSettings.deadlineDates)
+                cols.push('deadlineDates')
+            if (columnSettings.keywords)
+                cols.push('keywords')
+            if (columnSettings.tags)
+                cols.push('tags')
+        }
+        this.setState({cols:cols})
+    }
+
     // change the headers of the columns, checkboxes event
-    _onColumnHeaderChange(event){
+    onColumnHeaderChange(event){
         let col = event.target.value;
         let currentCols = this.state.cols;
         if(event.target.checked){
@@ -87,10 +107,17 @@ class TopicsList extends Component {
                 currentCols.splice(currentCols.indexOf(col), 1);
             }
         }
-        currentCols.sort();
+
+        const columnOrder = ['callTitle', 'plannedOpeningDate', 'deadlineDates', 'keywords', 'tags'];
+        currentCols.sort(function(a, b){
+            return columnOrder.indexOf(a) - columnOrder.indexOf(b);
+        });
+
         this.setState({
             cols: currentCols
         })
+
+        this.props.changeColumnSettings(this.state.cols);
     }
 
     // --- sort by date
@@ -213,41 +240,41 @@ class TopicsList extends Component {
                             <Card>
                                 <CardBlock>
                                     <form className="form-inline row">
+                                        <div className="checkbox col-2">
+                                            <label>
+                                                <input type="checkbox" value="callTitle" defaultChecked={this.props.columnSettings.callTitle}
+                                                    onChange={this.onColumnHeaderChange}
+                                                /> Call Title
+                                            </label>
+                                        </div>
                                         <div className="checkbox col-3">
                                             <label>
-                                                <input type="checkbox" value="plannedOpeningDate" 
-                                                    onChange={this._onColumnHeaderChange}
+                                                <input type="checkbox" value="plannedOpeningDate" defaultChecked={this.props.columnSettings.plannedOpeningDate}
+                                                    onChange={this.onColumnHeaderChange}
                                                 /> Planned Opening Date
                                             </label>
                                         </div>
                                         <div className="checkbox col-2">
                                             <label>
-                                                <input type="checkbox" value="deadlineDates"
-                                                    onChange={this._onColumnHeaderChange}
+                                                <input type="checkbox" value="deadlineDates" defaultChecked={this.props.columnSettings.deadlineDates}
+                                                    onChange={this.onColumnHeaderChange}
                                                 /> Deadline Dates
                                             </label>
                                         </div>
                                         <div className="checkbox col-2">
                                             <label>
-                                                <input type="checkbox" value="tags"
-                                                    onChange={this._onColumnHeaderChange}
-                                                /> Tags
-                                            </label>
-                                        </div> 
-                                        <div className="checkbox col-2">
-                                            <label>
-                                                <input type="checkbox" value="keywords"
-                                                    onChange={this._onColumnHeaderChange}
+                                                <input type="checkbox" value="keywords" defaultChecked={this.props.columnSettings.keywords}
+                                                    onChange={this.onColumnHeaderChange}
                                                 /> Keywords
                                             </label>
                                         </div>
                                         <div className="checkbox col-2">
                                             <label>
-                                                <input type="checkbox" value="callTitle"
-                                                    onChange={this._onColumnHeaderChange}
-                                                /> Call Title
+                                                <input type="checkbox" value="tags" defaultChecked={this.props.columnSettings.tags}
+                                                    onChange={this.onColumnHeaderChange}
+                                                /> Tags
                                             </label>
-                                        </div>
+                                        </div> 
                                     </form>
                                 </CardBlock>
                             </Card>
@@ -301,8 +328,13 @@ class TopicsList extends Component {
 
 function mapStateToProps(state){
     return{ 
-        searchedTopics: state.searchedTopics
+        searchedTopics: state.searchedTopics,
+        columnSettings: state.columnSettings
     };
 }
 
-export default connect(mapStateToProps)(TopicsList);
+function mapDispatchToProps(dispatch){
+    return bindActionCreators({changeColumnSettings}, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TopicsList);
