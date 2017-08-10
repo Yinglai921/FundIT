@@ -167,6 +167,7 @@ class TopicsList extends Component {
                     dataSort 
                     sortFunc={ this.revertSortOpenDate } 
                     expandable={ false }
+                    width='200'
                     >
                     Planned Opening Date
                     </TableHeaderColumn>
@@ -178,6 +179,7 @@ class TopicsList extends Component {
                     dataSort 
                     sortFunc={ this.revertSortDeadlineDate }
                     expandable={ false }
+                    width='200'
                     >
                     Deadline Dates
                     </TableHeaderColumn>

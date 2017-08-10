@@ -11,22 +11,48 @@ import keywords from '../data/keywords.json';
 class D3KeywordTree extends Component{
     constructor(props){
       super(props)
-      this.createTreeChart = this.createTreeChart.bind(this);
+	  this.createTreeChart = this.createTreeChart.bind(this);
+	  this.updateDimensions = this.updateDimensions.bind(this);
 	  this.state = {
-		  keyword: ''
+		  keyword: '',
+		  graphWidth: 0,
+		  graphHeight: 0
 	  }
-    }
+	}
 
+
+   updateDimensions(){
+	   //let graphDiv = document.getElementById("keyword-tree-graph");
+	   
+	   console.log("update: " + this.state.graphWidth + ", " + this.state.graphHeight)
+	   this.setState({graphWidth: $(window).width(), graphHeight: $(window).height()})
+
+
+	   //this.createTreeChart(mountNode, this.props.onChangeKeyword)
+	   
+   }
+
+   componentWillMount(){
+	   this.updateDimensions();
+   }
    componentDidMount() {
-      const mountNode = ReactDOM.findDOMNode(this);
+	  const mountNode = ReactDOM.findDOMNode(this);
+	  window.addEventListener("resize", this.updateDimensions);
       this.createTreeChart(mountNode, this.props.onChangeKeyword)
    }
 
+   componentWillUnmount(){
+	   window.removeEventListener("resize", this.updateDimensions)
+   }
+
    componentDidUpdate() {
-      //this.createTreeChart(ReactDOM.findDOMNode(this));
+	   //const mountNode = ReactDOM.findDOMNode(this);
+       //this.createTreeChart(mountNode, this.props.onChangeKeyword)
    }
 
    createTreeChart(svgDomNode, onChangeKeyword) {
+
+	    d3.select("#keyword-tree-graph svg").html("");
 
 		function searchTree(obj,search,path){
 			var name;
@@ -76,21 +102,32 @@ class D3KeywordTree extends Component{
 	        return [index,leaves];
 		}	
 		// draw tree
-		
 
         // Set the dimensions and margins of the diagram
-		var margin = {top: 20, right: 90, bottom: 30, left: 90},
-			width = 1060 - margin.left - margin.right,
-			height = 500 - margin.top - margin.bottom;
+		var margin = {top: this.state.graphHeight * 0.05, right: this.state.graphWidth * 0.1, bottom: this.state.graphHeight * 0.05, left: this.state.graphWidth * 0.1},
+			width = this.state.graphWidth - margin.left - margin.right,
+			height = this.state.graphHeight - margin.top - margin.bottom;
 
 		var zoom = d3.zoom()
-		.scaleExtent([0.5, 100])
-		.on('zoom', zoomFn);
+		.scaleExtent([0.7, 2])
+		.on('zoom', zoomFn)
+		
 
 		function zoomFn() {
 			d3.select(svgDomNode).select("g")
 				.attr('transform', 'translate(' + d3.event.transform.x + ',' + d3.event.transform.y + ') scale(' + d3.event.transform.k + ')');
 		}
+
+		function reset(){
+			d3.zoomTransform(this).x = 0;
+			d3.zoomTransform(this).y = 0;
+			d3.zoomTransform(this).k = 1;
+			d3.select(svgDomNode).select("g").transition().duration(750)
+				.attr('transform', 'translate(' + d3.zoomTransform(this).x + ',' + d3.zoomTransform(this).y + ') scale(' + d3.zoomTransform(this).k + ')');
+			
+			//console.log(d3.zoomTransform(this))
+		}
+
 		// append the svg object to the body of the page
 		// appends a 'group' element to 'svg'
 		// moves the 'group' element to the top left margin
@@ -98,9 +135,10 @@ class D3KeywordTree extends Component{
 			.attr("width", width + margin.right + margin.left)
 			.attr("height", height + margin.top + margin.bottom)
 			.call(zoom)
+			.on('dblclick.zoom', reset)
 			.append("g")
 				.attr("transform", "translate("
-				+ margin.left + "," + margin.top + ")");
+				+ margin.left + "," + margin.top * 0.5 + ")");
 
 		var i = 0,
 			duration = 750,
@@ -342,7 +380,7 @@ class D3KeywordTree extends Component{
    }
     render() {
       return (
-	  		<svg></svg>
+	  		<svg width={this.state.graphWidth} height={this.state.graphHeight}></svg>
 		  )
     }
 }
