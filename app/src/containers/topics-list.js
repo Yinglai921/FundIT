@@ -148,6 +148,14 @@ class TopicsList extends Component {
 
     // --- end of sort by date functions
 
+    // format of the expandable rows (keywords and tags)
+    keywordFormatter(cell, row){
+        if(cell !== undefined){
+            let content = cell.join(" ; ");
+            return (<div className="expandable-row">{content}</div>)
+        }
+    }
+
     // render column according to the checkboxes
     renderColumn(col){
 
@@ -180,6 +188,7 @@ class TopicsList extends Component {
                     dataField={col} 
                     filter={ { type: 'RegexFilter', delay: 1000 } } 
                     expandable={ true }
+                    dataFormat={ this.keywordFormatter }
                     >
                     Keywords
                     </TableHeaderColumn> 
@@ -190,6 +199,7 @@ class TopicsList extends Component {
                     dataField={col} 
                     filter={ { type: 'RegexFilter', delay: 1000 } } 
                     expandable={ true }
+                    dataFormat={ this.keywordFormatter }
                     >
                     Tags
                     </TableHeaderColumn> 
@@ -236,7 +246,7 @@ class TopicsList extends Component {
 
         // some custom settings for react-bootstrap-table
         const options = {
-            expandRowBgColor: 'rgb(255, 255, 255)',
+            expandRowBgColor: 'rgb(219,230,236)',
             expandBy: 'column',  // Currently, available value is row and column, default is row
             afterColumnFilter: this.afterColumnFilter // a callback to get filtered result
             };

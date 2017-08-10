@@ -60,3 +60,18 @@ body {
 .react-bs-table-sizePerPage-dropdown{
   visibility: hidden !important;
 }
+
+.expandable-row{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.set-search-word-row{
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.select2-container{
+  width: 100%;
+}

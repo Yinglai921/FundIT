@@ -53,11 +53,11 @@ class KeywordTree extends Component {
                       <ToggleMenuButton toggleMenu={this.toggleMenu} />
                       <h3>Keyword tree</h3>
                       <select id="search" className="search"></select>
-                      <D3KeywordThree onChangeKeyword={this.changeKeyword}/>
-                      <div className="container">
+                      <div className="set-search-word-row">
                         keyword: {this.state.keyword} 
                         <button className="btn btn-primary" onClick={this.jumpToIndex} style={{marginLeft: '20px'}}> Set search keyword </button>
                       </div>
+                      <D3KeywordThree onChangeKeyword={this.changeKeyword}/>
                   </div>
               </div>
           </div>
