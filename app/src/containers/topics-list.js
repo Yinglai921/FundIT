@@ -231,7 +231,7 @@ class TopicsList extends Component {
     }
 
     linkFormatter(cell, row) {
-        return <a href={`http://ec.europa.eu/research/participants/portal4/desktop/en/opportunities/h2020/topics/${row.topicFileName}.html`}>{cell}</a>
+        return <a target="_blank" href={`http://ec.europa.eu/research/participants/portal4/desktop/en/opportunities/h2020/topics/${row.topicFileName}.html`}>{cell}</a>
     }
 
     afterColumnFilter(filterConds, result) {
@@ -258,7 +258,7 @@ class TopicsList extends Component {
             <div className="row">
                 <div className="topics-list col-sm-12">
                     <TopicsNumber />
-                    <div>
+                    <div id="settingBtn">
                         <Button onClick={this.toggle} style={{ marginBottom: '1rem'}}>
                             <span className="fa fa-cog" aria-hidden="true"></span>
                         </Button>
@@ -321,7 +321,7 @@ class TopicsList extends Component {
                             tdStyle={ { whiteSpace: 'normal' } }
                             dataFormat={ this.linkFormatter }
                             >
-                            Title
+                            Topic Title
                         </TableHeaderColumn>
                         <TableHeaderColumn 
                             dataField='callStatus' 
