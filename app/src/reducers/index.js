@@ -6,6 +6,7 @@ import SearchTermReducer from './reducer_searchTerm';
 import SearchedTopicsReducer from './reducer_searchedTopics';
 import ColumnSettingsReducer from './reducer_columnSettings';
 import FilterNumberReducer from './reducer_filterNumber';
+import NavigationToggle from './reducer_navigationToggle';
 
 
 const rootReducer = combineReducers({
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
   searchTerm: SearchTermReducer,
   searchedTopics: SearchedTopicsReducer,
   columnSettings: ColumnSettingsReducer,
-  filterNumber: FilterNumberReducer
+  filterNumber: FilterNumberReducer,
+  navigationToggle: NavigationToggle
 });
 
 export default rootReducer;

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import D3KeywordThree from './d3-keyword-tree';
 import Navigation from './navigation';
-import { changeFilterTerm } from '../actions';
+import { changeFilterTerm, setNavigationToggle } from '../actions';
 
 import ToggleMenuButton from '../components/buttons/toggle-menu-button';
 
@@ -15,24 +15,30 @@ class KeywordTree extends Component {
     super(props);
     this.state = {
       keyword:"",
-      toggle: true
+      toggle: true,
     }
     this.changeKeyword = this.changeKeyword.bind(this);
     this.jumpToIndex = this.jumpToIndex.bind(this);
     this.toggleMenu = this.toggleMenu.bind(this);
   }
   
+  componentDidMount(){
+    this.setState({toggle: this.props.navigationToggle});
+  }
+
   toggleMenu(e){
     e.preventDefault();
     const currentState = this.state.toggle;
     this.setState({toggle: !currentState});
+
+    this.props.setNavigationToggle(!currentState);
   }
 
   changeKeyword(keyword){
-    let index = keyword.indexOf('(') - 1;
-    keyword = keyword.slice(0, index)
-    
-    console.log(index, keyword)
+    if (keyword.indexOf('(') !== -1){
+      let index = keyword.indexOf('(') - 1;
+      keyword = keyword.slice(0, index)
+    }
     this.props.changeFilterTerm(keyword);
     this.setState({keyword: keyword});
   }
@@ -46,7 +52,7 @@ class KeywordTree extends Component {
     return (
 
       <div id="wrapper" className={this.state.toggle ? "toggled" : null}>
-            <Navigation />
+            <Navigation active={"keyword"}/>
             <div id="page-content-wrapper">
               <div className="container-fluid">
                   <div className="row">
@@ -54,8 +60,8 @@ class KeywordTree extends Component {
                       <h3>Keyword tree</h3>
                       <select id="search" className="search"></select>
                       <div className="set-search-word-row">
-                        Keyword: {this.state.keyword} 
-                        <button className="btn btn-primary" onClick={this.jumpToIndex} style={{marginLeft: '20px'}}> Set search keyword </button>
+                         Selected keyword: <b>{this.state.keyword}</b>
+                        <button className="btn btn-primary" onClick={this.jumpToIndex} style={{marginLeft: '20px'}}> Search topics</button>
                       </div>
                       <div id="keyword-tree-graph">
                         <D3KeywordThree onChangeKeyword={this.changeKeyword}/>
@@ -68,11 +74,15 @@ class KeywordTree extends Component {
   }
 }
 
-
+function mapStateToProps(state){
+    return{ 
+        navigationToggle: state.navigationToggle,
+    };
+}
 
 
 function mapDispatchToProps(dispatch){
-    return bindActionCreators({changeFilterTerm}, dispatch);
+    return bindActionCreators({changeFilterTerm, setNavigationToggle}, dispatch);
 }
 
-export default connect(null, mapDispatchToProps)(KeywordTree);
+export default connect(mapStateToProps, mapDispatchToProps)(KeywordTree);

@@ -10,6 +10,7 @@ export const CHANGE_SEARCH_SCOPE = 'change_search_scope';
 export const CHANGE_FILTER_TERM = 'change_filter_term';
 export const CHANGE_COLUMNSETTINGS = 'change_columnsettings';
 export const SET_FILTER_NUMBER = 'set_filter_number';
+export const SET_NAV_TOGGLE = 'set_nav_toggle';
 // fetch all the topics from the start
 const TOPICS_URL = 'http://127.0.0.1:5000/fundit/api/topics';
 
@@ -160,7 +161,6 @@ export function changeColumnSettings(list){
     }
 }
 
-
 // for connecting '/keywords' with '/'
 export function changeFilterTerm(keyword){
     return{
@@ -175,4 +175,11 @@ export function setFilterNumber(length){
         payload: length
     }
 
+}
+
+export function setNavigationToggle(toggle){
+    return{
+        type: SET_NAV_TOGGLE,
+        payload: toggle
+    }
 }

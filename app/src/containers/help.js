@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import SearchBar from './search-bar';
-import TopicsList from './topics-list';
-import FilterSidebar from './filter-sidebar';
 
 import Navigation from '../components/navigation';
 import ToggleMenuButton from '../components/buttons/toggle-menu-button';
 
 import { setNavigationToggle } from '../actions/index';
+
+import help1 from '../styles/img/help1.gif'
 
 class Index extends Component {
 
@@ -37,15 +36,14 @@ class Index extends Component {
 
     return(
        <div id="wrapper" className={this.state.toggle ? "toggled" : null}>
-            <Navigation active={"index"}/>
+            <Navigation active={"help"}/>
             <div id="page-content-wrapper">
               <div className="container-fluid">
                   <div className="row">
                     <ToggleMenuButton toggleMenu={this.toggleMenu} />
-                    <SearchBar />
                   </div>
                   <div className="row">
-                    {this.props.searchedTopics.length == 0 ? "No results" : <TopicsList />}
+                    <img src={help1} alt="help1" />
                 </div>
               </div>
           </div>
@@ -57,7 +55,6 @@ class Index extends Component {
 
 function mapStateToProps(state){
     return{ 
-        searchedTopics: state.searchedTopics,
         navigationToggle: state.navigationToggle,
     };
 }

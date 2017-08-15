@@ -375,7 +375,9 @@ class D3KeywordTree extends Component{
 
 		// click tree to setSearchWord
 		function setSearchWordFromTree(d){
+			console.log(d.data.name)
 			onChangeKeyword(d.data.name);
+			
 		}
    }
     render() {

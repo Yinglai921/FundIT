@@ -50,8 +50,13 @@ class SearchBar extends Component{
 
     onFormSubmit(event){
         event.preventDefault();
+
+        if(this.props.scopes.length == 0){
+            alert("Please select at least one search scope");
+        }
         // set search term globally 
         this.props.setSearchTerm(this.state.term);
+
         // search topics
         this.props.searchTopics(this.props.topics, this.state.term, this.props.scopes, this.props.filters, false);
     } 

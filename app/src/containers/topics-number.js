@@ -7,12 +7,14 @@ class TopicsNumber extends Component {
     constructor(props){
         super(props);
         this.state = {
-            // filterNumber: this.props.filterNumber,
-            // searchedNumber: this.props.searchedTopics.length
+            filterNumber: this.props.filterNumber,
+            searchedNumber: this.props.searchedTopics.length
         }
     }
 
+
     render(){
+        console.log(this.props.searchedTopics.length, this.props.filterNumber)
         return(
             <div>
                 <p> Number of searched topics: {this.props.searchedTopics.length} </p>
