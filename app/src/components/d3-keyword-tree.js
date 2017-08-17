@@ -133,7 +133,7 @@ class D3KeywordTree extends Component{
 		// moves the 'group' element to the top left margin
 		var svg = d3.select(svgDomNode)
 			.attr("width", width + margin.right + margin.left)
-			.attr("height", height + margin.top + margin.bottom)
+			.attr("height", height * 1.2 + margin.top + margin.bottom)  // height *1.2 not to make the graph too squeezing
 			.call(zoom)
 			.on('dblclick.zoom', reset)
 			.append("g")

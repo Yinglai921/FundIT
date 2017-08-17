@@ -45,7 +45,7 @@ class Index extends Component {
                     <SearchBar />
                   </div>
                   <div className="row">
-                    {this.props.searchedTopics.length == 0 ? "No results" : <TopicsList />}
+                    {this.props.searchedTopics.length == 0 ? "No results found." : <TopicsList />}
                 </div>
               </div>
           </div>

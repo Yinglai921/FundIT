@@ -51,7 +51,9 @@ class SearchBar extends Component{
     onFormSubmit(event){
         event.preventDefault();
 
-        if(this.props.scopes.length == 0){
+        // console.log("SCOPES: ", this.props.scopes)
+
+        if(this.props.scopes === {} || this.props.scopes.title == false && this.props.scopes.keywords == false && this.props.scopes.tags == false){
             alert("Please select at least one search scope");
         }
         // set search term globally 

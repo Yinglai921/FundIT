@@ -43,7 +43,7 @@ class Index extends Component {
                     <ToggleMenuButton toggleMenu={this.toggleMenu} />
                   </div>
                   <div className="row">
-                    <img src={help1} alt="help1" />
+                    {/* <img src={help1} alt="help1" /> */}
                 </div>
               </div>
           </div>
