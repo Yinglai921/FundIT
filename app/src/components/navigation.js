@@ -23,7 +23,7 @@ export default class Navigation extends Component {
                     <Link className={ this.props.active == "index" ? "nav-item nav-link active" : "nav-item nav-link" } to="/" > Index </Link>
                 </li>
                 <li>
-                    <Link className={ this.props.active == "keyword" ? "nav-item nav-link active" : "nav-item nav-link" } to="/keywords" > Keywords </Link>
+                    <Link className={ this.props.active == "keyword" ? "nav-item nav-link active" : "nav-item nav-link" } to="/keywords" > Keyword tree </Link>
                 </li>
                 <li>
                    <Link className={ this.props.active == "help" ? "nav-item nav-link active" : "nav-item nav-link" } to="/help" > Help </Link>

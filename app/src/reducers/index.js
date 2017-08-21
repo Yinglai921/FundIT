@@ -7,6 +7,7 @@ import SearchedTopicsReducer from './reducer_searchedTopics';
 import ColumnSettingsReducer from './reducer_columnSettings';
 import FilterNumberReducer from './reducer_filterNumber';
 import NavigationToggle from './reducer_navigationToggle';
+import SelectedKeywords from './reducer_selectedKeywords';
 
 
 const rootReducer = combineReducers({
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
   searchedTopics: SearchedTopicsReducer,
   columnSettings: ColumnSettingsReducer,
   filterNumber: FilterNumberReducer,
-  navigationToggle: NavigationToggle
+  navigationToggle: NavigationToggle,
+  selectedKeywords: SelectedKeywords,
 });
 
 export default rootReducer;

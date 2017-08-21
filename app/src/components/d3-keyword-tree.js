@@ -24,7 +24,7 @@ class D3KeywordTree extends Component{
    updateDimensions(){
 	   //let graphDiv = document.getElementById("keyword-tree-graph");
 	   
-	   console.log("update: " + this.state.graphWidth + ", " + this.state.graphHeight)
+	   //console.log("update: " + this.state.graphWidth + ", " + this.state.graphHeight)
 	   this.setState({graphWidth: $(window).width(), graphHeight: $(window).height()})
 
 
@@ -38,30 +38,40 @@ class D3KeywordTree extends Component{
    componentDidMount() {
 	  const mountNode = ReactDOM.findDOMNode(this);
 	  window.addEventListener("resize", this.updateDimensions);
-      this.createTreeChart(mountNode, this.props.onChangeKeyword)
+      this.createTreeChart(mountNode, this.props.onChangeKeyword, this.props.keywords, this.props.onSelectKeywords);
    }
 
    componentWillUnmount(){
 	   window.removeEventListener("resize", this.updateDimensions)
    }
-
-   componentDidUpdate() {
-	   //const mountNode = ReactDOM.findDOMNode(this);
-       //this.createTreeChart(mountNode, this.props.onChangeKeyword)
+   
+//    shouldComponentUpdate(newProps, newState) {
+//     return true;
+//    }
+   componentWillUpdate() {
+	   console.log("graph updated")
+	   const mountNode = ReactDOM.findDOMNode(this);
+       this.createTreeChart(mountNode, this.props.onChangeKeyword, this.props.keywords, this.props.onSelectKeywords)
    }
 
-   createTreeChart(svgDomNode, onChangeKeyword) {
+   createTreeChart(svgDomNode, onChangeKeyword, selectedKeywords, onSelectKeywords) {
 
 	    d3.select("#keyword-tree-graph svg").html("");
 
 		function searchTree(obj,search,path){
 			var name;
-			if(obj.data.value){
-				name = `${obj.data.name} (${obj.data.value})`
-			}else{
-				name = `${obj.data.name} (0)`
-			}
-			
+			name = obj.data.name;
+			// if(obj.data.value){
+			// 	name = `${obj.data.name} (${obj.data.value})`
+			// }else{
+			// 	name = `${obj.data.name} (0)`
+			// }
+
+			if (search.indexOf('(') !== -1){
+				let index = search.indexOf('(') - 1;
+				search = search.slice(0, index)
+			  }
+						
 			if(name === search){ //if search is found return, add the object to the path and return it
 				path.push(obj);
 				return path;
@@ -76,31 +86,16 @@ class D3KeywordTree extends Component{
 					}
 					else{//we were wrong, remove this parent from the path and continue iterating
 						path.pop();
-					}
+					} 
 				}
 			}
 			else{//not the right object, return false so it will continue to iterate in the loop
 				return false;
-			}
+			} 
 		}		
 
-		function extract_select2_data(node,leaves,index){
-	        if (node.children.length > 0){
-	            for(var i = 0;i<node.children.length;i++){
-	                index = extract_select2_data(node.children[i],leaves,index)[0];
-	            }
-	        }
-	        else {
-				if(node.value){
-					var name = `${node.name} (${node.value})`;
-					leaves.push({id:++index,text:name});
-				}else{
-					var name = `${node.name} (0)`;
-					leaves.push({id:++index,text:name});	
-				}
-	        }
-	        return [index,leaves];
-		}	
+		
+
 		// draw tree
 
         // Set the dimensions and margins of the diagram
@@ -133,7 +128,7 @@ class D3KeywordTree extends Component{
 		// moves the 'group' element to the top left margin
 		var svg = d3.select(svgDomNode)
 			.attr("width", width + margin.right + margin.left)
-			.attr("height", height * 1.2 + margin.top + margin.bottom)  // height *1.2 not to make the graph too squeezing
+			.attr("height", height + margin.top + margin.bottom)
 			.call(zoom)
 			.on('dblclick.zoom', reset)
 			.append("g")
@@ -142,8 +137,8 @@ class D3KeywordTree extends Component{
 
 		var i = 0,
 			duration = 750,
-			root,
-			select2_data;
+			root;
+			//select2_data;
 
 		// declares a tree layout and assigns the size
 		var treemap = d3.tree().size([height, width]);
@@ -180,34 +175,12 @@ class D3KeywordTree extends Component{
 			}
 		}
 
-		select2_data = extract_select2_data(keywords,[],0)[1];//I know, not the prettiest...
-		select2_data.sort(function(a, b){ // sort the object array by alphabetic order
-			var textA = a.text.toUpperCase();
-			var textB = b.text.toUpperCase();
-			return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-		})
-		select2_data.unshift({id: 0, text: "select a keyword"})
-
-
-		//init search box
-		$("#search").select2({
-			placeholder: "Select a keyword",
-			data: select2_data
-		});
-
-
-		//attach search box listener
-		$("select").on("select2:select", function(e) {
-			var text = $("#select2-search-container").attr("title").toString();
-			var paths = searchTree(root,text,[]);
-			if(typeof(paths) !== "undefined"){
+	    console.log("selectedKeywords: ", selectedKeywords)
+			selectedKeywords.forEach((keyword) =>{
+				var paths = searchTree(root, keyword, []);
 				openPaths(paths);
-				setSearchWord(text);
-			}
-			else{
-				alert(text+" not found!");
-			}
-		})
+			});
+
 
 		function update(source) {
 
@@ -368,16 +341,12 @@ class D3KeywordTree extends Component{
 				}
 		}
 
-		// set search word by "search bar"
-		function setSearchWord(d){
-			onChangeKeyword(d);
-		}
 
 		// click tree to setSearchWord
 		function setSearchWordFromTree(d){
 			console.log(d.data.name)
 			onChangeKeyword(d.data.name);
-			
+			onSelectKeywords(d.data.name);
 		}
    }
     render() {
