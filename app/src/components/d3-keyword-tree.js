@@ -48,7 +48,7 @@ class D3KeywordTree extends Component{
 //    shouldComponentUpdate(newProps, newState) {
 //     return true;
 //    }
-   componentWillUpdate() {
+   componentDidUpdate() {
 	   console.log("graph updated")
 	   const mountNode = ReactDOM.findDOMNode(this);
        this.createTreeChart(mountNode, this.props.onChangeKeyword, this.props.keywords, this.props.onSelectKeywords)
@@ -175,11 +175,14 @@ class D3KeywordTree extends Component{
 			}
 		}
 
-	    console.log("selectedKeywords: ", selectedKeywords)
+		console.log("selectedKeywords: ", selectedKeywords)
+		if(selectedKeywords !== null){
 			selectedKeywords.forEach((keyword) =>{
 				var paths = searchTree(root, keyword, []);
 				openPaths(paths);
 			});
+		}
+
 
 
 		function update(source) {
@@ -346,7 +349,7 @@ class D3KeywordTree extends Component{
 		function setSearchWordFromTree(d){
 			console.log(d.data.name)
 			onChangeKeyword(d.data.name);
-			onSelectKeywords(d.data.name);
+			//onSelectKeywords(d.data.name);
 		}
    }
     render() {
