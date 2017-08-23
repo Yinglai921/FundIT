@@ -49,6 +49,7 @@ class KeywordTree extends Component {
     }
     this.props.changeFilterTerm(keyword);
     this.setState({keyword: keyword});
+    this.jumpToIndex();
   }
 
   selectKeywords(keywordsList){
@@ -84,10 +85,10 @@ class KeywordTree extends Component {
                         onSelectKeywords={this.selectKeywords}
                         keywords={this.state.keywords}
                         />
-                      <div className="set-search-word-row">
+                      {/* <div className="set-search-word-row">
                          Selected keyword: <b>{this.state.keyword}</b>
                         <button className="btn btn-primary" onClick={this.jumpToIndex} style={{marginLeft: '20px'}}> Search topics</button> <i>Please click a text in the graph to set a keyword </i>
-                      </div>
+                      </div> */}
                       <div id="keyword-tree-graph">
                         <D3KeywordThree onChangeKeyword={this.changeKeyword} keywords={this.state.keywords} onSelectKeywords={this.selectKeywords} />
                       </div>

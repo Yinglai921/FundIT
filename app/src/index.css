@@ -79,3 +79,9 @@ body {
 #settingBtn{
   text-align: right;
 }
+
+.treeGraphLabel{
+  cursor: pointer;
+  fill: steelblue;
+  text-decoration: underline;
+}

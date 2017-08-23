@@ -99,7 +99,7 @@ class SearchBar extends Component{
                         <label className="col-sm-2 col-form-label">Search topics: </label>
                         <div className="col-sm-8">
                             <input 
-                            placeholder="search topics"
+                            placeholder="Please enter one word or one phrase, like: bioinformatics"
                             value={this.state.term}
                             className="form-control"
                             onChange={this.onInputChange}

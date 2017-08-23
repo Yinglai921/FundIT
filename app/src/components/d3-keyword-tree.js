@@ -228,7 +228,7 @@ class D3KeywordTree extends Component{
 				.attr("text-anchor", function(d) {
 					return d.children || d._children ? "end" : "start";
 				})
-				.attr("style", "cursor: pointer")
+				.attr("class", "treeGraphLabel")
 				.text(function(d) { return d.data.name; })
 				.on("click", setSearchWordFromTree);
 
