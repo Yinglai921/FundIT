@@ -123,6 +123,11 @@ class D3KeywordTree extends Component{
 			//console.log(d3.zoomTransform(this))
 		}
 
+		// tooltips
+		var tooltip = d3.select("body").append("div")
+		.attr("class", "tooltip")
+		.style("opacity", 0);
+
 		// append the svg object to the body of the page
 		// appends a 'group' element to 'svg'
 		// moves the 'group' element to the top left margin
@@ -138,12 +143,12 @@ class D3KeywordTree extends Component{
 		var i = 0,
 			duration = 750,
 			root;
-			//select2_data;
 
 		// declares a tree layout and assigns the size
 		var treemap = d3.tree().size([height, width]);
 
 		// Assigns parent, children, height, depth
+		
 		root = d3.hierarchy(keywords, function(d) { return d.children; });
 		root.x0 = height / 2;
 		root.y0 = 0;
@@ -217,7 +222,8 @@ class D3KeywordTree extends Component{
 				.attr('r', 1e-6)
 				.style("fill", function(d) {
 					return d._children ? "lightsteelblue" : "#fff";
-				});
+				})
+
 
 			// Add labels for the nodes
 			nodeEnter.append('text')
@@ -230,7 +236,23 @@ class D3KeywordTree extends Component{
 				})
 				.attr("class", "treeGraphLabel")
 				.text(function(d) { return d.data.name; })
-				.on("click", setSearchWordFromTree);
+				.on("click", setSearchWordFromTree)
+				.on("mouseover", function(d) {
+					if(d.data.value === undefined){
+						d.data.value = 0;
+					}
+					tooltip.transition()
+					  .duration(200)
+					  .style("opacity", .9);
+					tooltip.html(d.data.name + "<br/> Number of topics:" + d.data.value)
+					  .style("left", (d3.event.pageX) + "px")
+					  .style("top", (d3.event.pageY - 28) + "px");
+					})
+				  .on("mouseout", function(d) {
+					tooltip.transition()
+					  .duration(500)
+					  .style("opacity", 0);
+					});
 
 			// UPDATE
 			var nodeUpdate = nodeEnter.merge(node);
@@ -250,7 +272,8 @@ class D3KeywordTree extends Component{
 						return "#ff4136"; // red
 					}else if(d._children){
 						return "lightsteelblue"
-					}else{
+					}
+					else{
 						return "#fff"
 					}
 				})
@@ -347,6 +370,9 @@ class D3KeywordTree extends Component{
 
 		// click tree to setSearchWord
 		function setSearchWordFromTree(d){
+			tooltip.transition()
+			.duration(500)
+			.style("opacity", 0);
 			console.log(d.data.name)
 			onChangeKeyword(d.data.name);
 			//onSelectKeywords(d.data.name);
