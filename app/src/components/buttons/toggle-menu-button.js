@@ -11,8 +11,12 @@ export default class ToggleMenuButton extends Component{
     render(){
         return(
             <Button onClick={this.props.toggleMenu}>
-                <span className="fa fa-bars" aria-hidden="true"></span>
+                <span className="glyphicon glyphicon-th-list" aria-hidden="true"></span>
             </Button>
+            // <button onClick={this.props.toggleMenu} type="button" className="btn btn-default" aria-label="Left Align">
+            //     <span className="glyphicon glyphicon-menu-hamburge" aria-hidden="true"></span>
+            // </button>
         )
     }
 }
+

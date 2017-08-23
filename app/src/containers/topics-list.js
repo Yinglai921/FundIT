@@ -56,25 +56,78 @@ class BSTable extends React.Component {
     }
 }
 
+class CheckboxFilter extends React.Component {
+    constructor(props) {
+      super(props);
+      this.filter = this.filter.bind(this);
+      this.isFiltered = this.isFiltered.bind(this);
+    }
+  
+    filter(event) {
+      if (this.refs.nokCheckbox.checked && this.refs.okCheckbox.checked) {
+        // all checkboxes are checked means we want to remove the filter for this column
+        this.props.filterHandler();
+      } else {
+        this.props.filterHandler({ callback: this.isFiltered });
+      }
+    }
+  
+    isFiltered(targetValue) {
+      if (targetValue === 'Closed') {
+        return (this.refs.nokCheckbox.checked);
+      } else {
+        return (this.refs.okCheckbox.checked);
+      }
+    }
+
+    cleanFiltered() {
+        this.refs.okCheckbox.checked = true;
+        this.refs.nokCheckbox.checked = true;
+        this.props.filterHandler();
+      }
+  
+    render() {
+      return (
+        <div>
+          <input ref='okCheckbox' type='checkbox' className='filter' onChange={ this.filter } defaultChecked={ true } /><label>{ this.props.textOK }</label>
+          <input ref='nokCheckbox' type='checkbox' className='filter' onChange={ this.filter } defaultChecked={ true } style={ { marginLeft: 30 + 'px' } } /><label>{ this.props.textNOK }</label>
+        </div>
+      );
+    }
+  }
+  
+  CheckboxFilter.propTypes = {
+    filterHandler: React.PropTypes.func.isRequired,
+    textOK: React.PropTypes.string,
+    textNOK: React.PropTypes.string
+  };
+  
+  CheckboxFilter.defaultProps = {
+    textOK: 'Open',
+    textNOK: 'Closed'
+  };
+  
+  function getCustomFilter(filterHandler, customFilterParameters) {
+    return (
+      <CheckboxFilter filterHandler={ filterHandler } textOK={ customFilterParameters.textOK } textNOK={ customFilterParameters.textNOK } />
+    );
+  }
+
+
 class TopicsList extends Component {
     constructor(props) {
         super(props);
         
         this.state = {
             cols:[],
-            collapse: false,
             filterNumber: this.props.searchedTopics.length
         };
 
         this.onColumnHeaderChange = this.onColumnHeaderChange.bind(this);
-        this.toggle = this.toggle.bind(this);
         this.afterColumnFilter = this.afterColumnFilter.bind(this);
 
     }
 
-    toggle(){
-        this.setState({ collapse: !this.state.collapse });
-    }
 
     // set the columns according to the columnSettings if has one
     componentWillMount(){
@@ -259,46 +312,37 @@ class TopicsList extends Component {
                 <div className="topics-list col-sm-12">
                     <TopicsNumber />
                     <div id="settingBtn">
-                        <Button onClick={this.toggle} style={{ marginBottom: '1rem'}}>
-                            <span className="fa fa-cog" aria-hidden="true"></span>
-                        </Button>
-                        <Collapse isOpen={this.state.collapse}>
-                            <Card>
-                                <CardBlock>
+                        <span>Table columns: </span>
+                        <label className="checkbox-inline">
+                            <input type="checkbox" value="callTitle" defaultChecked={this.props.columnSettings.callTitle}
+                                onChange={this.onColumnHeaderChange}
+                            /> Call Title
+                        </label>
 
-                                            <label className="checkbox-inline">
-                                                <input type="checkbox" value="callTitle" defaultChecked={this.props.columnSettings.callTitle}
-                                                    onChange={this.onColumnHeaderChange}
-                                                /> Call Title
-                                            </label>
 
-  
-                                            <label className="checkbox-inline">
-                                                <input type="checkbox" value="plannedOpeningDate" defaultChecked={this.props.columnSettings.plannedOpeningDate}
-                                                    onChange={this.onColumnHeaderChange}
-                                                /> Planned Opening Date
-                                            </label>
+                        <label className="checkbox-inline">
+                            <input type="checkbox" value="plannedOpeningDate" defaultChecked={this.props.columnSettings.plannedOpeningDate}
+                                onChange={this.onColumnHeaderChange}
+                            /> Planned Opening Date
+                        </label>
 
-                                            <label className="checkbox-inline">
-                                                <input type="checkbox" value="deadlineDates" defaultChecked={this.props.columnSettings.deadlineDates}
-                                                    onChange={this.onColumnHeaderChange}
-                                                /> Deadline Dates
-                                            </label>
+                        <label className="checkbox-inline">
+                            <input type="checkbox" value="deadlineDates" defaultChecked={this.props.columnSettings.deadlineDates}
+                                onChange={this.onColumnHeaderChange}
+                            /> Deadline Dates
+                        </label>
 
-                                            <label className="checkbox-inline">
-                                                <input type="checkbox" value="keywords" defaultChecked={this.props.columnSettings.keywords}
-                                                    onChange={this.onColumnHeaderChange}
-                                                /> Keywords
-                                            </label>
+                        <label className="checkbox-inline">
+                            <input type="checkbox" value="keywords" defaultChecked={this.props.columnSettings.keywords}
+                                onChange={this.onColumnHeaderChange}
+                            /> Keywords
+                        </label>
 
-                                            <label className="checkbox-inline">
-                                                <input type="checkbox" value="tags" defaultChecked={this.props.columnSettings.tags}
-                                                    onChange={this.onColumnHeaderChange}
-                                                /> Tags
-                                            </label>
-                                </CardBlock>
-                            </Card>
-                        </Collapse>
+                        <label className="checkbox-inline">
+                            <input type="checkbox" value="tags" defaultChecked={this.props.columnSettings.tags}
+                                onChange={this.onColumnHeaderChange}
+                            /> Tags
+                        </label>
                     </div>
                     <BootstrapTable 
                         data={ searchedTopics }
@@ -326,6 +370,7 @@ class TopicsList extends Component {
                         <TableHeaderColumn 
                             dataField='callStatus' 
                             expandable={ false }
+                            filter={ { type: 'CustomFilter', getElement: getCustomFilter, customFilterParameters: { textOK: 'Open', textNOK: 'Closed' } } }
                             dataSort 
                             width='150'
                             >

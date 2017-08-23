@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchTopics, searchTopics, setSearchTerm, changeSearchScope } from '../actions/index';
-import FilterSidebar from './filter-sidebar';
 
 class SearchBar extends Component{
     constructor(props){
@@ -10,7 +9,7 @@ class SearchBar extends Component{
 
         this.state = {
             term: this.props.searchTerm,
-            scopes: [],
+            scopes: ["title", "keywords", "tags"],
         };
 
         this.onInputChange = this.onInputChange.bind(this);
@@ -19,12 +18,13 @@ class SearchBar extends Component{
     }
 
     // get all the topics after the render
-    componentDidMount(){
+    componentWillMount(){
         this.props.fetchTopics();
         const { scopes } = this.props;
         let currentScopes = [];
         // if the global scopes has already set, initial the current local state with global scopes state
-        if(scopes !== {}){
+       
+        if(scopes.title !== undefined){
             console.log("initial scope state")
             if(scopes.title){
                 currentScopes.push('title')
@@ -35,13 +35,16 @@ class SearchBar extends Component{
             if(scopes.tags){
                 currentScopes.push('tags')
             }
-        }
-        this.setState({
-            scopes: currentScopes
-        })
-        //console.log(this.state.scopes)
-        this.props.searchTopics(this.props.topics, this.state.term, this.props.scopes, this.props.filters, false);
 
+            this.setState({
+                scopes: currentScopes
+            })
+        }
+        //console.log(this.state.scopes)
+    }
+
+    componentDidMount(){
+        this.props.searchTopics(this.props.topics, this.state.term, this.state.scopes);
     }
 
     onInputChange(event){
@@ -59,8 +62,9 @@ class SearchBar extends Component{
         // set search term globally 
         this.props.setSearchTerm(this.state.term);
 
+         console.log("scope STATE before search: ", this.state.scopes)
         // search topics
-        this.props.searchTopics(this.props.topics, this.state.term, this.props.scopes, this.props.filters, false);
+        this.props.searchTopics(this.props.topics, this.state.term, this.state.scopes);
     } 
 
     onSearchScopeChange(event){
@@ -83,7 +87,7 @@ class SearchBar extends Component{
         this.props.changeSearchScope(this.state.scopes);
         this.props.setSearchTerm(this.state.term);
         //console.log(this.state.scopes)
-        this.props.searchTopics(this.props.topics, this.state.term, this.state.scopes, this.props.filters, true);
+        this.props.searchTopics(this.props.topics, this.state.term, this.state.scopes);
     }
 
     render(){
@@ -108,20 +112,21 @@ class SearchBar extends Component{
                 </form>
                 
                 <div>
+                    <span>Search queries: </span>
                         <label className="checkbox-inline">
-                            <input type="checkbox" value="title" defaultChecked={this.props.scopes.title}
+                            <input type="checkbox" value="title" defaultChecked={this.state.scopes.indexOf("title") == -1 ? false: true}
                                 onChange={this.onSearchScopeChange}
                             /> In title
                         </label>
 
                         <label className="checkbox-inline">
-                            <input type="checkbox" value="keywords" defaultChecked={this.props.scopes.keywords}
+                            <input type="checkbox" value="keywords" defaultChecked={this.state.scopes.indexOf("keywords") == -1 ? false: true}
                                 onChange={this.onSearchScopeChange}
                             /> In keywords
                         </label>
 
                         <label className="checkbox-inline">
-                            <input type="checkbox" value="tags" defaultChecked={this.props.scopes.tags}
+                            <input type="checkbox" value="tags" defaultChecked={this.state.scopes.indexOf("tags") == -1 ? false: true}
                                 onChange={this.onSearchScopeChange}
                             /> In tags
                         </label>
@@ -133,7 +138,6 @@ class SearchBar extends Component{
                             /> In descriptions
                         </label>
                     </div> */}
-                    <FilterSidebar />
                 </div>
             </div>
         )

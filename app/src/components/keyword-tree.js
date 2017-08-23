@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
+import { Alert } from 'reactstrap';
 
 import D3KeywordThree from './d3-keyword-tree';
 import Navigation from './navigation';
@@ -18,11 +19,13 @@ class KeywordTree extends Component {
       keyword: this.props.searchTerm,
       keywords: this.props.selectedKeywords,
       toggle: true,
+      alertVisible: true,
     }
     this.changeKeyword = this.changeKeyword.bind(this);
     this.selectKeywords = this.selectKeywords.bind(this);
     this.jumpToIndex = this.jumpToIndex.bind(this);
     this.toggleMenu = this.toggleMenu.bind(this);
+    this.onDismiss = this.onDismiss.bind(this);
   }
   
   componentDidMount(){
@@ -52,11 +55,14 @@ class KeywordTree extends Component {
     this.props.selectKeywords(keywordsList);
     this.setState({keywords: keywordsList});
     console.log("select Keywords: ", this.state.keywords)
-
   }
 
   jumpToIndex(){
     this.props.history.push('/')
+  }
+
+  onDismiss(){
+    this.setState({alertVisible: false});
   }
 
 
@@ -68,6 +74,9 @@ class KeywordTree extends Component {
             <div id="page-content-wrapper">
               <div className="container-fluid">
                   <div className="row">
+                      <Alert color="info" isOpen={this.state.alertVisible} toggle={this.onDismiss}>
+                          Double click the graph to recenter it!
+                      </Alert>
                       <ToggleMenuButton toggleMenu={this.toggleMenu} />
                       <h3>Keyword tree</h3>
                       <KeywordTreeSearch 

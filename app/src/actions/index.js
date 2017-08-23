@@ -54,26 +54,14 @@ export function setSearchTerm(term){
 /* search topics
 opics: the whole topic list; 
 term: the search input word, string;
-scopes: the searched scope { 'title' : 'false', 'keywords' : 'false'...}
-filters: the filters like openTopics, calls { 'opened' : 'false'...}
+scopes: the searched scope ["title", "keywords", "tags"]
 */
-export function searchTopics(topics, term, scopes, filters, ifCheckbox){
+export function searchTopics(topics, term, scopes){
 
-
-    let currentScopes = []
-    if(!ifCheckbox){
-            // find keys through scopes, keys = ['title', 'keywords' ...]
-        currentScopes = Object.keys(scopes).filter((scope) => {
-            return scopes[scope] == true;
-        });
-    }else{
-        currentScopes = scopes;
-    }
 
     console.log("topics length: " + topics.length)
-    console.log("current scope: " + currentScopes)
+    console.log("current scope: " + scopes)
     console.log("searched term: " + term)
-    console.log("filters: " + filters)
     
 
 
@@ -85,30 +73,12 @@ export function searchTopics(topics, term, scopes, filters, ifCheckbox){
         distance: 0,
         maxPatternLength: 60,
         minMatchCharLength: 1,
-        keys: currentScopes
+        keys: scopes
     };
 
     let fuse = new Fuse(topics, options);
     let result = fuse.search(term);
     console.log("search result length: " + result.length)
-    
-    // filter the search result 
-
-    let currentFilters = filters; //['Open']
-
-    if (currentFilters.length > 0){
-        let filteredResult = [];
-        currentFilters.forEach((filter) => {
-            result.forEach((topic) => {
-                if(topic.callStatus == filter){
-                    filteredResult.push(topic);
-                }
-            })
-        })
-        result = filteredResult;
-    }
-
-    console.log("filter result length: " + result.length)
     console.log("")
 
     return{
@@ -117,15 +87,6 @@ export function searchTopics(topics, term, scopes, filters, ifCheckbox){
     }
 }
 
-
-// change filters reducer true/false
-export function changeFilterState(filters){
-
-    return{
-        type: CHANGE_FILTER_STATE,
-        payload: filters
-    }
-}
 
 export function changeSearchScope(list){
     let scopes = {
