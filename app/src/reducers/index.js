@@ -7,6 +7,7 @@ import ColumnSettingsReducer from './reducer_columnSettings';
 import FilterNumberReducer from './reducer_filterNumber';
 import NavigationToggle from './reducer_navigationToggle';
 import SelectedKeywords from './reducer_selectedKeywords';
+import ColorToggle from './reducer_colorToggle';
 
 
 const rootReducer = combineReducers({
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   filterNumber: FilterNumberReducer,
   navigationToggle: NavigationToggle,
   selectedKeywords: SelectedKeywords,
+  colorToggle: ColorToggle,
 });
 
 export default rootReducer;

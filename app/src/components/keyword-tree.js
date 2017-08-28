@@ -3,12 +3,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import { Alert } from 'reactstrap';
+import SwitchButton from 'react-switch-button';
 
 import D3KeywordThree from './d3-keyword-tree';
 import Navigation from './navigation';
-import { changeFilterTerm, setNavigationToggle, selectKeywords } from '../actions';
+import { changeFilterTerm, setNavigationToggle, selectKeywords, setColorToggle } from '../actions';
 
 import ToggleMenuButton from '../components/buttons/toggle-menu-button';
+import ToggleColorButton from '../components/buttons/toggle-color-button';
 import KeywordTreeSearch from '../containers/keyword-tree-search';
 
 
@@ -20,12 +22,14 @@ class KeywordTree extends Component {
       keywords: this.props.selectedKeywords,
       toggle: true,
       alertVisible: true,
+      colorCheck: this.props.colorToggle,
     }
     this.changeKeyword = this.changeKeyword.bind(this);
     this.selectKeywords = this.selectKeywords.bind(this);
     this.jumpToIndex = this.jumpToIndex.bind(this);
     this.toggleMenu = this.toggleMenu.bind(this);
     this.onDismiss = this.onDismiss.bind(this);
+    this.onColorCheck = this.onColorCheck.bind(this);
   }
   
   componentDidMount(){
@@ -66,6 +70,12 @@ class KeywordTree extends Component {
     this.setState({alertVisible: false});
   }
 
+  onColorCheck(e){
+    e.preventDefault();
+    this.setState({colorCheck: !this.state.colorCheck});
+    this.props.setColorToggle(!this.state.colorCheck);
+  }
+
 
   render() {
     return (
@@ -79,18 +89,16 @@ class KeywordTree extends Component {
                           Double click the graph to recenter it!
                       </Alert>
                       <ToggleMenuButton toggleMenu={this.toggleMenu} />
+                     
                       <h3>Keyword tree</h3>
                       <KeywordTreeSearch 
                         onChangeKeyword={this.changeKeyword} 
                         onSelectKeywords={this.selectKeywords}
                         keywords={this.state.keywords}
-                        />
-                      {/* <div className="set-search-word-row">
-                         Selected keyword: <b>{this.state.keyword}</b>
-                        <button className="btn btn-primary" onClick={this.jumpToIndex} style={{marginLeft: '20px'}}> Search topics</button> <i>Please click a text in the graph to set a keyword </i>
-                      </div> */}
+                      />
                       <div id="keyword-tree-graph">
-                        <D3KeywordThree onChangeKeyword={this.changeKeyword} keywords={this.state.keywords} onSelectKeywords={this.selectKeywords} />
+                        <SwitchButton name="switch-3" label="Double click to change node color :"  defaultChecked={this.state.colorCheck} onChange={this.onColorCheck} />
+                        <D3KeywordThree onChangeKeyword={this.changeKeyword} keywords={this.state.keywords} onSelectKeywords={this.selectKeywords} colorToggle={this.state.colorCheck}/>
                       </div>
                   </div>
               </div>
@@ -105,12 +113,14 @@ function mapStateToProps(state){
         navigationToggle: state.navigationToggle,
         searchTerm: state.searchTerm,
         selectedKeywords: state.selectedKeywords,
+        colorToggle: state.colorToggle,
+
     };
 }
 
 
 function mapDispatchToProps(dispatch){
-    return bindActionCreators({changeFilterTerm, setNavigationToggle, selectKeywords}, dispatch);
+    return bindActionCreators({changeFilterTerm, setNavigationToggle, selectKeywords, setColorToggle}, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(KeywordTree);

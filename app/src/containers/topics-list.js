@@ -215,6 +215,7 @@ class TopicsList extends Component {
 
     // in order to get nested data from 'actions', use dataFormatter
     actionsFormatter(cell, row){
+
         return (`${cell[0].types}`)
     }
 

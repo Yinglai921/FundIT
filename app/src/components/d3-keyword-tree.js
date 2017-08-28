@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom'; // render to DOM
 import {scaleLinear, max, select} from 'd3';
 import { hierarchy, tree} from 'd3-hierarchy';
 import * as d3 from "d3";
+import * as d3Chromatic from 'd3-scale-chromatic';
+
 import * as select2 from 'select2';
 import $ from 'jquery';
 
@@ -38,7 +40,7 @@ class D3KeywordTree extends Component{
    componentDidMount() {
 	  const mountNode = ReactDOM.findDOMNode(this);
 	  window.addEventListener("resize", this.updateDimensions);
-      this.createTreeChart(mountNode, this.props.onChangeKeyword, this.props.keywords, this.props.onSelectKeywords);
+      this.createTreeChart(mountNode, this.props.onChangeKeyword, this.props.keywords, this.props.onSelectKeywords, this.props.colorToggle);
    }
 
    componentWillUnmount(){
@@ -51,10 +53,10 @@ class D3KeywordTree extends Component{
    componentDidUpdate() {
 	   console.log("graph updated")
 	   const mountNode = ReactDOM.findDOMNode(this);
-       this.createTreeChart(mountNode, this.props.onChangeKeyword, this.props.keywords, this.props.onSelectKeywords)
+       this.createTreeChart(mountNode, this.props.onChangeKeyword, this.props.keywords, this.props.onSelectKeywords, this.props.colorToggle)
    }
 
-   createTreeChart(svgDomNode, onChangeKeyword, selectedKeywords, onSelectKeywords) {
+   createTreeChart(svgDomNode, onChangeKeyword, selectedKeywords, onSelectKeywords, colorToggle) {
 
 	    d3.select("#keyword-tree-graph svg").html("");
 
@@ -128,6 +130,9 @@ class D3KeywordTree extends Component{
 		.attr("class", "tooltip")
 		.style("opacity", 0);
 
+
+		var colorScale = d3.scaleSequential(d3Chromatic.interpolateGreens)
+		.domain([0, 30])
 		// append the svg object to the body of the page
 		// appends a 'group' element to 'svg'
 		// moves the 'group' element to the top left margin
@@ -139,6 +144,7 @@ class D3KeywordTree extends Component{
 			.append("g")
 				.attr("transform", "translate("
 				+ margin.left + "," + margin.top * 0.5 + ")");
+
 
 		var i = 0,
 			duration = 750,
@@ -221,7 +227,16 @@ class D3KeywordTree extends Component{
 				.attr('class', 'node')
 				.attr('r', 1e-6)
 				.style("fill", function(d) {
-					return d._children ? "lightsteelblue" : "#fff";
+					if(colorToggle === false){
+						return d._children ? "lightsteelblue" : "#fff";
+					}
+					else{
+						if(d.data.value === undefined){
+							d.data.value = 0;
+						}
+						return colorScale(d.data.value)
+					}
+					
 				})
 
 
@@ -268,14 +283,28 @@ class D3KeywordTree extends Component{
 			nodeUpdate.select('circle.node')
 				.attr('r', 10)
 				.style("fill", function(d) {
-					if(d.class === "found"){
-						return "#ff4136"; // red
-					}else if(d._children){
-						return "lightsteelblue"
+					if(colorToggle === false){
+						if(d.class === "found"){
+							return "#ff4136"; // red
+						}else if(d._children){
+							return "lightsteelblue"
+						}
+						else{
+							return "#fff"
+						}
+					}else{
+						
+						if(d.class === "found"){
+							return "#ff4136"; // red
+						}else if(d.data.value === undefined ){
+							d.data.value = 0;
+							return colorScale(d.data.value)
+						}
+						else{
+							return colorScale(d.data.value)
+						}
 					}
-					else{
-						return "#fff"
-					}
+
 				})
 				.style("stroke", function(d) {
 					if(d.class === 'found'){

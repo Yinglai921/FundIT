@@ -12,6 +12,7 @@ export const CHANGE_COLUMNSETTINGS = 'change_columnsettings';
 export const SET_FILTER_NUMBER = 'set_filter_number';
 export const SET_NAV_TOGGLE = 'set_nav_toggle';
 export const SELECT_KEYWORDS = 'select_keywords';
+export const SET_COLOR_TOGGLE = 'set_color_toggle';
 // fetch all the topics from the start
 const TOPICS_URL = 'http://127.0.0.1:5000/fundit/api/topics';
 
@@ -152,5 +153,12 @@ export function selectKeywords(keywordList){
     return{
         type: SELECT_KEYWORDS,
         payload: keywordList
+    }
+}
+
+export function setColorToggle(toggle){
+    return{
+        type: SET_COLOR_TOGGLE,
+        payload: toggle
     }
 }
