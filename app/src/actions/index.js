@@ -111,7 +111,9 @@ export function changeColumnSettings(list){
         "plannedOpeningDate": false,
         "deadlineDates": false,
         "keywords": false,
-        "tags": false
+        "tags": false,
+        "mainSpecificProgrammeLevelDesc": false,
+        "actions": false
     }
     list.forEach((name) => {
         settings[name] = true;

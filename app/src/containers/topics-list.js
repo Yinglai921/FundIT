@@ -144,6 +144,10 @@ class TopicsList extends Component {
                 cols.push('keywords')
             if (columnSettings.tags)
                 cols.push('tags')
+            if (columnSettings.mainSpecificProgrammeLevelDesc)
+                cols.push('mainSpecificProgrammeLevelDesc')
+            if (columnSettings.actions)
+                cols.push('actions')
         }
         this.setState({cols:cols})
 
@@ -166,7 +170,7 @@ class TopicsList extends Component {
             }
         }
 
-        const columnOrder = ['callTitle', 'plannedOpeningDate', 'deadlineDates', 'keywords', 'tags'];
+        const columnOrder = ['callTitle', 'mainSpecificProgrammeLevelDesc', 'actions', 'plannedOpeningDate', 'deadlineDates', 'keywords', 'tags'];
         currentCols.sort(function(a, b){
             return columnOrder.indexOf(a) - columnOrder.indexOf(b);
         });
@@ -209,6 +213,11 @@ class TopicsList extends Component {
         }
     }
 
+    // in order to get nested data from 'actions', use dataFormatter
+    actionsFormatter(cell, row){
+        return (`${cell[0].types}`)
+    }
+
     // render column according to the checkboxes
     renderColumn(col){
 
@@ -240,17 +249,19 @@ class TopicsList extends Component {
             case 'keywords':
                 return(
                     <TableHeaderColumn 
+                    headerText='The portal keyword service provides all official keywords which are used in the proposals, projects and expert profiles in the context of EU grants.'
                     dataField={col} 
                     filter={ { type: 'RegexFilter', delay: 1000 } } 
                     expandable={ true }
                     dataFormat={ this.keywordFormatter }
                     >
-                    Keywords
+                    Keywords 
                     </TableHeaderColumn> 
                 );
             case 'tags':
                 return(
                     <TableHeaderColumn 
+                    headerText='List of tags associated with the topic.'
                     dataField={col} 
                     filter={ { type: 'RegexFilter', delay: 1000 } } 
                     expandable={ true }
@@ -268,6 +279,28 @@ class TopicsList extends Component {
                     expandable={ false }
                     >
                     Call Title
+                    </TableHeaderColumn> 
+                );
+            case 'mainSpecificProgrammeLevelDesc':
+                return(
+                    <TableHeaderColumn 
+                    dataField={col}
+                    tdStyle={ { whiteSpace: 'normal' } } 
+                    expandable={ false }
+                    width='250'
+                    >
+                    Pillar
+                    </TableHeaderColumn> 
+                );
+            case 'actions':
+                return(
+                    <TableHeaderColumn 
+                    dataField={col}
+                    tdStyle={ { whiteSpace: 'normal' } } 
+                    expandable={ false }
+                    dataFormat={ this.actionsFormatter }
+                    >
+                    Types of actions
                     </TableHeaderColumn> 
                 );
         }
@@ -318,7 +351,16 @@ class TopicsList extends Component {
                                 onChange={this.onColumnHeaderChange}
                             /> Call Title
                         </label>
-
+                        <label className="checkbox-inline">
+                            <input type="checkbox" value="mainSpecificProgrammeLevelDesc" defaultChecked={this.props.columnSettings.mainSpecificProgrammeLevelDesc}
+                                onChange={this.onColumnHeaderChange}
+                            /> Pillar
+                        </label>
+                        <label className="checkbox-inline">
+                            <input type="checkbox" value="actions" defaultChecked={this.props.columnSettings.actions}
+                                onChange={this.onColumnHeaderChange}
+                            /> Types of actions
+                        </label>
 
                         <label className="checkbox-inline">
                             <input type="checkbox" value="plannedOpeningDate" defaultChecked={this.props.columnSettings.plannedOpeningDate}
