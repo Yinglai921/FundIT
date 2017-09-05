@@ -14,7 +14,8 @@ export const SET_NAV_TOGGLE = 'set_nav_toggle';
 export const SELECT_KEYWORDS = 'select_keywords';
 export const SET_COLOR_TOGGLE = 'set_color_toggle';
 // fetch all the topics from the start
-const TOPICS_URL = 'http://127.0.0.1:5000/fundit/api/topics';
+//const TOPICS_URL = 'http://127.0.0.1:5000/fundit/api/topics';
+const ROOT_URL = 'http://localhost:8080/search'
 
 function dateFormatCovert(time){
     let currTime = new Date(time);
@@ -60,31 +61,45 @@ scopes: the searched scope ["title", "keywords", "tags"]
 export function searchTopics(topics, term, scopes){
 
 
-    console.log("topics length: " + topics.length)
-    console.log("current scope: " + scopes)
-    console.log("searched term: " + term)
-    
+    //console.log("topics length: " + topics.length)
+    //console.log("current scope: " + scopes)
+    //console.log("searched term: " + term)
+    let searchScope = ''; 
+    if (scopes.length !== 0){
 
+        scopes.forEach((scope, index) => {
+            if (index == 0){
+                searchScope = scope;
+            }else{
+                searchScope = `${searchScope},${scope}`;
+            }
+        });
+    }
+    console.log(searchScope)
+    
+    const request = axios.get(`${ROOT_URL}/scope:${searchScope}&string:${term}`);
+ 
+    console.log(request)
 
     // search 
-    let options = {
-        shouldSort: true,
-        threshold: 0.1,
-        location: 0,
-        distance: 0,
-        maxPatternLength: 60,
-        minMatchCharLength: 1,
-        keys: scopes
-    };
+    // let options = {
+    //     shouldSort: true,
+    //     threshold: 0.1,
+    //     location: 0,
+    //     distance: 0,
+    //     maxPatternLength: 60,
+    //     minMatchCharLength: 1,
+    //     keys: scopes
+    // };
 
-    let fuse = new Fuse(topics, options);
-    let result = fuse.search(term);
-    console.log("search result length: " + result.length)
-    console.log("")
+    // let fuse = new Fuse(topics, options);
+    // let result = fuse.search(term);
+    // console.log("search result length: " + result.length)
+    // console.log("")
 
     return{
         type: SEARCH_TOPICS,
-        payload: result
+        payload: request
     }
 }
 
