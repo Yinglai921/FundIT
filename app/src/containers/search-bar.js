@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchTopics, searchTopics, setSearchTerm, changeSearchScope } from '../actions/index';
+import { fetchTopics, searchTopics, setSearchTerm, changeSearchScope, setAdvancedSearchQueries } from '../actions/index';
+import AdvancedSearchForm from './advanced-search-form';
 
 class SearchBar extends Component{
     constructor(props){
@@ -10,11 +11,13 @@ class SearchBar extends Component{
         this.state = {
             term: this.props.searchTerm,
             scopes: ["title", "keywords", "tags"],
+            
         };
 
         this.onInputChange = this.onInputChange.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);
         this.onSearchScopeChange = this.onSearchScopeChange.bind(this);
+        this.advancedSearchSubmit = this.advancedSearchSubmit.bind(this);
     }
 
     // get all the topics after the render
@@ -90,6 +93,11 @@ class SearchBar extends Component{
         this.props.searchTopics(this.props.topics, this.state.term, this.state.scopes);
     }
 
+    advancedSearchSubmit(values){
+       // console.log(values);
+        this.props.setAdvancedSearchQueries(values);
+    }
+
     render(){
         return(
 
@@ -112,9 +120,6 @@ class SearchBar extends Component{
                 </form>
 
                 <p> Hints: Search a phrase with quotes, for example: "Transport information systems" </p>
-                    <p> Search all of the words with AND, for example: data AND security </p>
-                    <p> Search at least one of the words with OR, for example: data OR security </p>
-                    <p> Search without the word using NOT, for example : data NOT security </p>
 
                 <div>
                     <span>Search queries: </span>
@@ -143,7 +148,10 @@ class SearchBar extends Component{
                             /> In descriptions
                         </label>
                     </div> */}
+
                 </div>
+
+                <AdvancedSearchForm onSubmit={this.advancedSearchSubmit} initialData={this.props.advancedSearchQueries}/>
             </div>
         )
     }
@@ -154,11 +162,12 @@ function mapStatetoProps(state){
         topics: state.topics,
         scopes: state.scopes,
         filters: state.filters,
-        searchTerm: state.searchTerm
+        searchTerm: state.searchTerm,
+        advancedSearchQueries: state.advancedSearchQueries
      }
 }
 function mapDispatchToProps(dispatch){
-    return bindActionCreators({fetchTopics, searchTopics, setSearchTerm, changeSearchScope}, dispatch);
+    return bindActionCreators({fetchTopics, searchTopics, setSearchTerm, changeSearchScope, setAdvancedSearchQueries}, dispatch);
 }
 
 export default connect(mapStatetoProps, mapDispatchToProps)(SearchBar);

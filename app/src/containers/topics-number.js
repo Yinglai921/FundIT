@@ -17,8 +17,8 @@ class TopicsNumber extends Component {
         console.log(this.props.searchedTopics.length, this.props.filterNumber)
         return(
             <div>
-                <p> Number of searched topics: {this.props.searchedTopics.length} </p>
-                <p> Number of filtered topics: {this.props.filterNumber <= this.props.searchedTopics.length ? this.props.filterNumber: this.props.searchedTopics.length} </p> 
+                <p> Number of searched topics: {this.props.searchedTopics.length > 100 ? "100+" : this.props.searchedTopics.length} </p>
+                {/* <p> Number of filtered topics: {this.props.filterNumber <= this.props.searchedTopics.length ? this.props.filterNumber: this.props.searchedTopics.length} </p>  */}
             </div>
         )
     }

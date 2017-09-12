@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux';
+import { createStore, combineReducers } from 'redux';
 import TopicsReducer from './reducer_topics';
 import ScopesReducer from './reducer_scopes';
 import SearchTermReducer from './reducer_searchTerm';
@@ -8,6 +8,10 @@ import FilterNumberReducer from './reducer_filterNumber';
 import NavigationToggle from './reducer_navigationToggle';
 import SelectedKeywords from './reducer_selectedKeywords';
 import ColorToggle from './reducer_colorToggle';
+import AdvancedSearchQueries from './reducer-advanced-search-query';
+
+// import redux-form reducer 
+import { reducer as formReducers } from 'redux-form';
 
 
 const rootReducer = combineReducers({
@@ -20,6 +24,10 @@ const rootReducer = combineReducers({
   navigationToggle: NavigationToggle,
   selectedKeywords: SelectedKeywords,
   colorToggle: ColorToggle,
+  advancedSearchQueries: AdvancedSearchQueries,
+  
+  form: formReducers // this is for redux-form
 });
 
+const store = createStore(rootReducer);
 export default rootReducer;

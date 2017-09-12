@@ -13,6 +13,7 @@ export const SET_FILTER_NUMBER = 'set_filter_number';
 export const SET_NAV_TOGGLE = 'set_nav_toggle';
 export const SELECT_KEYWORDS = 'select_keywords';
 export const SET_COLOR_TOGGLE = 'set_color_toggle';
+export const SET_ADVANCED_SEARCH_QUERIES = 'set_advanced_search_queries';
 // fetch all the topics from the start
 const TOPICS_URL = 'http://localhost:3001/api/search';
 
@@ -176,5 +177,12 @@ export function setColorToggle(toggle){
     return{
         type: SET_COLOR_TOGGLE,
         payload: toggle
+    }
+}
+
+export function setAdvancedSearchQueries(queries){
+    return{
+        type: SET_ADVANCED_SEARCH_QUERIES,
+        payload: queries
     }
 }
