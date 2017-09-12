@@ -51,6 +51,7 @@ class KeywordTree extends Component {
       let index = keyword.indexOf('(') - 1;
       keyword = keyword.slice(0, index)
     }
+    keyword = `"${keyword}"`;
     this.props.changeFilterTerm(keyword);
     this.setState({keyword: keyword});
     this.jumpToIndex();

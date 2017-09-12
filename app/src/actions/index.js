@@ -14,7 +14,7 @@ export const SET_NAV_TOGGLE = 'set_nav_toggle';
 export const SELECT_KEYWORDS = 'select_keywords';
 export const SET_COLOR_TOGGLE = 'set_color_toggle';
 // fetch all the topics from the start
-const TOPICS_URL = 'http://127.0.0.1:5000/fundit/api/topics';
+const TOPICS_URL = 'http://localhost:3001/api/search';
 
 function dateFormatCovert(time){
     let currTime = new Date(time);
@@ -59,32 +59,48 @@ scopes: the searched scope ["title", "keywords", "tags"]
 */
 export function searchTopics(topics, term, scopes){
 
+    let inTitle = true;
+    let inKeywords = true;
+    let inTags = true;
+
+    if (scopes.indexOf("title") == -1 ){
+        inTitle = false;
+    } else{ inTitle = true; }
+
+    if (scopes.indexOf("keywords") == -1 ){
+        inKeywords = false;
+    } else{ inKeywords = true; }
+
+    if (scopes.indexOf("tags") == -1 ){
+        inTags = false;
+    } else{ inTags = true; }
+
+    let request = axios.get(`${TOPICS_URL}?q=${term}&intitle=${inTitle}&inkeywords=${inKeywords}&intags=${inTags}`)
 
     console.log("topics length: " + topics.length)
     console.log("current scope: " + scopes)
     console.log("searched term: " + term)
-    
-
 
     // search 
-    let options = {
-        shouldSort: true,
-        threshold: 0.1,
-        location: 0,
-        distance: 0,
-        maxPatternLength: 60,
-        minMatchCharLength: 1,
-        keys: scopes
-    };
 
-    let fuse = new Fuse(topics, options);
-    let result = fuse.search(term);
-    console.log("search result length: " + result.length)
-    console.log("")
+    // let options = {
+    //     shouldSort: true,
+    //     threshold: 0.1,
+    //     location: 0,
+    //     distance: 0,
+    //     maxPatternLength: 60,
+    //     minMatchCharLength: 1,
+    //     keys: scopes
+    // };
+
+    // let fuse = new Fuse(topics, options);
+    // let result = fuse.search(term);
+    // console.log("search result length: " + result.length)
+    // console.log("")
 
     return{
         type: SEARCH_TOPICS,
-        payload: result
+        payload: request
     }
 }
 

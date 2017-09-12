@@ -252,7 +252,7 @@ class TopicsList extends Component {
                     <TableHeaderColumn 
                     headerText='The portal keyword service provides all official keywords which are used in the proposals, projects and expert profiles in the context of EU grants.'
                     dataField={col} 
-                    filter={ { type: 'RegexFilter', delay: 1000 } } 
+                    filter={ { type: 'TextFilter', delay: 1000 } } 
                     expandable={ true }
                     dataFormat={ this.keywordFormatter }
                     >
@@ -264,7 +264,7 @@ class TopicsList extends Component {
                     <TableHeaderColumn 
                     headerText='List of tags associated with the topic.'
                     dataField={col} 
-                    filter={ { type: 'RegexFilter', delay: 1000 } } 
+                    filter={ { type: 'TextFilter', delay: 1000 } } 
                     expandable={ true }
                     dataFormat={ this.keywordFormatter }
                     >
@@ -276,7 +276,7 @@ class TopicsList extends Component {
                     <TableHeaderColumn 
                     dataField={col}
                     tdStyle={ { whiteSpace: 'normal' } } 
-                    filter={ { type: 'RegexFilter', delay: 1000 } } 
+                    filter={ { type: 'TextFilter', delay: 1000 } } 
                     expandable={ false }
                     >
                     Call Title
@@ -332,102 +332,118 @@ class TopicsList extends Component {
     render(){
         const { searchedTopics } = this.props;
         const { cols, filterNumber } = this.state;
-
-        // some custom settings for react-bootstrap-table
-        const options = {
-            expandRowBgColor: 'rgb(219,230,236)',
-            expandBy: 'column',  // Currently, available value is row and column, default is row
-            afterColumnFilter: this.afterColumnFilter // a callback to get filtered result
-            };
-
-        console.log("render: ", cols)
-        return (
-            <div className="row">
-                <div className="topics-list col-sm-12">
-                    <TopicsNumber />
-                    <div id="settingBtn">
-                        <span>Table columns: </span>
-                        <label className="checkbox-inline">
-                            <input type="checkbox" value="callTitle" defaultChecked={this.props.columnSettings.callTitle}
-                                onChange={this.onColumnHeaderChange}
-                            /> Call Title
-                        </label>
-                        <label className="checkbox-inline">
-                            <input type="checkbox" value="mainSpecificProgrammeLevelDesc" defaultChecked={this.props.columnSettings.mainSpecificProgrammeLevelDesc}
-                                onChange={this.onColumnHeaderChange}
-                            /> Pillar
-                        </label>
-                        <label className="checkbox-inline">
-                            <input type="checkbox" value="actions" defaultChecked={this.props.columnSettings.actions}
-                                onChange={this.onColumnHeaderChange}
-                            /> Types of actions
-                        </label>
-
-                        <label className="checkbox-inline">
-                            <input type="checkbox" value="plannedOpeningDate" defaultChecked={this.props.columnSettings.plannedOpeningDate}
-                                onChange={this.onColumnHeaderChange}
-                            /> Planned Opening Date
-                        </label>
-
-                        <label className="checkbox-inline">
-                            <input type="checkbox" value="deadlineDates" defaultChecked={this.props.columnSettings.deadlineDates}
-                                onChange={this.onColumnHeaderChange}
-                            /> Deadline Dates
-                        </label>
-
-                        <label className="checkbox-inline">
-                            <input type="checkbox" value="keywords" defaultChecked={this.props.columnSettings.keywords}
-                                onChange={this.onColumnHeaderChange}
-                            /> Keywords
-                        </label>
-
-                        <label className="checkbox-inline">
-                            <input type="checkbox" value="tags" defaultChecked={this.props.columnSettings.tags}
-                                onChange={this.onColumnHeaderChange}
-                            /> Tags
-                        </label>
-                    </div>
-                    <BootstrapTable 
-                        data={ searchedTopics }
-                        replace
-                        pagination
-                        options={ options }
-                        expandableRow={ () => { return true; } }
-                        expandComponent={ this.expandComponent }
-                        >
-                        <TableHeaderColumn 
-                            dataField='topicId' 
-                            isKey
-                            hidden
-                            >
-                            ID
-                        </TableHeaderColumn>
-                        <TableHeaderColumn 
-                            dataField='title' 
-                            expandable={ false } 
-                            tdStyle={ { whiteSpace: 'normal' } }
-                            dataFormat={ this.linkFormatter }
-                            >
-                            Topic Title
-                        </TableHeaderColumn>
-                        <TableHeaderColumn 
-                            dataField='callStatus' 
-                            expandable={ false }
-                            filter={ { type: 'CustomFilter', getElement: getCustomFilter, customFilterParameters: { textOK: 'Open', textNOK: 'Closed' } } }
-                            dataSort 
-                            width='150'
-                            >
-                            Call Status
-                        </TableHeaderColumn>
-
-                        {cols.map((col) => {
-                            return this.renderColumn(col)
-                        })}
-
-                    </BootstrapTable>
+        
+        if ( searchedTopics == null){
+            return(
+                <div>
+                    Loading...
                 </div>
-            </div>
-        );
+            )
+        } else{
+
+            let results = [];
+            searchedTopics.forEach((topic) => {
+                results.push(topic._source);
+            })
+    
+            // some custom settings for react-bootstrap-table
+            const options = {
+                expandRowBgColor: 'rgb(219,230,236)',
+                expandBy: 'column',  // Currently, available value is row and column, default is row
+                afterColumnFilter: this.afterColumnFilter // a callback to get filtered result
+                };
+    
+            console.log("render: ", cols)
+            return (
+                <div className="row">
+                    <div className="topics-list col-sm-12">
+                        <TopicsNumber />
+                        <div id="settingBtn">
+                            <span>Table columns: </span>
+                            <label className="checkbox-inline">
+                                <input type="checkbox" value="callTitle" defaultChecked={this.props.columnSettings.callTitle}
+                                    onChange={this.onColumnHeaderChange}
+                                /> Call Title
+                            </label>
+                            <label className="checkbox-inline">
+                                <input type="checkbox" value="mainSpecificProgrammeLevelDesc" defaultChecked={this.props.columnSettings.mainSpecificProgrammeLevelDesc}
+                                    onChange={this.onColumnHeaderChange}
+                                /> Pillar
+                            </label>
+                            <label className="checkbox-inline">
+                                <input type="checkbox" value="actions" defaultChecked={this.props.columnSettings.actions}
+                                    onChange={this.onColumnHeaderChange}
+                                /> Types of actions
+                            </label>
+    
+                            <label className="checkbox-inline">
+                                <input type="checkbox" value="plannedOpeningDate" defaultChecked={this.props.columnSettings.plannedOpeningDate}
+                                    onChange={this.onColumnHeaderChange}
+                                /> Planned Opening Date
+                            </label>
+    
+                            <label className="checkbox-inline">
+                                <input type="checkbox" value="deadlineDates" defaultChecked={this.props.columnSettings.deadlineDates}
+                                    onChange={this.onColumnHeaderChange}
+                                /> Deadline Dates
+                            </label>
+    
+                            <label className="checkbox-inline">
+                                <input type="checkbox" value="keywords" defaultChecked={this.props.columnSettings.keywords}
+                                    onChange={this.onColumnHeaderChange}
+                                /> Keywords
+                            </label>
+    
+                            <label className="checkbox-inline">
+                                <input type="checkbox" value="tags" defaultChecked={this.props.columnSettings.tags}
+                                    onChange={this.onColumnHeaderChange}
+                                /> Tags
+                            </label>
+                        </div>
+                        <BootstrapTable 
+                            data={ results }
+                            replace
+                            pagination
+                            options={ options }
+                            expandableRow={ () => { return true; } }
+                            expandComponent={ this.expandComponent }
+                            >
+                            <TableHeaderColumn 
+                                dataField='topicId' 
+                                isKey
+                                hidden
+                                >
+                                ID
+                            </TableHeaderColumn>
+                            <TableHeaderColumn 
+                                dataField='title' 
+                                expandable={ false } 
+                                tdStyle={ { whiteSpace: 'normal' } }
+                                dataFormat={ this.linkFormatter }
+                                >
+                                Topic Title
+                            </TableHeaderColumn>
+                            <TableHeaderColumn 
+                                dataField='callStatus' 
+                                expandable={ false }
+                                filter={ { type: 'CustomFilter', getElement: getCustomFilter, customFilterParameters: { textOK: 'Open', textNOK: 'Closed' } } }
+                                dataSort 
+                                width='150'
+                                >
+                                Call Status
+                            </TableHeaderColumn>
+    
+                            {cols.map((col) => {
+                                return this.renderColumn(col)
+                            })}
+    
+                        </BootstrapTable>
+                    </div>
+                </div>
+            );
+
+        }
+        
     }
 }
 

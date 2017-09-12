@@ -110,7 +110,12 @@ class SearchBar extends Component{
                         </div>
                     </div>
                 </form>
-                
+
+                <p> Hints: Search a phrase with quotes, for example: "Transport information systems" </p>
+                    <p> Search all of the words with AND, for example: data AND security </p>
+                    <p> Search at least one of the words with OR, for example: data OR security </p>
+                    <p> Search without the word using NOT, for example : data NOT security </p>
+
                 <div>
                     <span>Search queries: </span>
                         <label className="checkbox-inline">
