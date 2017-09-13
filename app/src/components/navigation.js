@@ -20,13 +20,13 @@ export default class Navigation extends Component {
                      <Link className="navbar-brand" to="/"> FundIT </Link>
                 </li>
                 <li>
-                    <Link className={ this.props.active == "index" ? "nav-item nav-link active" : "nav-item nav-link" } to="/" > Index </Link>
+                    <Link className={ this.props.active == "index" ? "nav-item nav-link active" : "nav-item nav-link" } to="/" > Search Topics </Link>
                 </li>
                 <li>
                     <Link className={ this.props.active == "keyword" ? "nav-item nav-link active" : "nav-item nav-link" } to="/keywords" > Keyword tree </Link>
                 </li>
                 <li>
-                   <Link className={ this.props.active == "help" ? "nav-item nav-link active" : "nav-item nav-link" } to="/help" > Help </Link>
+                   <Link className={ this.props.active == "advanced-search" ? "nav-item nav-link active" : "nav-item nav-link" } to="/advanced-search" > Advanced Search </Link>
                 </li>
             </ul>
         </div>

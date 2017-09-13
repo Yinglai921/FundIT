@@ -7,45 +7,116 @@ import { connect } from 'react-redux';
 let InitializeFromStateForm = props => {
     const { handleSubmit, pristine, reset, submitting, initialValue } = props
     return (
-        <form onSubmit={ handleSubmit }>
-            <div>
-                <label>With all of the words</label>
-                <div>
-                    <Field name="ANDquery" value="data" component="input" type="text" placeholder=""/>
+        <div className="search-bar col-sm-12">
+            <form onSubmit={ handleSubmit }>
+                <div className="form-group row">
+                    <label className="col-sm-2 col-form-label">With all of the words:</label>
+                    <div className="col-sm-10">
+                        <Field style={{width: "100%"}}  name="ANDquery" value="data" component="input" type="text" placeholder=""/>
+                    </div>
                 </div>
-            </div>
-            <div>
-                <label>With at least one of the words</label>
-                <div>
-                    <Field name="ORquery" component="input" type="text" placeholder="" />
+
+                {/* the scopes */}
+                <div className="form-group row">
+                    <div className="col-sm-2">
+                        <b>Where my words must all occur:</b>
+                    </div>
+                    <div className="col-sm-10">
+                        <div className="col-sm-2">
+                            <div className="col-sm-2">
+                                <Field name="must_title" id="must_title" component="input" type="checkbox"/>
+                            </div>
+                            <label className="col-sm-8">In title</label>
+                        </div>
+                        <div className="col-sm-3">
+                            <div className="col-sm-2">
+                                <Field name="must_keywords" id="must_keywords" component="input" type="checkbox"/>
+                            </div>
+                            <label className="col-sm-8">In keywords</label>
+                        </div>
+                        <div className="col-sm-2">
+                            <div className="col-sm-2">
+                                <Field name="must_tags" id="must_tags" component="input" type="checkbox"/>
+                            </div>
+                            <label className="col-sm-8">In tags</label>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div>
-                <label>Without the words</label>
-                <div>
-                    <Field name="NOTquery" component="input" type="text" placeholder="" />
+                 {/* end of the scopes */}
+
+                <div className="form-group row">
+                    <label className="col-sm-2 col-form-label">With at least one of the words:</label>
+                    <div className="col-sm-10">
+                        <Field style={{width: "100%"}} name="ORquery" component="input" type="text" placeholder="" />
+                    </div>
                 </div>
-            </div>
-            <div>
-                <label>In title</label>
-                <div>
-                    <Field name="title" id="title" component="input" type="checkbox"/>
+
+                {/* the scopes */}
+                <div className="form-group row">
+                    <div className="col-sm-2">
+                        <b>Where my words should at least occur:</b>
+                    </div>
+                    <div className="col-sm-10">
+                        <div className="col-sm-2">
+                            <div className="col-sm-2">
+                                <Field name="should_title" id="should_title" component="input" type="checkbox"/>
+                            </div>
+                            <label className="col-sm-8">In title</label>
+                        </div>
+                        <div className="col-sm-3">
+                            <div className="col-sm-2">
+                                <Field name="should_keywords" id="should_keywords" component="input" type="checkbox"/>
+                            </div>
+                            <label className="col-sm-8">In keywords</label>
+                        </div>
+                        <div className="col-sm-2">
+                            <div className="col-sm-2">
+                                <Field name="should_tags" id="should_tags" component="input" type="checkbox"/>
+                            </div>
+                            <label className="col-sm-8">In tags</label>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div>
-                <label>In keywords</label>
-                <div>
-                    <Field name="keywords" id="keywords" component="input" type="checkbox"/>
+                 {/* end of the scopes */}
+
+                <div className="form-group row">
+                    <label className="col-sm-2 col-form-label">Without the words:</label>
+                    <div className="col-sm-10">
+                        <Field style={{width: "100%"}}  name="NOTquery" component="input" type="text" placeholder="" />
+                    </div>
                 </div>
-            </div>
-            <div>
-                <label>In tags</label>
-                <div>
-                    <Field name="tags" id="tags" component="input" type="checkbox"/>
+
+                {/* the scopes */}
+                <div className="form-group row">
+                    <div className="col-sm-2">
+                        <b>Where my words must not all occur:</b>
+                    </div>
+                    <div className="col-sm-10">
+                        <div className="col-sm-2">
+                            <div className="col-sm-2">
+                                <Field name="mustnot_title" id="mustnot_title" component="input" type="checkbox"/>
+                            </div>
+                            <label className="col-sm-8">In title</label>
+                        </div>
+                        <div className="col-sm-3">
+                            <div className="col-sm-2">
+                                <Field name="mustnot_keywords" id="mustnot_keywords" component="input" type="checkbox"/>
+                            </div>
+                            <label className="col-sm-8">In keywords</label>
+                        </div>
+                        <div className="col-sm-2">
+                            <div className="col-sm-2">
+                                <Field name="mustnot_tags" id="mustnot_tags" component="input" type="checkbox"/>
+                            </div>
+                            <label className="col-sm-8">In tags</label>
+                        </div>
+                    </div>
+    
                 </div>
-            </div>
-            <button type="submit" disabled={pristine || submitting}> Submit</button>
-        </form>
+                {/* end of the scopes */}
+                <button type="submit" className="btn btn-primary" disabled={pristine || submitting}> Submit</button>
+            </form>
+        </div>
     )
 }
 

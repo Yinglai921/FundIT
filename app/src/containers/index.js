@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import SearchBar from './search-bar';
 import TopicsList from './topics-list';
 
+
 import Navigation from '../components/navigation';
 import ToggleMenuButton from '../components/buttons/toggle-menu-button';
 

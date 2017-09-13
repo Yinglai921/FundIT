@@ -15,7 +15,7 @@ import reducers from './reducers';
 import Index from './containers/index';
 import KeywordTree from './components/keyword-tree'
 import TagsGraph from './components/tags-graph'
-import Help from './containers/help'
+import AdvancedSearch from './containers/advanced-search'
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
@@ -26,7 +26,7 @@ ReactDOM.render(
                 <Switch>
                     <Route path="/keywords" component={KeywordTree} />
                     <Route path="/tags" component={TagsGraph} />
-                    <Route path="/help" component={Help} />
+                    <Route path="/advanced-search" component={AdvancedSearch} />
                     <Route path="/" component={Index} />
                 </Switch>
             </div>

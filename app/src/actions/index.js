@@ -14,8 +14,10 @@ export const SET_NAV_TOGGLE = 'set_nav_toggle';
 export const SELECT_KEYWORDS = 'select_keywords';
 export const SET_COLOR_TOGGLE = 'set_color_toggle';
 export const SET_ADVANCED_SEARCH_QUERIES = 'set_advanced_search_queries';
+export const ADVANCED_SEARCH_TOPICS = 'advanced_search_topics';
 // fetch all the topics from the start
 const TOPICS_URL = 'http://localhost:3001/api/search';
+const ADVANCED_SEARCH_URL = 'http://localhost:3001/api/advancedsearch';
 
 function dateFormatCovert(time){
     let currTime = new Date(time);
@@ -82,29 +84,25 @@ export function searchTopics(topics, term, scopes){
     console.log("current scope: " + scopes)
     console.log("searched term: " + term)
 
-    // search 
-
-    // let options = {
-    //     shouldSort: true,
-    //     threshold: 0.1,
-    //     location: 0,
-    //     distance: 0,
-    //     maxPatternLength: 60,
-    //     minMatchCharLength: 1,
-    //     keys: scopes
-    // };
-
-    // let fuse = new Fuse(topics, options);
-    // let result = fuse.search(term);
-    // console.log("search result length: " + result.length)
-    // console.log("")
-
     return{
         type: SEARCH_TOPICS,
         payload: request
     }
 }
 
+// advanced search, only take one parameter "values"
+//{ANDquery: String, NOTquery: String, ORquery: String, keywords: bool, tags: bool, title: bool}
+export function advancedSearchTopics(values){
+    console.log(values);
+    
+    let request = axios.get(`${ADVANCED_SEARCH_URL}?andquery=${values.ANDquery}&orquery=${values.ORquery}&notquery=${values.NOTquery}&must_title=${values.must_title}&must_keywords=${values.must_keywords}&must_tags=${values.must_tags}&should_title=${values.should_title}&should_keywords=${values.should_keywords}&should_tags=${values.should_tags}&mustnot_title=${values.mustnot_title}&mustnot_keywords=${values.mustnot_keywords}&mustnot_tags=${values.mustnot_tags}}`)
+
+    return{
+        type: ADVANCED_SEARCH_TOPICS,
+        payload: request
+    }
+
+}
 
 export function changeSearchScope(list){
     let scopes = {

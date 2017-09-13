@@ -5,12 +5,14 @@ import { bindActionCreators } from 'redux';
 
 import Navigation from '../components/navigation';
 import ToggleMenuButton from '../components/buttons/toggle-menu-button';
+import TopicsList from './topics-list';
+import AdvancedSearchForm from './advanced-search-form';
 
-import { setNavigationToggle } from '../actions/index';
+import { setNavigationToggle, setAdvancedSearchQueries, advancedSearchTopics } from '../actions/index';
 
 import help1 from '../styles/img/help1.gif'
 
-class Index extends Component {
+class AdvancedSearch extends Component {
 
   constructor(props){
     super(props);
@@ -18,6 +20,7 @@ class Index extends Component {
     this.state ={
       toggle: true
     }
+    this.advancedSearchSubmit = this.advancedSearchSubmit.bind(this);
   }
 
   componentDidMount(){
@@ -32,18 +35,26 @@ class Index extends Component {
     this.props.setNavigationToggle(!currentState);
   }
 
+  advancedSearchSubmit(values){
+    // store the values in redux
+    this.props.setAdvancedSearchQueries(values);
+    // advanced search topics
+    this.props.advancedSearchTopics(values);
+  }
+
   render() {
 
     return(
        <div id="wrapper" className={this.state.toggle ? "toggled" : null}>
-            <Navigation active={"help"}/>
+            <Navigation active={"advanced-search"}/>
             <div id="page-content-wrapper">
               <div className="container-fluid">
                   <div className="row">
                     <ToggleMenuButton toggleMenu={this.toggleMenu} />
+                    <AdvancedSearchForm onSubmit={this.advancedSearchSubmit} initialData={this.props.advancedSearchQueries}/>
                   </div>
                   <div className="row">
-                    {/* <img src={help1} alt="help1" /> */}
+                    {this.props.searchedTopics.length == 0 ? "No results found." : <TopicsList />}
                 </div>
               </div>
           </div>
@@ -56,12 +67,15 @@ class Index extends Component {
 function mapStateToProps(state){
     return{ 
         navigationToggle: state.navigationToggle,
+        searchedTopics: state.searchedTopics,
+        advancedSearchQueries: state.advancedSearchQueries
     };
 }
 
 
 function mapDispatchToProps(dispatch){
-    return bindActionCreators({setNavigationToggle}, dispatch);
+    return bindActionCreators({setNavigationToggle, setAdvancedSearchQueries, advancedSearchTopics}, dispatch);
 }
   
-export default connect(mapStateToProps, mapDispatchToProps)(Index);
+export default connect(mapStateToProps, mapDispatchToProps)(AdvancedSearch);
+

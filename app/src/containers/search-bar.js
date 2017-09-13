@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchTopics, searchTopics, setSearchTerm, changeSearchScope, setAdvancedSearchQueries } from '../actions/index';
-import AdvancedSearchForm from './advanced-search-form';
+import { fetchTopics, searchTopics, setSearchTerm, changeSearchScope } from '../actions/index';
+
 
 class SearchBar extends Component{
     constructor(props){
@@ -17,7 +17,6 @@ class SearchBar extends Component{
         this.onInputChange = this.onInputChange.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);
         this.onSearchScopeChange = this.onSearchScopeChange.bind(this);
-        this.advancedSearchSubmit = this.advancedSearchSubmit.bind(this);
     }
 
     // get all the topics after the render
@@ -93,10 +92,7 @@ class SearchBar extends Component{
         this.props.searchTopics(this.props.topics, this.state.term, this.state.scopes);
     }
 
-    advancedSearchSubmit(values){
-       // console.log(values);
-        this.props.setAdvancedSearchQueries(values);
-    }
+
 
     render(){
         return(
@@ -150,8 +146,6 @@ class SearchBar extends Component{
                     </div> */}
 
                 </div>
-
-                <AdvancedSearchForm onSubmit={this.advancedSearchSubmit} initialData={this.props.advancedSearchQueries}/>
             </div>
         )
     }
@@ -163,11 +157,10 @@ function mapStatetoProps(state){
         scopes: state.scopes,
         filters: state.filters,
         searchTerm: state.searchTerm,
-        advancedSearchQueries: state.advancedSearchQueries
      }
 }
 function mapDispatchToProps(dispatch){
-    return bindActionCreators({fetchTopics, searchTopics, setSearchTerm, changeSearchScope, setAdvancedSearchQueries}, dispatch);
+    return bindActionCreators({fetchTopics, searchTopics, setSearchTerm, changeSearchScope}, dispatch);
 }
 
 export default connect(mapStatetoProps, mapDispatchToProps)(SearchBar);
