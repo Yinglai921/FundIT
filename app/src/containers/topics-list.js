@@ -318,7 +318,8 @@ class TopicsList extends Component {
     }
 
     linkFormatter(cell, row) {
-        return <a target="_blank" href={`http://ec.europa.eu/research/participants/portal4/desktop/en/opportunities/h2020/topics/${row.topicFileName}.html`}>{cell}</a>
+        console.log(row);
+        return <a target="_blank" href={`https://ec.europa.eu/research/participants/portal/desktop/en/opportunities/h2020/topics/${row.identifier.toLowerCase()}.html`}>{cell}</a>
     }
 
     afterColumnFilter(filterConds, result) {
@@ -344,6 +345,7 @@ class TopicsList extends Component {
             let results = [];
             searchedTopics.forEach((topic) => {
                 results.push(topic._source);
+                console.log(results);
             })
     
             // some custom settings for react-bootstrap-table
