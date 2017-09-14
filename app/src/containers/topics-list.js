@@ -94,24 +94,25 @@ class CheckboxFilter extends React.Component {
         </div>
       );
     }
-  }
+}
   
-  CheckboxFilter.propTypes = {
-    filterHandler: React.PropTypes.func.isRequired,
-    textOK: React.PropTypes.string,
-    textNOK: React.PropTypes.string
-  };
-  
-  CheckboxFilter.defaultProps = {
-    textOK: 'Open',
-    textNOK: 'Closed'
-  };
-  
-  function getCustomFilter(filterHandler, customFilterParameters) {
-    return (
-      <CheckboxFilter filterHandler={ filterHandler } textOK={ customFilterParameters.textOK } textNOK={ customFilterParameters.textNOK } />
-    );
-  }
+CheckboxFilter.propTypes = {
+filterHandler: React.PropTypes.func.isRequired,
+textOK: React.PropTypes.string,
+textNOK: React.PropTypes.string
+};
+
+CheckboxFilter.defaultProps = {
+textOK: 'Open',
+textNOK: 'Closed'
+};
+
+function getCustomFilter(filterHandler, customFilterParameters) {
+return (
+    <CheckboxFilter filterHandler={ filterHandler } textOK={ customFilterParameters.textOK } textNOK={ customFilterParameters.textNOK } />
+);
+}
+
 
 
 class TopicsList extends Component {

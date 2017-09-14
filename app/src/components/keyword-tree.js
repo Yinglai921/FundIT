@@ -3,9 +3,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import { Alert } from 'reactstrap';
-import SwitchButton from 'react-switch-button';
+//import SwitchButton from 'react-switch-button';
 
 import D3KeywordThree from './d3-keyword-tree';
+import D3KeywordColorLegend from './d3-keyword-color-legend';
+
 import Navigation from './navigation';
 import { changeFilterTerm, setNavigationToggle, selectKeywords, setColorToggle } from '../actions';
 
@@ -97,8 +99,18 @@ class KeywordTree extends Component {
                         onSelectKeywords={this.selectKeywords}
                         keywords={this.state.keywords}
                       />
+
+                      <div className="btn-group" role="group" style={{float: "right", top: "10px"}}>
+                          <button type="button" className={this.state.colorCheck ? "btn btn-default" : "btn btn-primary active"} onClick={this.onColorCheck}>Default Graph</button>
+                          <button type="button" className={this.state.colorCheck ? "btn btn-primary active" : "btn btn-default"} onClick={this.onColorCheck}>Colored Graph</button>
+                      </div>
+
+                      <div style={{marginTop: "30px", marginLeft: "20px"}} className={this.state.colorCheck? " " : "hidden"}>
+                        <p> Number of topics that includes this keyword: </p>
+                        <D3KeywordColorLegend />
+                      </div>
+                      
                       <div id="keyword-tree-graph">
-                        <SwitchButton name="switch-3" label="Double click to change node color :"  defaultChecked={this.state.colorCheck} onChange={this.onColorCheck} />
                         <D3KeywordThree onChangeKeyword={this.changeKeyword} keywords={this.state.keywords} onSelectKeywords={this.selectKeywords} colorToggle={this.state.colorCheck}/>
                       </div>
                   </div>

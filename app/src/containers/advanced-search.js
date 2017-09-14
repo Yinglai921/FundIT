@@ -18,13 +18,16 @@ class AdvancedSearch extends Component {
     super(props);
     this.toggleMenu = this.toggleMenu.bind(this);
     this.state ={
-      toggle: true
+      toggle: true,
+      initial: true
     }
     this.advancedSearchSubmit = this.advancedSearchSubmit.bind(this);
   }
 
   componentDidMount(){
     this.setState({toggle: this.props.navigationToggle});
+    // advanced search topics
+    // this.props.advancedSearchTopics(this.props.advancedSearchQueries);
   }
 
   toggleMenu(e){
@@ -40,6 +43,7 @@ class AdvancedSearch extends Component {
     this.props.setAdvancedSearchQueries(values);
     // advanced search topics
     this.props.advancedSearchTopics(values);
+    this.setState({initial: false});
   }
 
   render() {
@@ -54,7 +58,8 @@ class AdvancedSearch extends Component {
                     <AdvancedSearchForm onSubmit={this.advancedSearchSubmit} initialData={this.props.advancedSearchQueries}/>
                   </div>
                   <div className="row">
-                    {this.props.searchedTopics.length == 0 ? "No results found." : <TopicsList />}
+                    {this.state.initial? "No results found." : <TopicsList />}
+                    {/* <TopicsList /> */}
                 </div>
               </div>
           </div>

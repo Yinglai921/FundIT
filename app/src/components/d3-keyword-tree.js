@@ -132,7 +132,7 @@ class D3KeywordTree extends Component{
 
 
 		var colorScale = d3.scaleSequential(d3Chromatic.interpolateGreens)
-		.domain([0, 30])
+		.domain([0, 50])
 		// append the svg object to the body of the page
 		// appends a 'group' element to 'svg'
 		// moves the 'group' element to the top left margin
@@ -295,7 +295,8 @@ class D3KeywordTree extends Component{
 					}else{
 						
 						if(d.class === "found"){
-							return "#ff4136"; // red
+							//return "#ff4136"; // red
+							return colorScale(d.data.value)
 						}else if(d.data.value === undefined ){
 							d.data.value = 0;
 							return colorScale(d.data.value)
