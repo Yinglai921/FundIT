@@ -9,7 +9,7 @@ import NavigationToggle from './reducer_navigationToggle';
 import SelectedKeywords from './reducer_selectedKeywords';
 import ColorToggle from './reducer_colorToggle';
 import AdvancedSearchQueries from './reducer-advanced-search-query';
-
+import KeywordTree from './reducer_keywordTree';
 // import redux-form reducer 
 import { reducer as formReducers } from 'redux-form';
 
@@ -25,6 +25,7 @@ const rootReducer = combineReducers({
   selectedKeywords: SelectedKeywords,
   colorToggle: ColorToggle,
   advancedSearchQueries: AdvancedSearchQueries,
+  keywordTree: KeywordTree,
   
   form: formReducers // this is for redux-form
 });

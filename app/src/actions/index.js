@@ -15,9 +15,11 @@ export const SELECT_KEYWORDS = 'select_keywords';
 export const SET_COLOR_TOGGLE = 'set_color_toggle';
 export const SET_ADVANCED_SEARCH_QUERIES = 'set_advanced_search_queries';
 export const ADVANCED_SEARCH_TOPICS = 'advanced_search_topics';
+export const FETCH_KEYWORDTREE = 'fetch_keyword_tree';
 // fetch all the topics from the start
 const TOPICS_URL = 'http://localhost:3001/api/search';
 const ADVANCED_SEARCH_URL = 'http://localhost:3001/api/advancedsearch';
+const KEYWORDTREE_URL = 'http://localhost:3001/api/keywordtree';
 
 function dateFormatCovert(time){
     let currTime = new Date(time);
@@ -47,6 +49,16 @@ export function fetchTopics(){
         //payload: request
         payload: currentTopics
     }
+}
+
+export function fetchKeywordTree(){
+    let request = axios.get(KEYWORDTREE_URL);
+  
+    return{
+        type: FETCH_KEYWORDTREE, 
+        payload: request
+    }
+    
 }
 
 export function setSearchTerm(term){

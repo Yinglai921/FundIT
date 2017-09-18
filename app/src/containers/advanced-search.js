@@ -55,6 +55,8 @@ class AdvancedSearch extends Component {
               <div className="container-fluid">
                   <div className="row">
                     <ToggleMenuButton toggleMenu={this.toggleMenu} />
+                    <p> Hints: Search a phrase with quotes, for example: "Collection of local data" </p>
+                    <p> Hints: Search several words with semicolon to separate them: for example: data; security; bioinformatics </p>
                     <AdvancedSearchForm onSubmit={this.advancedSearchSubmit} initialData={this.props.advancedSearchQueries}/>
                   </div>
                   <div className="row">

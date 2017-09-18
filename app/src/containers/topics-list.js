@@ -319,7 +319,6 @@ class TopicsList extends Component {
     }
 
     linkFormatter(cell, row) {
-        console.log(row);
         return <a target="_blank" href={`https://ec.europa.eu/research/participants/portal/desktop/en/opportunities/h2020/topics/${row.identifier.toLowerCase()}.html`}>{cell}</a>
     }
 
@@ -346,7 +345,6 @@ class TopicsList extends Component {
             let results = [];
             searchedTopics.forEach((topic) => {
                 results.push(topic._source);
-                console.log(results);
             })
     
             // some custom settings for react-bootstrap-table

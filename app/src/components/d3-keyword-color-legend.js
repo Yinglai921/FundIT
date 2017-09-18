@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom'; // render to DOM
 import * as d3 from "d3";
-import $ from 'jquery';
 
 class D3KeywordColorLegend extends Component{
     constructor(props){

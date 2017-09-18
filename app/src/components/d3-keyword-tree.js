@@ -4,11 +4,8 @@ import {scaleLinear, max, select} from 'd3';
 import { hierarchy, tree} from 'd3-hierarchy';
 import * as d3 from "d3";
 import * as d3Chromatic from 'd3-scale-chromatic';
+import $ from 'jQuery';
 
-import * as select2 from 'select2';
-import $ from 'jquery';
-
-import keywords from '../data/keywords.json';
 
 class D3KeywordTree extends Component{
     constructor(props){
@@ -24,14 +21,7 @@ class D3KeywordTree extends Component{
 
 
    updateDimensions(){
-	   //let graphDiv = document.getElementById("keyword-tree-graph");
-	   
-	   //console.log("update: " + this.state.graphWidth + ", " + this.state.graphHeight)
-	   this.setState({graphWidth: $(window).width(), graphHeight: $(window).height()})
-
-
-	   //this.createTreeChart(mountNode, this.props.onChangeKeyword)
-	   
+	   this.setState({graphWidth: $(window).width(), graphHeight: $(window).height()})	   
    }
 
    componentWillMount(){
@@ -40,23 +30,20 @@ class D3KeywordTree extends Component{
    componentDidMount() {
 	  const mountNode = ReactDOM.findDOMNode(this);
 	  window.addEventListener("resize", this.updateDimensions);
-      this.createTreeChart(mountNode, this.props.onChangeKeyword, this.props.keywords, this.props.onSelectKeywords, this.props.colorToggle);
+      this.createTreeChart(mountNode, this.props.onChangeKeyword, this.props.data, this.props.keywords, this.props.onSelectKeywords, this.props.colorToggle);
    }
 
    componentWillUnmount(){
 	   window.removeEventListener("resize", this.updateDimensions)
    }
    
-//    shouldComponentUpdate(newProps, newState) {
-//     return true;
-//    }
    componentDidUpdate() {
 	   console.log("graph updated")
 	   const mountNode = ReactDOM.findDOMNode(this);
-       this.createTreeChart(mountNode, this.props.onChangeKeyword, this.props.keywords, this.props.onSelectKeywords, this.props.colorToggle)
+       this.createTreeChart(mountNode, this.props.onChangeKeyword, this.props.data, this.props.keywords, this.props.onSelectKeywords, this.props.colorToggle)
    }
 
-   createTreeChart(svgDomNode, onChangeKeyword, selectedKeywords, onSelectKeywords, colorToggle) {
+   createTreeChart(svgDomNode, onChangeKeyword, data, selectedKeywords, onSelectKeywords, colorToggle) {
 
 	    d3.select("#keyword-tree-graph svg").html("");
 
@@ -69,10 +56,14 @@ class D3KeywordTree extends Component{
 			// 	name = `${obj.data.name} (0)`
 			// }
 
-			if (search.indexOf('(') !== -1){
-				let index = search.indexOf('(') - 1;
-				search = search.slice(0, index)
-			  }
+			// if (search.indexOf('(') !== -1){
+			// 	let index = search.indexOf('(') - 1;
+			// 	search = search.slice(0, index)
+			//   }
+		   
+			// search = search.substring(0, search.length-3);
+			
+			//search = search.substring(0, search.length-3);
 						
 			if(name === search){ //if search is found return, add the object to the path and return it
 				path.push(obj);
@@ -95,9 +86,9 @@ class D3KeywordTree extends Component{
 				return false;
 			} 
 		}		
-
 		
-
+		// initial tree data
+		console.log("treehierarcy: ", data );
 		// draw tree
 
         // Set the dimensions and margins of the diagram
@@ -155,7 +146,7 @@ class D3KeywordTree extends Component{
 
 		// Assigns parent, children, height, depth
 		
-		root = d3.hierarchy(keywords, function(d) { return d.children; });
+		root = d3.hierarchy(data, function(d) { return d.children; });
 		root.x0 = height / 2;
 		root.y0 = 0;
 
@@ -187,7 +178,7 @@ class D3KeywordTree extends Component{
 		}
 
 		console.log("selectedKeywords: ", selectedKeywords)
-		if(selectedKeywords !== null){
+		if(selectedKeywords.length !== 0){
 			selectedKeywords.forEach((keyword) =>{
 				var paths = searchTree(root, keyword, []);
 				openPaths(paths);
@@ -404,8 +395,8 @@ class D3KeywordTree extends Component{
 			.duration(500)
 			.style("opacity", 0);
 			console.log(d.data.name)
-			onChangeKeyword(d.data.name);
-			//onSelectKeywords(d.data.name);
+			//onChangeKeyword(d.data.name);
+			onSelectKeywords(d.data.name, onChangeKeyword);
 		}
    }
     render() {

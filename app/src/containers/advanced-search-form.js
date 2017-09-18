@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 
 let InitializeFromStateForm = props => {
-    const { handleSubmit, pristine, reset, submitting, initialValue } = props
+    const { handleSubmit, initialValue } = props
     return (
         <div className="search-bar col-sm-12">
             <form onSubmit={ handleSubmit }>
@@ -114,7 +114,7 @@ let InitializeFromStateForm = props => {
     
                 </div>
                 {/* end of the scopes */}
-                <button type="submit" className="btn btn-primary" disabled={pristine || submitting}> Submit</button>
+                <button type="submit" className="btn btn-primary"> Submit</button>
             </form>
         </div>
     )
