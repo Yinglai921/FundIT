@@ -103,7 +103,7 @@ class SearchBar extends Component{
                         <label className="col-sm-2 col-form-label">Search topics: </label>
                         <div className="col-sm-8">
                             <input 
-                            placeholder="Please enter one word or one phrase, like: bioinformatics"
+                            placeholder='Search a phrase with quotes, for example: "Transport information systems"'
                             value={this.state.term}
                             className="form-control"
                             onChange={this.onInputChange}
@@ -114,8 +114,6 @@ class SearchBar extends Component{
                         </div>
                     </div>
                 </form>
-
-                <p> Hints: Search a phrase with quotes, for example: "Transport information systems" </p>
 
                 <div>
                     <span>Search queries: </span>

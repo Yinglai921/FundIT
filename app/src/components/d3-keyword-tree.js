@@ -4,7 +4,7 @@ import {scaleLinear, max, select} from 'd3';
 import { hierarchy, tree} from 'd3-hierarchy';
 import * as d3 from "d3";
 import * as d3Chromatic from 'd3-scale-chromatic';
-import $ from 'jQuery';
+import $ from 'jquery';
 
 
 class D3KeywordTree extends Component{
