@@ -21,7 +21,7 @@ class D3KeywordTree extends Component{
 
 
    updateDimensions(){
-	   this.setState({graphWidth: $(window).width(), graphHeight: $(window).height()})	   
+	   this.setState({graphWidth: $(window).width() * 0.8, graphHeight: $(window).height() * 0.8})	   
    }
 
    componentWillMount(){
@@ -50,20 +50,6 @@ class D3KeywordTree extends Component{
 		function searchTree(obj,search,path){
 			var name;
 			name = obj.data.name;
-			// if(obj.data.value){
-			// 	name = `${obj.data.name} (${obj.data.value})`
-			// }else{
-			// 	name = `${obj.data.name} (0)`
-			// }
-
-			// if (search.indexOf('(') !== -1){
-			// 	let index = search.indexOf('(') - 1;
-			// 	search = search.slice(0, index)
-			//   }
-		   
-			// search = search.substring(0, search.length-3);
-			
-			//search = search.substring(0, search.length-3);
 						
 			if(name === search){ //if search is found return, add the object to the path and return it
 				path.push(obj);
@@ -88,7 +74,7 @@ class D3KeywordTree extends Component{
 		}		
 		
 		// initial tree data
-		console.log("treehierarcy: ", data );
+		// console.log("treehierarcy: ", data );
 		// draw tree
 
         // Set the dimensions and margins of the diagram
@@ -180,6 +166,8 @@ class D3KeywordTree extends Component{
 		console.log("selectedKeywords: ", selectedKeywords)
 		if(selectedKeywords.length !== 0){
 			selectedKeywords.forEach((keyword) =>{
+				let lastOccuranceIndex = keyword.lastIndexOf("(") - 1;
+		    	keyword = keyword.substring(0, lastOccuranceIndex);
 				var paths = searchTree(root, keyword, []);
 				openPaths(paths);
 			});
@@ -241,7 +229,16 @@ class D3KeywordTree extends Component{
 					return d.children || d._children ? "end" : "start";
 				})
 				.attr("class", "treeGraphLabel")
-				.text(function(d) { return d.data.name; })
+				.text(function(d) { 
+					if (d.data.name !== undefined){
+						if (d.data.name.length <= 20){
+							return d.data.name;
+						} else {
+							return `${d.data.name.substring(0, 20)}...`; 
+						}
+					}
+
+				})
 				.on("click", setSearchWordFromTree)
 				.on("mouseover", function(d) {
 					if(d.data.value === undefined){
@@ -250,7 +247,7 @@ class D3KeywordTree extends Component{
 					tooltip.transition()
 					  .duration(200)
 					  .style("opacity", .9);
-					tooltip.html(d.data.name + "<br/> Number of topics:" + d.data.value)
+					tooltip.html(d.data.description + "<br/> Number of topics:" + d.data.value)
 					  .style("left", (d3.event.pageX) + "px")
 					  .style("top", (d3.event.pageY - 28) + "px");
 					})
@@ -394,9 +391,14 @@ class D3KeywordTree extends Component{
 			tooltip.transition()
 			.duration(500)
 			.style("opacity", 0);
-			console.log(d.data.name)
+
+			if (d.data.value == undefined){
+				d.data.value = 0;
+			}
+			let name = `${d.data.name} (${d.data.value})`
+			console.log(name)
 			//onChangeKeyword(d.data.name);
-			onSelectKeywords(d.data.name, onChangeKeyword);
+			onSelectKeywords(name, onChangeKeyword);
 		}
    }
     render() {

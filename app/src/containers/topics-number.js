@@ -24,8 +24,8 @@ class TopicsNumber extends Component {
 
         return(
             <div>
-                <p> Number of searched topics: {searchedTopics.length > 100 ? "100+" : searchedTopics.length} </p>
-                <p> Number of filtered topics: {filtered > 100 ? "100+" : filtered} </p> 
+                <p> Number of searched topics: {searchedTopics.length} </p>
+                <p> Number of filtered topics: {filtered} </p> 
             </div>
         )
     }

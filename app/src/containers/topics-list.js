@@ -171,7 +171,7 @@ class TopicsList extends Component {
             }
         }
 
-        const columnOrder = ['callTitle', 'mainSpecificProgrammeLevelDesc', 'actions', 'plannedOpeningDate', 'deadlineDates', 'keywords', 'tags'];
+        const columnOrder = ['mainSpecificProgrammeLevelDesc','plannedOpeningDate', 'keywords', 'tags'];
         currentCols.sort(function(a, b){
             return columnOrder.indexOf(a) - columnOrder.indexOf(b);
         });
@@ -236,18 +236,6 @@ class TopicsList extends Component {
                     Planned Opening Date
                     </TableHeaderColumn>
                 );
-            case 'deadlineDates':
-                return(
-                    <TableHeaderColumn 
-                    dataField={col} 
-                    dataSort 
-                    sortFunc={ this.revertSortDeadlineDate }
-                    expandable={ false }
-                    width='200'
-                    >
-                    Deadline Dates
-                    </TableHeaderColumn>
-                );
             case 'keywords':
                 return(
                     <TableHeaderColumn 
@@ -272,17 +260,6 @@ class TopicsList extends Component {
                     Tags
                     </TableHeaderColumn> 
                 );
-            case 'callTitle':
-                return(
-                    <TableHeaderColumn 
-                    dataField={col}
-                    tdStyle={ { whiteSpace: 'normal' } } 
-                    filter={ { type: 'TextFilter', delay: 1000 } } 
-                    expandable={ false }
-                    >
-                    Call Title
-                    </TableHeaderColumn> 
-                );
             case 'mainSpecificProgrammeLevelDesc':
                 return(
                     <TableHeaderColumn 
@@ -292,17 +269,6 @@ class TopicsList extends Component {
                     width='250'
                     >
                     Pillar
-                    </TableHeaderColumn> 
-                );
-            case 'actions':
-                return(
-                    <TableHeaderColumn 
-                    dataField={col}
-                    tdStyle={ { whiteSpace: 'normal' } } 
-                    expandable={ false }
-                    dataFormat={ this.actionsFormatter }
-                    >
-                    Types of actions
                     </TableHeaderColumn> 
                 );
         }
@@ -349,9 +315,11 @@ class TopicsList extends Component {
     
             // some custom settings for react-bootstrap-table
             const options = {
-                expandRowBgColor: 'rgb(219,230,236)',
-                expandBy: 'column',  // Currently, available value is row and column, default is row
-                afterColumnFilter: this.afterColumnFilter // a callback to get filtered result
+                    expandRowBgColor: 'rgb(219,230,236)',
+                    expandBy: 'column',  // Currently, available value is row and column, default is row
+                    afterColumnFilter: this.afterColumnFilter, // a callback to get filtered result
+                    defaultSortName: 'callStatus',
+                    defaultSortOrder: 'desc',
                 };
     
             console.log("render: ", cols)
@@ -361,21 +329,22 @@ class TopicsList extends Component {
                         <TopicsNumber />
                         <div id="settingBtn">
                             <span>Table columns: </span>
-                            <label className="checkbox-inline">
+                            {/* <label className="checkbox-inline">
                                 <input type="checkbox" value="callTitle" defaultChecked={this.props.columnSettings.callTitle}
                                     onChange={this.onColumnHeaderChange}
                                 /> Call Title
-                            </label>
+                            </label> */}
                             <label className="checkbox-inline">
                                 <input type="checkbox" value="mainSpecificProgrammeLevelDesc" defaultChecked={this.props.columnSettings.mainSpecificProgrammeLevelDesc}
                                     onChange={this.onColumnHeaderChange}
                                 /> Pillar
                             </label>
-                            <label className="checkbox-inline">
+
+                            {/* <label className="checkbox-inline">
                                 <input type="checkbox" value="actions" defaultChecked={this.props.columnSettings.actions}
                                     onChange={this.onColumnHeaderChange}
                                 /> Types of actions
-                            </label>
+                            </label> */}
     
                             <label className="checkbox-inline">
                                 <input type="checkbox" value="plannedOpeningDate" defaultChecked={this.props.columnSettings.plannedOpeningDate}
@@ -383,11 +352,11 @@ class TopicsList extends Component {
                                 /> Planned Opening Date
                             </label>
     
-                            <label className="checkbox-inline">
+                            {/* <label className="checkbox-inline">
                                 <input type="checkbox" value="deadlineDates" defaultChecked={this.props.columnSettings.deadlineDates}
                                     onChange={this.onColumnHeaderChange}
                                 /> Deadline Dates
-                            </label>
+                            </label> */}
     
                             <label className="checkbox-inline">
                                 <input type="checkbox" value="keywords" defaultChecked={this.props.columnSettings.keywords}
@@ -432,6 +401,31 @@ class TopicsList extends Component {
                                 width='150'
                                 >
                                 Call Status
+                            </TableHeaderColumn>
+                            <TableHeaderColumn 
+                                dataField='callTitle'
+                                tdStyle={ { whiteSpace: 'normal' } } 
+                                filter={ { type: 'TextFilter', delay: 1000 } } 
+                                expandable={ false }
+                                >
+                                Call Title
+                            </TableHeaderColumn> 
+                            <TableHeaderColumn 
+                                dataField='actions'
+                                tdStyle={ { whiteSpace: 'normal' } } 
+                                expandable={ false }
+                                dataFormat={ this.actionsFormatter }
+                                width='200'
+                                >
+                                Types of actions
+                            </TableHeaderColumn> 
+                            <TableHeaderColumn 
+                                dataField='deadlineDates'
+                                dataSort 
+                                sortFunc={ this.revertSortDeadlineDate }
+                                expandable={ false }
+                                >
+                                Deadline Dates
                             </TableHeaderColumn>
     
                             {cols.map((col) => {

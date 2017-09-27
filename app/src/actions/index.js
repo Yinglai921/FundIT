@@ -1,4 +1,3 @@
-import Fuse from 'fuse.js';
 import axios from 'axios';
 import topics from '../data/topics.json';
 
