@@ -7,7 +7,6 @@ import TopicsList from './topics-list';
 
 
 import Navigation from '../components/navigation';
-import ToggleMenuButton from '../components/buttons/toggle-menu-button';
 
 import { setNavigationToggle } from '../actions/index';
 
@@ -15,39 +14,27 @@ class Index extends Component {
 
   constructor(props){
     super(props);
-    this.toggleMenu = this.toggleMenu.bind(this);
-    this.state ={
-      toggle: true
-    }
   }
 
   componentDidMount(){
     this.setState({toggle: this.props.navigationToggle});
   }
 
-  toggleMenu(e){
-    e.preventDefault();
-    const currentState = this.state.toggle;
-    this.setState({toggle: !currentState});
-
-    this.props.setNavigationToggle(!currentState);
-  }
 
   render() {
 
     return(
-       <div id="wrapper" className={this.state.toggle ? "toggled" : null}>
+       <div className="container-fluid">
+         <div className="row">
             <Navigation active={"index"}/>
-            <div id="page-content-wrapper">
-              <div className="container-fluid">
-                  <div className="row">
-                    <ToggleMenuButton toggleMenu={this.toggleMenu} />
-                    <SearchBar />
-                  </div>
-                  <div className="row">
-                    {this.props.searchedTopics.length == 0 ? "No results found." : <TopicsList />}
-                </div>
-              </div>
+          </div>
+          <div className="row">
+            <SearchBar />
+          </div>
+          <div className="row">
+            <div className="col-sm-12">
+              {this.props.searchedTopics.length == 0 ? "No results found." : <TopicsList />}
+            </div>
           </div>
         </div>
     )

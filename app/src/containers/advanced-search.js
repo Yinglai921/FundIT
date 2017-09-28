@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 
 
 import Navigation from '../components/navigation';
-import ToggleMenuButton from '../components/buttons/toggle-menu-button';
 import TopicsList from './topics-list';
 import AdvancedSearchForm from './advanced-search-form';
 
@@ -16,26 +15,15 @@ class AdvancedSearch extends Component {
 
   constructor(props){
     super(props);
-    this.toggleMenu = this.toggleMenu.bind(this);
     this.state ={
-      toggle: true,
       initial: true
     }
     this.advancedSearchSubmit = this.advancedSearchSubmit.bind(this);
   }
 
   componentDidMount(){
-    this.setState({toggle: this.props.navigationToggle});
     // advanced search topics
     // this.props.advancedSearchTopics(this.props.advancedSearchQueries);
-  }
-
-  toggleMenu(e){
-    e.preventDefault();
-    const currentState = this.state.toggle;
-    this.setState({toggle: !currentState});
-
-    this.props.setNavigationToggle(!currentState);
   }
 
   advancedSearchSubmit(values){
@@ -49,23 +37,23 @@ class AdvancedSearch extends Component {
   render() {
 
     return(
-       <div id="wrapper" className={this.state.toggle ? "toggled" : null}>
+       <div className="container-fluid">
+         <div className="row">
             <Navigation active={"advanced-search"}/>
-            <div id="page-content-wrapper">
-              <div className="container-fluid">
-                  <div className="row">
-                    <ToggleMenuButton toggleMenu={this.toggleMenu} />
-                    <p> Hints: Search a phrase with quotes, for example: "Collection of local data" </p>
-                    <p> Hints: Search several words with semicolon to separate them: for example: data; security; bioinformatics </p>
-                    <AdvancedSearchForm onSubmit={this.advancedSearchSubmit} initialData={this.props.advancedSearchQueries}/>
-                  </div>
-                  <div className="row">
-                    {this.state.initial? "No results found." : <TopicsList />}
-                    {/* <TopicsList /> */}
-                </div>
-              </div>
           </div>
-        </div>
+          <div className="row">
+            <div className="col-sm-12">
+              <p> Hints: Search a phrase with quotes, for example: "Collection of local data" </p>
+              <p> Hints: Search several words with semicolon to separate them: for example: data; security; bioinformatics </p>
+            </div>
+            <AdvancedSearchForm onSubmit={this.advancedSearchSubmit} initialData={this.props.advancedSearchQueries}/>
+          </div>
+          <div className="row">
+            <div className="col-sm-12">
+              {this.state.initial? "No results found." : <TopicsList />}
+            </div>
+          </div>
+      </div>
     )
   }
 }

@@ -96,8 +96,8 @@ body {
   position: absolute;
   text-align: center;
   width:10%;
-  left: 0;
-  padding: 2px;
+  left: 10;
+  padding: 4px;
   font: 12px sans-serif;
   background: lightsteelblue;
   border: 0px;
@@ -169,4 +169,13 @@ input:checked + .slider:before {
 .rsbc-switch-button{
   margin-top: 20px;
   float: right;
+}
+ 
+#keyword-tree-graph{
+  margin-top: 5%;
+}
+#keyword-tree-graph svg{
+  display: block;
+  margin: auto;
+  border: 1px solid gray;
 }

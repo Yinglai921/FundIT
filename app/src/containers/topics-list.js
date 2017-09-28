@@ -324,8 +324,8 @@ class TopicsList extends Component {
     
             console.log("render: ", cols)
             return (
-                <div className="row">
-                    <div className="topics-list col-sm-12">
+                <div>
+                    <div className="topics-list">
                         <TopicsNumber />
                         <div id="settingBtn">
                             <span>Table columns: </span>

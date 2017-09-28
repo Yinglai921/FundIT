@@ -68,11 +68,13 @@ export default class KeywordTreeSearch extends Component{
 
         const options = select2_data;
         return(
-            <VirtualizedSelect
-                options={options}
-                multi={this.state.multi}
-                onChange={this.handleSelectChange}
-                value={this.state.selectValue}
-            />
+
+                <VirtualizedSelect
+                    options={options}
+                    multi={this.state.multi}
+                    onChange={this.handleSelectChange}
+                    value={this.state.selectValue}
+                />
+
         )}
     }
