@@ -69,13 +69,14 @@ export function setSearchTerm(term){
 /* search topics
 opics: the whole topic list; 
 term: the search input word, string;
-scopes: the searched scope ["title", "keywords", "tags"]
+scopes: the searched scope ["title", "keywords", "tags", "description"]
 */
 export function searchTopics(topics, term, scopes){
 
     let inTitle = true;
     let inKeywords = true;
     let inTags = true;
+    let inDescription = true;
 
     if (scopes.indexOf("title") == -1 ){
         inTitle = false;
@@ -89,7 +90,11 @@ export function searchTopics(topics, term, scopes){
         inTags = false;
     } else{ inTags = true; }
 
-    let request = axios.get(`${TOPICS_URL}?q=${term}&intitle=${inTitle}&inkeywords=${inKeywords}&intags=${inTags}`)
+    if (scopes.indexOf("description") == -1 ){
+        inDescription = false;
+    } else{ inDescription = true; }
+
+    let request = axios.get(`${TOPICS_URL}?q=${term}&intitle=${inTitle}&inkeywords=${inKeywords}&intags=${inTags}&indescription=${inDescription}`)
 
     console.log("topics length: " + topics.length)
     console.log("current scope: " + scopes)
@@ -135,12 +140,9 @@ export function changeSearchScope(list){
 export function changeColumnSettings(list){
     let settings = {
         "callTitle": false,
-        "plannedOpeningDate": false,
-        "deadlineDates": false,
         "keywords": false,
         "tags": false,
-        "mainSpecificProgrammeLevelDesc": false,
-        "actions": false
+        "mainSpecificProgrammeLevelDesc": false
     }
     list.forEach((name) => {
         settings[name] = true;

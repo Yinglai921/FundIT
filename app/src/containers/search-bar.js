@@ -10,7 +10,7 @@ class SearchBar extends Component{
 
         this.state = {
             term: this.props.searchTerm,
-            scopes: ["title", "keywords", "tags"],
+            scopes: ["title", "keywords", "tags", "description"],
             
         };
 
@@ -37,6 +37,9 @@ class SearchBar extends Component{
             if(scopes.tags){
                 currentScopes.push('tags')
             }
+            if(scopes.description){
+                currentScopes.push('description')
+            }
 
             this.setState({
                 scopes: currentScopes
@@ -58,7 +61,7 @@ class SearchBar extends Component{
 
         // console.log("SCOPES: ", this.props.scopes)
 
-        if(this.props.scopes === {} || this.props.scopes.title == false && this.props.scopes.keywords == false && this.props.scopes.tags == false){
+        if(this.props.scopes === {} || this.props.scopes.title == false && this.props.scopes.keywords == false && this.props.scopes.tags == false && this.props.scopes.description == false){
             alert("Please select at least one search scope");
         }
         // set search term globally 
@@ -134,15 +137,11 @@ class SearchBar extends Component{
                                 onChange={this.onSearchScopeChange}
                             /> In tags
                         </label>
-
-                    {/* <div className="checkbox col-2">
-                        <label>
-                            <input type="checkbox" value="desc"
+                        <label className="checkbox-inline">
+                            <input type="checkbox" value="description" defaultChecked={this.state.scopes.indexOf("description") == -1 ? false: true}
                                 onChange={this.onSearchScopeChange}
                             /> In descriptions
                         </label>
-                    </div> */}
-
                 </div>
             </div>
         )
