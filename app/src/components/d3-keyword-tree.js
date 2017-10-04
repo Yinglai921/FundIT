@@ -49,7 +49,7 @@ class D3KeywordTree extends Component{
 
 		function searchTree(obj,search,path){
 			var name;
-			name = obj.data.name;
+			name = obj.data.description;
 						
 			if(name === search){ //if search is found return, add the object to the path and return it
 				path.push(obj);
@@ -395,7 +395,7 @@ class D3KeywordTree extends Component{
 			if (d.data.value == undefined){
 				d.data.value = 0;
 			}
-			let name = `${d.data.name} (${d.data.value})`
+			let name = `${d.data.description} (${d.data.value})`
 			console.log(name)
 			//onChangeKeyword(d.data.name);
 			onSelectKeywords(name, onChangeKeyword);

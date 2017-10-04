@@ -121,7 +121,7 @@ class TopicsList extends Component {
         
         this.state = {
             cols:[],
-            filterNumber: this.props.searchedTopics.length
+            filterNumber: this.props.searchedTopics.length,
         };
 
         this.onColumnHeaderChange = this.onColumnHeaderChange.bind(this);
@@ -131,30 +131,24 @@ class TopicsList extends Component {
 
 
     // set the columns according to the columnSettings if has one
-    componentWillMount(){
-        const { columnSettings, searchedTopics } = this.props;
+    componentDidMount(){
+        const { columnSettings, searchedTopics, scopes } = this.props;
         let cols = [];
         if (columnSettings !== null){
-            if (columnSettings.callTitle)
-                cols.push('callTitle')
             if (columnSettings.plannedOpeningDate)
                 cols.push('plannedOpeningDate')
-            if (columnSettings.deadlineDates)
-                cols.push('deadlineDates')
             if (columnSettings.keywords)
                 cols.push('keywords')
             if (columnSettings.tags)
                 cols.push('tags')
             if (columnSettings.mainSpecificProgrammeLevelDesc)
                 cols.push('mainSpecificProgrammeLevelDesc')
-            if (columnSettings.actions)
-                cols.push('actions')
         }
         this.setState({cols:cols})
-
         this.props.setFilterNumber(searchedTopics.length)
+        
     }
-
+    
     // change the headers of the columns, checkboxes event
     onColumnHeaderChange(event){
         let col = event.target.value;
@@ -309,7 +303,7 @@ class TopicsList extends Component {
         } else{
 
             let results = [];
-            searchedTopics.forEach((topic) => {
+            searchedTopics.forEach((topic) =>{
                 results.push(topic._source);
             })
     
@@ -322,7 +316,6 @@ class TopicsList extends Component {
                     defaultSortOrder: 'desc',
                 };
     
-            console.log("render: ", cols)
             return (
                 <div>
                     <div className="topics-list">
@@ -396,7 +389,7 @@ class TopicsList extends Component {
                             <TableHeaderColumn 
                                 dataField='callStatus' 
                                 expandable={ false }
-                                filter={ { type: 'CustomFilter', getElement: getCustomFilter, customFilterParameters: { textOK: 'Open', textNOK: 'Closed' } } }
+                                //filter={ { type: 'CustomFilter', getElement: getCustomFilter, customFilterParameters: { textOK: 'Open', textNOK: 'Closed' } } }
                                 dataSort 
                                 width='150'
                                 >

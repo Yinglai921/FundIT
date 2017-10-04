@@ -5,7 +5,6 @@ export default function(state = 0, action){
         case SET_FILTER_NUMBER:
             return action.payload;
         case SEARCH_TOPICS:
-            console.log(action.payload)
             return action.payload.data.length;
     }
     return state;

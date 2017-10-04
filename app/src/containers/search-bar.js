@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchTopics, searchTopics, setSearchTerm, changeSearchScope } from '../actions/index';
+import { searchTopics, setSearchTerm, changeSearchScope } from '../actions/index';
 
 
 class SearchBar extends Component{
@@ -10,7 +10,7 @@ class SearchBar extends Component{
 
         this.state = {
             term: this.props.searchTerm,
-            scopes: ["title", "keywords", "tags", "description"],
+            scopes: ["title", "keywords", "tags", "description", "open"],
             
         };
 
@@ -21,7 +21,7 @@ class SearchBar extends Component{
 
     // get all the topics after the render
     componentWillMount(){
-        this.props.fetchTopics();
+       // this.props.fetchTopics();
         const { scopes } = this.props;
         let currentScopes = [];
         // if the global scopes has already set, initial the current local state with global scopes state
@@ -40,6 +40,9 @@ class SearchBar extends Component{
             if(scopes.description){
                 currentScopes.push('description')
             }
+            if(scopes.open){
+                currentScopes.push('open')
+            }
 
             this.setState({
                 scopes: currentScopes
@@ -50,6 +53,7 @@ class SearchBar extends Component{
 
     componentDidMount(){
         this.props.searchTopics(this.props.topics, this.state.term, this.state.scopes);
+        this.props.changeSearchScope(this.state.scopes);
     }
 
     onInputChange(event){
@@ -93,6 +97,7 @@ class SearchBar extends Component{
         this.props.setSearchTerm(this.state.term);
         //console.log(this.state.scopes)
         this.props.searchTopics(this.props.topics, this.state.term, this.state.scopes);
+
     }
 
 
@@ -143,6 +148,14 @@ class SearchBar extends Component{
                             /> In descriptions
                         </label>
                 </div>
+                    <span> Limit the search results: </span>
+                            <label className="checkbox-inline">
+                                <input type="checkbox" value="open" defaultChecked={this.state.scopes.indexOf("open") == -1 ? false: true}
+                                    onChange={this.onSearchScopeChange}
+                                /> In open topics
+                            </label>
+                <div>
+                </div>
             </div>
         )
     }
@@ -157,7 +170,7 @@ function mapStatetoProps(state){
      }
 }
 function mapDispatchToProps(dispatch){
-    return bindActionCreators({fetchTopics, searchTopics, setSearchTerm, changeSearchScope}, dispatch);
+    return bindActionCreators({searchTopics, setSearchTerm, changeSearchScope}, dispatch);
 }
 
 export default connect(mapStatetoProps, mapDispatchToProps)(SearchBar);

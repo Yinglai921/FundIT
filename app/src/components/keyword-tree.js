@@ -45,6 +45,10 @@ class KeywordTree extends Component {
 
     let lastOccuranceIndex = keyword.lastIndexOf("(") - 1;
     keyword = keyword.substring(0, lastOccuranceIndex);
+    if(keyword.length > 50){
+      keyword = keyword.substring(0, 50);
+    }
+    keyword = `"${keyword}"`;
     this.props.changeFilterTerm(keyword); // just another name, change the searched term
     this.setState({keyword: keyword});
     this.jumpToIndex();
@@ -52,13 +56,13 @@ class KeywordTree extends Component {
 
   selectKeywords(keywordsList){
     
-    // let newKeywordsList = [];
+    let newKeywordsList = [];
 
-    // keywordsList.forEach((keyword) => {
-    //    let lastOccuranceIndex = keyword.lastIndexOf("(") - 1;
-    //    let word = keyword.substring(0, lastOccuranceIndex);
-    //    newKeywordsList.push(word);
-    // })
+    keywordsList.forEach((keyword) => {
+       let lastOccuranceIndex = keyword.lastIndexOf("(") - 1;
+       let word = keyword.substring(0, lastOccuranceIndex);
+       newKeywordsList.push(word);
+    })
 
     console.log("keywordsList: ", keywordsList)
     this.props.selectKeywords(keywordsList);

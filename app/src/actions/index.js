@@ -1,5 +1,5 @@
 import axios from 'axios';
-import topics from '../data/topics.json';
+// import topics from '../data/topics.json';
 
 export const FETCH_TOPICS = 'fetch_topics';
 export const CHANGE_FILTER_STATE = 'change_filter_state'; 
@@ -15,6 +15,11 @@ export const SET_COLOR_TOGGLE = 'set_color_toggle';
 export const SET_ADVANCED_SEARCH_QUERIES = 'set_advanced_search_queries';
 export const ADVANCED_SEARCH_TOPICS = 'advanced_search_topics';
 export const FETCH_KEYWORDTREE = 'fetch_keyword_tree';
+
+
+
+
+
 // fetch all the topics from the start
 const TOPICS_URL = 'http://localhost:3001/api/search';
 const ADVANCED_SEARCH_URL = 'http://localhost:3001/api/advancedsearch';
@@ -28,27 +33,27 @@ function dateFormatCovert(time){
     let newTime = `${year}-${month}-${date}`;
     return newTime;
 }
-export function fetchTopics(){
-    //const request = axios.get(TOPICS_URL)
-    // cover date to a new format
-    let currentTopics = topics;
-    currentTopics.forEach((topic) => {
-        if(topic.plannedOpeningDate !== null){
-            topic.plannedOpeningDate = dateFormatCovert(topic.plannedOpeningDate);
-        }
-        if(topic.deadlineDates.length !== 0){
-            for(let i = 0; i < topic.deadlineDates.length; i++){
-                topic.deadlineDates[i] = dateFormatCovert(topic.deadlineDates[i])
-            }
-        }     
-    })
+// export function fetchTopics(){
+//     //const request = axios.get(TOPICS_URL)
+//     // cover date to a new format
+//     let currentTopics = topics;
+//     currentTopics.forEach((topic) => {
+//         if(topic.plannedOpeningDate !== null){
+//             topic.plannedOpeningDate = dateFormatCovert(topic.plannedOpeningDate);
+//         }
+//         if(topic.deadlineDates.length !== 0){
+//             for(let i = 0; i < topic.deadlineDates.length; i++){
+//                 topic.deadlineDates[i] = dateFormatCovert(topic.deadlineDates[i])
+//             }
+//         }     
+//     })
 
-    return{
-        type: FETCH_TOPICS,
-        //payload: request
-        payload: currentTopics
-    }
-}
+//     return{
+//         type: FETCH_TOPICS,
+//         //payload: request
+//         payload: currentTopics
+//     }
+// }
 
 export function fetchKeywordTree(){
     let request = axios.get(KEYWORDTREE_URL);
@@ -77,6 +82,7 @@ export function searchTopics(topics, term, scopes){
     let inKeywords = true;
     let inTags = true;
     let inDescription = true;
+    let inOpen = true;
 
     if (scopes.indexOf("title") == -1 ){
         inTitle = false;
@@ -94,7 +100,11 @@ export function searchTopics(topics, term, scopes){
         inDescription = false;
     } else{ inDescription = true; }
 
-    let request = axios.get(`${TOPICS_URL}?q=${term}&intitle=${inTitle}&inkeywords=${inKeywords}&intags=${inTags}&indescription=${inDescription}`)
+    if (scopes.indexOf("open") == -1 ){
+        inOpen = false;
+    } else{ inOpen = true; }
+
+    let request = axios.get(`${TOPICS_URL}?q=${term}&intitle=${inTitle}&inkeywords=${inKeywords}&intags=${inTags}&indescription=${inDescription}&inopen=${inOpen}`)
 
     console.log("topics length: " + topics.length)
     console.log("current scope: " + scopes)
@@ -125,7 +135,8 @@ export function changeSearchScope(list){
         "title": false,
         "keywords": false,
         "tags": false,
-        "desc": false
+        "description": false,
+        "open": false
     }
     list.forEach((name) => {           
         scopes[name] = true;
