@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 
 import SearchBar from './search-bar';
 import TopicsList from './topics-list';
+import Help from './help';
 
 
 import Navigation from '../components/navigation';
@@ -33,7 +34,7 @@ class Index extends Component {
           </div>
           <div className="row">
             <div className="col-sm-12">
-              {this.props.searchedTopics.length == 0 ? "No results found." : <TopicsList />}
+              {this.props.searchedTopics.length == 0 ? <Help /> : <TopicsList />}
             </div>
           </div>
         </div>
