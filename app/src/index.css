@@ -193,5 +193,9 @@ hr {
 }
 
 .border-right {
-  border-right: 1px solid gray;
+  border-right: 1px solid #999;
+}
+
+.top-margin{
+  margin-top: 5%;
 }

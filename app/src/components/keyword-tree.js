@@ -48,7 +48,7 @@ class KeywordTree extends Component {
     if(keyword.length > 50){
       keyword = keyword.substring(0, 50);
     }
-    keyword = `"${keyword}"`;
+    keyword = `${keyword.toLowerCase()}`;
     this.props.changeFilterTerm(keyword); // just another name, change the searched term
     this.setState({keyword: keyword});
     this.jumpToIndex();

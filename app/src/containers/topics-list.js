@@ -304,7 +304,8 @@ class TopicsList extends Component {
 
             let results = [];
             searchedTopics.forEach((topic) =>{
-                results.push(topic._source);
+                // results.push(topic._source);
+                results.push(topic);
             })
     
             // some custom settings for react-bootstrap-table
