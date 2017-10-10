@@ -17,6 +17,7 @@ class SearchBar extends Component{
         this.onInputChange = this.onInputChange.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);
         this.onSearchScopeChange = this.onSearchScopeChange.bind(this);
+
     }
 
     // get all the topics after the render
@@ -111,7 +112,7 @@ class SearchBar extends Component{
                         <label className="col-sm-2 col-form-label">Search topics: </label>
                         <div className="col-sm-8">
                             <input 
-                            placeholder='Search a phrase with quotes, for example: "Transport information systems"'
+                            placeholder='Search...'
                             value={this.state.term}
                             className="form-control"
                             onChange={this.onInputChange}

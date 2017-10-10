@@ -248,7 +248,7 @@ class D3KeywordTree extends Component{
 					  .duration(200)
 					  .style("opacity", .9);
 					tooltip.html(d.data.description + "<br/> Number of topics:" + d.data.value + "<br/> Number of open topics:" + d.data.open_value)
-					  .style("left", (d3.event.pageX) + "px")
+					  .style("left", (d3.event.pageX + 38) + "px")
 					  .style("top", (d3.event.pageY - 28) + "px");
 					})
 				  .on("mouseout", function(d) {

@@ -9,7 +9,6 @@ import AdvancedSearchForm from './advanced-search-form';
 
 import { setNavigationToggle, setAdvancedSearchQueries, advancedSearchTopics } from '../actions/index';
 
-import help1 from '../styles/img/help1.gif'
 
 class AdvancedSearch extends Component {
 

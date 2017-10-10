@@ -11,7 +11,7 @@ export default class Navigation extends Component {
       //const currentLocation = this.props.location.pathname
       //const navLinkClassName = `nav-item nav-link ${touched && error ? 'has-danger' : ''}`;
     return (
-        <nav className="navbar navbar-inverse">
+        <nav className="navbar navbar-inverse ">
             <div className="container-fluid">
                 <div className="navbar-header">
                     <a className="navbar-brand" href="#">FundIT</a>
@@ -24,10 +24,10 @@ export default class Navigation extends Component {
                             <Link  to="/" > Search Topics </Link>
                         </li>
                         <li className={ this.props.active == "keyword" ? "active" : "" }>
-                            <Link  to="/keywords" > Keyword tree </Link>
+                            <Link  to="/keywords" > Keyword Tree Graph</Link>
                         </li>
-                        <li className={ this.props.active == "advanced-search" ? "active" : "" }>
-                            <Link  to="/advanced-search" > Advanced Search </Link>
+                        <li className={ this.props.active == "user-guide" ? "active" : "" }>
+                            <Link  to="/user-guide" > User Guide </Link>
                         </li>
                     </ul>
                 </div>

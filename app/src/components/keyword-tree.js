@@ -9,6 +9,7 @@ import D3KeywordThree from './d3-keyword-tree';
 import D3KeywordColorLegend from './d3-keyword-color-legend';
 
 import Navigation from './navigation';
+import Footer from './footer';
 import { changeFilterTerm, setNavigationToggle, selectKeywords, setColorToggle, fetchKeywordTree } from '../actions';
 
 import ToggleColorButton from '../components/buttons/toggle-color-button';
@@ -101,42 +102,43 @@ class KeywordTree extends Component {
             <div className="row">
               <Navigation active={"keyword"}/>
             </div>
-              <div className="row">
-                <div className="col-sm-12">
-                  <Alert color="info" isOpen={this.state.alertVisible} toggle={this.onDismiss}>
-                      Double click the graph to recenter it!
-                  </Alert>
-                </div>
+            <div className="row">
+              <div className="col-sm-12">
+                <Alert color="info" isOpen={this.state.alertVisible} toggle={this.onDismiss}>
+                    Double click the graph to recenter it!
+                </Alert>
               </div>
-              <div className="row">
-                <div className="col-sm-12">                  
-                  <h3>Keyword tree</h3>
-                  <KeywordTreeSearch 
-                    onChangeKeyword={this.changeKeyword} 
-                    onSelectKeywords={this.selectKeywords}
-                    keywords={this.state.keywords}
-                  />
-                </div>
+            </div>
+            <div className="row">
+              <div className="col-sm-12" style={{zIndex: "1050"}}>                  
+                <h3>Keyword tree</h3>
+                <KeywordTreeSearch 
+                  onChangeKeyword={this.changeKeyword} 
+                  onSelectKeywords={this.selectKeywords}
+                  keywords={this.state.keywords}
+                />
               </div>
-              <div className="row">
-                <div className="col-sm-12">
+            </div>
+            <div className="row">
+              <div className="col-sm-12">
 
-                  <div className="btn-group" role="group" style={{float: "right", top: "10px"}}>
-                      <button type="button" className={this.state.colorCheck ? "btn btn-default" : "btn btn-primary active"} onClick={this.onColorCheck}>Default Graph</button>
-                      <button type="button" className={this.state.colorCheck ? "btn btn-primary active" : "btn btn-default"} onClick={this.onColorCheck}>Colored Graph</button>
-                  </div>
+                <div className="btn-group" role="group" style={{float: "right", top: "10px"}}>
+                    <button type="button" className={this.state.colorCheck ? "btn btn-default" : "btn btn-primary active"} onClick={this.onColorCheck}>Default Graph</button>
+                    <button type="button" className={this.state.colorCheck ? "btn btn-primary active" : "btn btn-default"} onClick={this.onColorCheck}>Colored Graph</button>
+                </div>
 
-                  <div style={{marginTop: "30px", marginLeft: "20px"}} className={this.state.colorCheck? " " : "hidden"}>
-                    <p> Number of topics that includes this keyword: </p>
-                    <D3KeywordColorLegend />
-                  </div>
-                  
-                  <div id="keyword-tree-graph">
-                    <D3KeywordThree onChangeKeyword={this.changeKeyword} data={this.props.keywordTree} keywords={this.state.keywords} onSelectKeywords={this.addOneKeyword} colorToggle={this.state.colorCheck}/>
-                  </div>
+                <div style={{marginTop: "30px", marginLeft: "20px"}} className={this.state.colorCheck? " " : "hidden"}>
+                  <p> Number of topics that includes this keyword: </p>
+                  <D3KeywordColorLegend />
+                </div>
+                
+                <div id="keyword-tree-graph">
+                  <D3KeywordThree onChangeKeyword={this.changeKeyword} data={this.props.keywordTree} keywords={this.state.keywords} onSelectKeywords={this.addOneKeyword} colorToggle={this.state.colorCheck}/>
                 </div>
               </div>
-          </div>
+            </div>
+            <Footer />
+        </div>
       );
     }
 
