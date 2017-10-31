@@ -10,6 +10,8 @@ import SelectedKeywords from './reducer_selectedKeywords';
 import ColorToggle from './reducer_colorToggle';
 import AdvancedSearchQueries from './reducer-advanced-search-query';
 import KeywordTree from './reducer_keywordTree';
+import AuthReducer from './reducer_auth';
+
 // import redux-form reducer 
 import { reducer as formReducers } from 'redux-form';
 
@@ -26,6 +28,7 @@ const rootReducer = combineReducers({
   colorToggle: ColorToggle,
   advancedSearchQueries: AdvancedSearchQueries,
   keywordTree: KeywordTree,
+  auth: AuthReducer,
   
   form: formReducers // this is for redux-form
 });

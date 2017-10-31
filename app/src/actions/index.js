@@ -15,15 +15,17 @@ export const SET_COLOR_TOGGLE = 'set_color_toggle';
 export const SET_ADVANCED_SEARCH_QUERIES = 'set_advanced_search_queries';
 export const ADVANCED_SEARCH_TOPICS = 'advanced_search_topics';
 export const FETCH_KEYWORDTREE = 'fetch_keyword_tree';
-
+export const AUTH_USER = 'auth_user';
+export const DEAUTH_USER = 'deauth_user';
+export const AUTH_ERROR = 'auth_error';
 
 
 
 
 // fetch all the topics from the start
-const TOPICS_URL = 'http://localhost:3001/api/search';
-const ADVANCED_SEARCH_URL = 'http://localhost:3001/api/advancedsearch';
-const KEYWORDTREE_URL = 'http://localhost:3001/api/keywordtree';
+const TOPICS_URL = 'https://fundit.proj.kth.se/api/search';
+const ADVANCED_SEARCH_URL = 'https://fundit.proj.kth.se/api/advancedsearch';
+const KEYWORDTREE_URL = 'https://fundit.proj.kth.se/api/keywordtree';
 
 function dateFormatCovert(time){
     let currTime = new Date(time);
@@ -141,7 +143,7 @@ export function changeSearchScope(list){
     list.forEach((name) => {           
         scopes[name] = true;
     })
-
+    
     return{
         type: CHANGE_SEARCH_SCOPE,
         payload: scopes
@@ -153,7 +155,10 @@ export function changeColumnSettings(list){
         "callTitle": false,
         "keywords": false,
         "tags": false,
-        "mainSpecificProgrammeLevelDesc": false
+        "mainSpecificProgrammeLevelDesc": false,
+        "callTitle": false,
+        "actions": false,
+        "budget": false
     }
     list.forEach((name) => {
         settings[name] = true;
@@ -207,4 +212,46 @@ export function setAdvancedSearchQueries(queries){
         type: SET_ADVANCED_SEARCH_QUERIES,
         payload: queries
     }
+}
+
+
+// ********** all about authentication ***************//
+
+
+const AuthURL_ROOT = 'http://localhost:3090';
+
+export function signinUser({ email, password }, history){
+
+    return function(dispatch){
+        // Submit email and psw to the server
+        // {email: email, password: password} = {email, password}
+        axios.post(`${AuthURL_ROOT}/signin`, { email, password })
+            .then(response => {
+                // if request is good...
+                // -- Update state to indicate user is authenticated
+                dispatch({ type: AUTH_USER });
+                // -- Save the JWT token
+                localStorage.setItem('token', response.data.token);
+                // -- redirect to the route '/mypage'
+                history.push('/mypage');
+            })
+            .catch(() => {
+                // if request is bad...
+                // - Show an error to the user
+                dispatch(authError('Bad Login Info'));
+            });
+    }
+
+}
+
+export function authError(error){
+    return{
+        type: AUTH_ERROR,
+        payload: error
+    }
+}
+
+export function signoutUser(){
+    localStorage.removeItem('token');
+    return{ type: DEAUTH_USER };
 }

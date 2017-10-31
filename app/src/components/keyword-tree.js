@@ -116,6 +116,7 @@ class KeywordTree extends Component {
                   onChangeKeyword={this.changeKeyword} 
                   onSelectKeywords={this.selectKeywords}
                   keywords={this.state.keywords}
+                  data={this.props.keywordTree}
                 />
               </div>
             </div>

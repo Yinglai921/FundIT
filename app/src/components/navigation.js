@@ -1,17 +1,41 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../styles/img/kth.png';
+import { connect } from 'react-redux';
 
-export default class Navigation extends Component {
+class Navigation extends Component {
 
   constructor(props){
       super(props);
   }
+
+  renderLinks(){
+    if(this.props.authenticated){
+        // show a link to sign out
+        return(
+            <p className="navbar-text navbar-right">
+                 <Link to="/signout" className="navbar-link">Sign out</Link>
+            </p>
+        )
+    } else {
+        // show sign in or sign up
+        return [
+            <p className="navbar-text navbar-right" key={1}>
+                <Link to="/signup" className="navbar-link">Sign up</Link>
+            </p>,
+            <p className="navbar-text navbar-right" key={2}>
+                <Link to="/signin" className="navbar-link">Sign in</Link>
+            </p>
+        ];
+    }
+  }
+
+
   render() {
       //const currentLocation = this.props.location.pathname
       //const navLinkClassName = `nav-item nav-link ${touched && error ? 'has-danger' : ''}`;
     return (
-        <nav className="navbar navbar-inverse ">
+        <nav className="navbar navbar-inverse navbar-fixed-top">
             <div className="container-fluid">
                 <div className="navbar-header">
                     <a className="navbar-brand" href="#">FundIT</a>
@@ -30,28 +54,20 @@ export default class Navigation extends Component {
                             <Link  to="/user-guide" > User Guide </Link>
                         </li>
                     </ul>
+                    {this.renderLinks()}
                 </div>
+               
             </div>
         </nav>
-
-
-       // <div id="sidebar-wrapper">
-        //     <ul className="sidebar-nav">
-        //         <li className="sidebar-brand">
-        //              <img src={logo} alt="Logo" />
-        //              <Link className="navbar-brand" to="/"> FundIT </Link>
-        //         </li>
-        //         <li>
-        //             <Link className={ this.props.active == "index" ? "nav-item nav-link active" : "nav-item nav-link" } to="/" > Search Topics </Link>
-        //         </li>
-        //         <li>
-        //             <Link className={ this.props.active == "keyword" ? "nav-item nav-link active" : "nav-item nav-link" } to="/keywords" > Keyword tree </Link>
-        //         </li>
-        //         <li>
-        //            <Link className={ this.props.active == "advanced-search" ? "nav-item nav-link active" : "nav-item nav-link" } to="/advanced-search" > Advanced Search </Link>
-        //         </li>
-        //     </ul>
-        // </div> 
     );
   }
 }
+
+
+function mapStateToProps(state){
+    return{
+        authenticated: state.auth.authenticated
+    }
+}
+
+export default connect(mapStateToProps)(Navigation);

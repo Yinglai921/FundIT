@@ -56,63 +56,6 @@ class BSTable extends React.Component {
     }
 }
 
-class CheckboxFilter extends React.Component {
-    constructor(props) {
-      super(props);
-      this.filter = this.filter.bind(this);
-      this.isFiltered = this.isFiltered.bind(this);
-    }
-  
-    filter(event) {
-      if (this.refs.nokCheckbox.checked && this.refs.okCheckbox.checked) {
-        // all checkboxes are checked means we want to remove the filter for this column
-        this.props.filterHandler();
-      } else {
-        this.props.filterHandler({ callback: this.isFiltered });
-      }
-    }
-  
-    isFiltered(targetValue) {
-      if (targetValue === 'Closed') {
-        return (this.refs.nokCheckbox.checked);
-      } else {
-        return (this.refs.okCheckbox.checked);
-      }
-    }
-
-    cleanFiltered() {
-        this.refs.okCheckbox.checked = true;
-        this.refs.nokCheckbox.checked = true;
-        this.props.filterHandler();
-      }
-  
-    render() {
-      return (
-        <div>
-          <input ref='okCheckbox' type='checkbox' className='filter' onChange={ this.filter } defaultChecked={ true } /><label>{ this.props.textOK }</label>
-          <input ref='nokCheckbox' type='checkbox' className='filter' onChange={ this.filter } defaultChecked={ true } style={ { marginLeft: 30 + 'px' } } /><label>{ this.props.textNOK }</label>
-        </div>
-      );
-    }
-}
-  
-CheckboxFilter.propTypes = {
-filterHandler: React.PropTypes.func.isRequired,
-textOK: React.PropTypes.string,
-textNOK: React.PropTypes.string
-};
-
-CheckboxFilter.defaultProps = {
-textOK: 'Open',
-textNOK: 'Closed'
-};
-
-function getCustomFilter(filterHandler, customFilterParameters) {
-return (
-    <CheckboxFilter filterHandler={ filterHandler } textOK={ customFilterParameters.textOK } textNOK={ customFilterParameters.textNOK } />
-);
-}
-
 
 
 class TopicsList extends Component {
@@ -121,13 +64,15 @@ class TopicsList extends Component {
         
         this.state = {
             cols:[],
-            filterNumber: this.props.searchedTopics.length,
+            filterNumber: this.props.searchedTopics.length
+
         };
 
         this.onColumnHeaderChange = this.onColumnHeaderChange.bind(this);
         this.afterColumnFilter = this.afterColumnFilter.bind(this);
 
     }
+
 
 
     // set the columns according to the columnSettings if has one
@@ -143,7 +88,19 @@ class TopicsList extends Component {
                 cols.push('tags')
             if (columnSettings.mainSpecificProgrammeLevelDesc)
                 cols.push('mainSpecificProgrammeLevelDesc')
+            if (columnSettings.callTitle)
+                cols.push('callTitle')
+            if (columnSettings.actions)
+                cols.push('actions')
+            if (columnSettings.budget)
+                cols.push('budget')
         }
+        
+        if (columnSettings.plannedOpeningDate == undefined){
+            cols.push('actions');
+            cols.push('callTitle');
+        }
+
         this.setState({cols:cols})
         this.props.setFilterNumber(searchedTopics.length)
         
@@ -165,7 +122,7 @@ class TopicsList extends Component {
             }
         }
 
-        const columnOrder = ['mainSpecificProgrammeLevelDesc','plannedOpeningDate', 'keywords', 'tags'];
+        const columnOrder = ['mainSpecificProgrammeLevelDesc','actions', 'callTitle', 'plannedOpeningDate', 'budget', 'keywords', 'tags'];
         currentCols.sort(function(a, b){
             return columnOrder.indexOf(a) - columnOrder.indexOf(b);
         });
@@ -265,6 +222,38 @@ class TopicsList extends Component {
                     Pillar
                     </TableHeaderColumn> 
                 );
+            case 'callTitle':
+                return(
+                    <TableHeaderColumn 
+                        dataField='callTitle'
+                        tdStyle={ { whiteSpace: 'normal' } } 
+                        filter={ { type: 'TextFilter', delay: 1000 } } 
+                        expandable={ false }
+                        >
+                        Call Title
+                    </TableHeaderColumn> 
+                );
+            case 'actions':
+                return(
+                    <TableHeaderColumn 
+                        dataField='actions'
+                        tdStyle={ { whiteSpace: 'normal' } } 
+                        expandable={ false }
+                        dataFormat={ this.actionsFormatter }
+                        width='200'
+                        >
+                        Types of Actions
+                    </TableHeaderColumn> 
+                );
+            case 'budget':
+                return(
+                    <TableHeaderColumn 
+                        dataField='budget'
+                        expandable={ false }
+                        >
+                        Topic Budget History
+                    </TableHeaderColumn> 
+                );
         }
 
     }
@@ -294,6 +283,7 @@ class TopicsList extends Component {
         const { searchedTopics } = this.props;
         const { cols, filterNumber } = this.state;
         
+
         if ( searchedTopics == null){
             return(
                 <div>
@@ -323,43 +313,44 @@ class TopicsList extends Component {
                         <TopicsNumber />
                         <div id="settingBtn">
                             <span>Table columns: </span>
-                            {/* <label className="checkbox-inline">
-                                <input type="checkbox" value="callTitle" defaultChecked={this.props.columnSettings.callTitle}
-                                    onChange={this.onColumnHeaderChange}
-                                /> Call Title
-                            </label> */}
                             <label className="checkbox-inline">
-                                <input type="checkbox" value="mainSpecificProgrammeLevelDesc" defaultChecked={this.props.columnSettings.mainSpecificProgrammeLevelDesc}
+                                <input type="checkbox" value="mainSpecificProgrammeLevelDesc" 
                                     onChange={this.onColumnHeaderChange}
                                 /> Pillar
                             </label>
 
-                            {/* <label className="checkbox-inline">
-                                <input type="checkbox" value="actions" defaultChecked={this.props.columnSettings.actions}
+                            <label className="checkbox-inline">
+                                <input type="checkbox" value="actions" defaultChecked={this.state.cols.indexOf('actions')}
                                     onChange={this.onColumnHeaderChange}
                                 /> Types of actions
-                            </label> */}
+                            </label>
+
+                            <label className="checkbox-inline">
+                                <input type="checkbox" value="callTitle" defaultChecked={this.state.cols.indexOf('callTitle')}
+                                    onChange={this.onColumnHeaderChange}
+                                /> Call Title
+                            </label>
     
                             <label className="checkbox-inline">
-                                <input type="checkbox" value="plannedOpeningDate" defaultChecked={this.props.columnSettings.plannedOpeningDate}
+                                <input type="checkbox" value="plannedOpeningDate" 
                                     onChange={this.onColumnHeaderChange}
                                 /> Planned Opening Date
                             </label>
     
-                            {/* <label className="checkbox-inline">
-                                <input type="checkbox" value="deadlineDates" defaultChecked={this.props.columnSettings.deadlineDates}
+                            <label className="checkbox-inline">
+                                <input type="checkbox" value="budget"
                                     onChange={this.onColumnHeaderChange}
-                                /> Deadline Dates
-                            </label> */}
+                                /> Budget
+                            </label>
     
                             <label className="checkbox-inline">
-                                <input type="checkbox" value="keywords" defaultChecked={this.props.columnSettings.keywords}
+                                <input type="checkbox" value="keywords" 
                                     onChange={this.onColumnHeaderChange}
                                 /> Keywords
                             </label>
     
                             <label className="checkbox-inline">
-                                <input type="checkbox" value="tags" defaultChecked={this.props.columnSettings.tags}
+                                <input type="checkbox" value="tags" 
                                     onChange={this.onColumnHeaderChange}
                                 /> Tags
                             </label>
@@ -397,31 +388,16 @@ class TopicsList extends Component {
                                 Call Status
                             </TableHeaderColumn>
                             <TableHeaderColumn 
-                                dataField='callTitle'
-                                tdStyle={ { whiteSpace: 'normal' } } 
-                                filter={ { type: 'TextFilter', delay: 1000 } } 
-                                expandable={ false }
-                                >
-                                Call Title
-                            </TableHeaderColumn> 
-                            <TableHeaderColumn 
-                                dataField='actions'
-                                tdStyle={ { whiteSpace: 'normal' } } 
-                                expandable={ false }
-                                dataFormat={ this.actionsFormatter }
-                                width='200'
-                                >
-                                Types of actions
-                            </TableHeaderColumn> 
-                            <TableHeaderColumn 
                                 dataField='deadlineDates'
                                 dataSort 
                                 sortFunc={ this.revertSortDeadlineDate }
+                                tdStyle={ { whiteSpace: 'normal' } }
                                 expandable={ false }
                                 >
                                 Deadline Dates
                             </TableHeaderColumn>
-    
+                            
+
                             {cols.map((col) => {
                                 return this.renderColumn(col)
                             })}
