@@ -23,9 +23,13 @@ export const AUTH_ERROR = 'auth_error';
 
 
 // fetch all the topics from the start
-const TOPICS_URL = 'https://fundit.proj.kth.se/api/search';
-const ADVANCED_SEARCH_URL = 'https://fundit.proj.kth.se/api/advancedsearch';
-const KEYWORDTREE_URL = 'https://fundit.proj.kth.se/api/keywordtree';
+// const TOPICS_URL = 'https://fundit.proj.kth.se/api/search';
+// const ADVANCED_SEARCH_URL = 'https://fundit.proj.kth.se/api/advancedsearch';
+// const KEYWORDTREE_URL = 'https://fundit.proj.kth.se/api/keywordtree';
+
+const TOPICS_URL = 'http://localhost:3001/api/search';
+const ADVANCED_SEARCH_URL = 'http://localhost:3001/api/advancedsearch';
+const KEYWORDTREE_URL = 'http://localhost:3001/api/keywordtree';
 
 function dateFormatCovert(time){
     let currTime = new Date(time);
@@ -78,43 +82,46 @@ opics: the whole topic list;
 term: the search input word, string;
 scopes: the searched scope ["title", "keywords", "tags", "description"]
 */
-export function searchTopics(topics, term, scopes){
+export function searchTopics(term, scopes, history){
 
-    let inTitle = true;
-    let inKeywords = true;
-    let inTags = true;
-    let inDescription = true;
-    let inOpen = true;
+    return function(dispatch){
 
-    if (scopes.indexOf("title") == -1 ){
-        inTitle = false;
-    } else{ inTitle = true; }
+        let inTitle = true;
+        let inKeywords = true;
+        let inTags = true;
+        let inDescription = true;
+        let inOpen = true;
+    
+        if (scopes.indexOf("title") == -1 ){
+            inTitle = false;
+        } else{ inTitle = true; }
+    
+        if (scopes.indexOf("keywords") == -1 ){
+            inKeywords = false;
+        } else{ inKeywords = true; }
+    
+        if (scopes.indexOf("tags") == -1 ){
+            inTags = false;
+        } else{ inTags = true; }
+    
+        if (scopes.indexOf("description") == -1 ){
+            inDescription = false;
+        } else{ inDescription = true; }
+    
+        if (scopes.indexOf("open") == -1 ){
+            inOpen = false;
+        } else{ inOpen = true; }
 
-    if (scopes.indexOf("keywords") == -1 ){
-        inKeywords = false;
-    } else{ inKeywords = true; }
-
-    if (scopes.indexOf("tags") == -1 ){
-        inTags = false;
-    } else{ inTags = true; }
-
-    if (scopes.indexOf("description") == -1 ){
-        inDescription = false;
-    } else{ inDescription = true; }
-
-    if (scopes.indexOf("open") == -1 ){
-        inOpen = false;
-    } else{ inOpen = true; }
-
-    let request = axios.get(`${TOPICS_URL}?q=${term}&intitle=${inTitle}&inkeywords=${inKeywords}&intags=${inTags}&indescription=${inDescription}&inopen=${inOpen}`)
-
-    console.log("topics length: " + topics.length)
-    console.log("current scope: " + scopes)
-    console.log("searched term: " + term)
-
-    return{
-        type: SEARCH_TOPICS,
-        payload: request
+        axios.get(`${TOPICS_URL}?q=${term}&intitle=${inTitle}&inkeywords=${inKeywords}&intags=${inTags}&indescription=${inDescription}&inopen=${inOpen}`)
+            .then(response => {
+                dispatch({ type: SEARCH_TOPICS, payload: response });
+                history.push(`/search?term=${term}&title=${inTitle}&keywords=${inKeywords}&tags=${inTags}&desc=${inDescription}&open=${inOpen}`);
+            })
+            .catch(() => {
+                // if request is bad...
+                // - Show an error to the user
+                dispatch(authError('Bad Login Info'));
+            });
     }
 }
 

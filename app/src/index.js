@@ -19,8 +19,9 @@ import KeywordTree from './components/keyword-tree'
 import UserGuide from './containers/user-guide'
 import Signin from './containers/auth/signin'
 import Signout from './containers/auth/signout'
+import Signup from './containers/auth/signup'
 
-const createStoreWithMiddleware = applyMiddleware(promise, reduxThunk, logger)(createStore);
+const createStoreWithMiddleware = applyMiddleware(promise, reduxThunk)(createStore);
 
 ReactDOM.render(
     <Provider store={createStoreWithMiddleware(reducers)}>
@@ -31,6 +32,8 @@ ReactDOM.render(
                     <Route path="/user-guide" component={UserGuide} />
                     <Route path="/signin" component={Signin} />
                     <Route path="/signout" component={Signout} />
+                    <Route path="/signup" component={Signup} />
+                    <Route path="/:search" component={Index} />
                     <Route path="/" component={Index} />
                 </Switch>
             </div>

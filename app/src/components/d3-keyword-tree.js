@@ -80,7 +80,7 @@ class D3KeywordTree extends Component{
         // Set the dimensions and margins of the diagram
 		var margin = {top: this.state.graphHeight * 0.05, right: this.state.graphWidth * 0.1, bottom: this.state.graphHeight * 0.05, left: this.state.graphWidth * 0.1},
 			width = this.state.graphWidth - margin.left - margin.right,
-			height = this.state.graphHeight - margin.top - margin.bottom;
+			height = this.state.graphHeight - margin.top - margin.bottom + 150;
 
 		var zoom = d3.zoom()
 		.scaleExtent([0.7, 2])

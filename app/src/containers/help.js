@@ -5,8 +5,11 @@ export default class Help extends Component{
     render(){
         return(
             <div className="container-fluid">
+                <div className="row top-margin">
+                    <h3> Search guideline</h3>  
+                </div>
                 
-                <div className="row top-margin">                   
+                {/* <div className="row top-margin">                   
                     <div className="col-sm-6 border-right">
                         <h4> Simple search </h4>
                         <p>
@@ -16,7 +19,7 @@ export default class Help extends Component{
                         </p>
                         <form>
                             <div className="form-group">
-                                <input type="text" className="form-control" value="information" />
+                                <input type="text" className="form-control" value="e.g. information" disabled/>
                             </div>
                         </form>
                         <p>
@@ -32,25 +35,25 @@ export default class Help extends Component{
                         </p>
                         <form>
                             <div className="form-group">
-                                <input type="text" className="form-control" value="ICT smart cities" />
+                                <input type="text" className="form-control" value="e.g. ICT smart cities" disabled/>
                             </div>
                         </form>
                         <p>
                             <span className="label label-danger">Warning</span> Please do not use AND to connect the words, it will not be recognised.
                         </p>
                     </div>
-                </div>
+                </div> */}
 
-                <div className="row top-margin">                   
+                <div className="row">                   
                     <div className="col-sm-6 border-right">
-                        <h4> Boolean search (OR) </h4>
+                        <h4> Search any of these words </h4>
                         <p>
-                            You could use OR to connect words. <br />
-                            <span className="label label-info">Search</span> Find topics that contain "information technology" or "security" in titles.
+                            {/* You could use OR to connect words. <br /> */}
+                            <span className="label label-info">Search</span> Find topics that contain "information technology" or "security" or "data".
                         </p>
                         <form>
                             <div className="form-group">
-                                <input type="text" className="form-control" value="information technology OR security" />
+                                <input type="text" className="form-control" value="e.g. information technology OR security OR data" disabled/>
                             </div>
                         </form>
                         <p>
@@ -58,15 +61,15 @@ export default class Help extends Component{
                         </p>
                     </div>
                     <div className="col-sm-6">
-                        <h4> Boolean search (NOT)</h4>
+                        <h4> Search without these unwanted words </h4>
                         <p>
-                            You could use NOT to exclude the words. <br />
-                            <span className="label label-info">Search</span> Find topic titles that contain "information" or "security", but not
-                            "chemistry".
+                            {/* You could use NOT to exclude the words. <br /> */}
+                            <span className="label label-info">Search</span> Find topic titles that contain "information", but excludes
+                            "space", "business" and "commercial".
                         </p>
                         <form>
                             <div className="form-group">
-                                <input type="text" className="form-control" value='information OR security NOT chemistry' />
+                                <input type="text" className="form-control" value='e.g. information NOT space business commercial' disabled/>
                             </div>
                         </form>
                         <p> 

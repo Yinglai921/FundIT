@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { searchTopics, setSearchTerm, changeSearchScope } from '../actions/index';
-
+import { Link } from 'react-router-dom';
+import queryString from 'query-string';
 
 class SearchBar extends Component{
     constructor(props){
@@ -23,37 +24,72 @@ class SearchBar extends Component{
     // get all the topics after the render
     componentWillMount(){
        // this.props.fetchTopics();
-        const { scopes } = this.props;
-        let currentScopes = [];
-        // if the global scopes has already set, initial the current local state with global scopes state
-       
-        if(scopes.title !== undefined){
-            console.log("initial scope state")
-            if(scopes.title){
+
+       if (this.props.queries !== ""){
+            const parsedQueries = queryString.parse(this.props.queries);
+            console.log(parsedQueries)
+            this.setState({
+                term: parsedQueries.term
+            })
+
+            let currentScopes = [];
+        
+            if(parsedQueries.title == 'true'){
                 currentScopes.push('title')
             }
-            if(scopes.keywords){
+            if(parsedQueries.keywords == 'true'){
                 currentScopes.push('keywords')
             }
-            if(scopes.tags){
+            if(parsedQueries.tags == 'true'){
                 currentScopes.push('tags')
             }
-            if(scopes.description){
+            if(parsedQueries.desc == 'true'){
                 currentScopes.push('description')
             }
-            if(scopes.open){
+            if(parsedQueries.open == 'true'){
                 currentScopes.push('open')
             }
 
             this.setState({
                 scopes: currentScopes
             })
-        }
+
+       } else{
+            const { scopes } = this.props;
+            let currentScopes = [];
+            // if the global scopes has already set, initial the current local state with global scopes state
+        
+            if(scopes.title !== undefined){
+                console.log("initial scope state")
+                if(scopes.title){
+                    currentScopes.push('title')
+                }
+                if(scopes.keywords){
+                    currentScopes.push('keywords')
+                }
+                if(scopes.tags){
+                    currentScopes.push('tags')
+                }
+                if(scopes.description){
+                    currentScopes.push('description')
+                }
+                if(scopes.open){
+                    currentScopes.push('open')
+                }
+
+                this.setState({
+                    scopes: currentScopes
+                })
+            }
+       }
+        
         //console.log(this.state.scopes)
     }
 
     componentDidMount(){
-        this.props.searchTopics(this.props.topics, this.state.term, this.state.scopes);
+        console.log(this.state.term)
+        console.log(this.state.scopes)
+        this.props.searchTopics(this.state.term, this.state.scopes, this.props.history);
         this.props.changeSearchScope(this.state.scopes);
     }
 
@@ -74,7 +110,7 @@ class SearchBar extends Component{
 
          console.log("scope STATE before search: ", this.state.scopes)
         // search topics
-        this.props.searchTopics(this.props.topics, this.state.term, this.state.scopes);
+        this.props.searchTopics(this.state.term, this.state.scopes, this.props.history);
     } 
 
     onSearchScopeChange(event){
@@ -97,7 +133,7 @@ class SearchBar extends Component{
         this.props.changeSearchScope(this.state.scopes);
         this.props.setSearchTerm(this.state.term);
         //console.log(this.state.scopes)
-        this.props.searchTopics(this.props.topics, this.state.term, this.state.scopes);
+        this.props.searchTopics(this.state.term, this.state.scopes, this.props.history);
 
     }
 
@@ -106,20 +142,23 @@ class SearchBar extends Component{
     render(){
         return(
 
-            <div className="search-bar col-sm-12">
-                <form onSubmit={this.onFormSubmit}>
+            <div className={ this.props.searchedTopics.length == 0 ? "search-bar col-sm-12 search-top-margin" : "search-bar col-sm-12" } >
+                <h2 className={ this.props.searchedTopics.length == 0 ? "text-center" : "hidden" } > FUNDIT </h2>
+                <form onSubmit={this.onFormSubmit} className={ this.props.searchedTopics.length == 0 ? "top-margin" : " " }>
                     <div className="form-group row">
                         <label className="col-sm-2 col-form-label">Search topics: </label>
                         <div className="col-sm-8">
                             <input 
-                            placeholder='Search...'
+                            placeholder='e.g. information OR security OR data NOT space'
                             value={this.state.term}
                             className="form-control"
                             onChange={this.onInputChange}
                             />
                         </div>
                         <div className="col-sm-2">
-                            <button type="submit" className="btn btn-primary"> Submit </button>
+                            <button type="submit" className="btn btn-primary">
+                                Submit
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -153,7 +192,7 @@ class SearchBar extends Component{
                             <label className="checkbox-inline">
                                 <input type="checkbox" value="open" defaultChecked={this.state.scopes.indexOf("open") == -1 ? false: true}
                                     onChange={this.onSearchScopeChange}
-                                /> In open topics
+                                /> In open and forthcoming topics
                             </label>
                 <div>
                 </div>
@@ -164,7 +203,7 @@ class SearchBar extends Component{
 
 function mapStatetoProps(state){
     return { 
-        topics: state.topics,
+        searchedTopics: state.searchedTopics,
         scopes: state.scopes,
         filters: state.filters,
         searchTerm: state.searchTerm,

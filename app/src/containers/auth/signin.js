@@ -11,15 +11,15 @@ class Signin extends Component {
             <div>
                 <fieldset className="form-group">
                     <label> Email: </label>
-                    <input {...fields.email.input} />
-                    {fields.email.meta.touched && fields.email.meta.error && 
-                    <span className="error">{fields.email.meta.error}</span>}
+                    <input className="form-control" {...fields.email.input} />
+                    {/* {fields.email.meta.touched && fields.email.meta.error && 
+                    <span className="error">{fields.email.meta.error}</span>} */}
                 </fieldset>
                 <fieldset className="form-group">
                     <label> Password: </label>
-                    <input {...fields.password.input} type="password" />
-                    {fields.password.meta.touched && fields.password.meta.error && 
-                    <span className="error">{fields.password.meta.error}</span>}
+                    <input className="form-control" {...fields.password.input} type="password" />
+                    {/* {fields.password.meta.touched && fields.password.meta.error && 
+                    <span className="error">{fields.password.meta.error}</span>} */}
                 </fieldset>
             </div>
         )
@@ -54,7 +54,7 @@ class Signin extends Component {
                     <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
                         <Fields names={[ 'email', 'password' ]} component={this.renderFields}/>
                         {this.renderAlert()}
-                        <button type="submit" className="btn btn-primary"> Submit </button>
+                        <button type="submit" className="btn btn-primary"> Sign in </button>
                     </form>
                 </div>
             </div>

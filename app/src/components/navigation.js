@@ -19,6 +19,7 @@ class Navigation extends Component {
         )
     } else {
         // show sign in or sign up
+
         return [
             <p className="navbar-text navbar-right" key={1}>
                 <Link to="/signup" className="navbar-link">Sign up</Link>

@@ -110,7 +110,7 @@ class KeywordTree extends Component {
               </div>
             </div>
             <div className="row">
-              <div className="col-sm-12" style={{zIndex: "1050"}}>                  
+              <div className="col-sm-12" style={{zIndex: "99"}}>                  
                 <h3>Keyword tree</h3>
                 <KeywordTreeSearch 
                   onChangeKeyword={this.changeKeyword} 

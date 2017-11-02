@@ -24,14 +24,17 @@ class Index extends Component {
 
   componentDidMount(){
     this.setState({toggle: this.props.navigationToggle});
+    console.log(this.props)
   }
 
   searchResultNotice(){
     if (this.props.searchTerm == ""){
-      return "Please enter a word to start search."
+      return (
+        <div style={{color:"#888"}}><p>Please enter a word to start search...</p></div>
+      )
     }else{
       if (this.props.searchedTopics.length == 0){
-        return "No result found."
+        return <div style={{color:"#888"}}><p>No results found...</p></div>
       }else{
         return ""
       }
@@ -49,7 +52,7 @@ class Index extends Component {
           </div>
 
           <div className="row">
-              <SearchBar />
+              <SearchBar history={this.props.history} queries={this.props.location.search}/>
           </div>
 
           <div className="row">
