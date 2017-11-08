@@ -18,6 +18,9 @@ export const FETCH_KEYWORDTREE = 'fetch_keyword_tree';
 export const AUTH_USER = 'auth_user';
 export const DEAUTH_USER = 'deauth_user';
 export const AUTH_ERROR = 'auth_error';
+export const FETCH_MESSAGE = 'fetch_message';
+export const QUERY_SAVED = 'query_saved';
+export const QUERY_SAVE_ERROR = 'query_save_error';
 
 
 
@@ -225,7 +228,7 @@ export function setAdvancedSearchQueries(queries){
 // ********** all about authentication ***************//
 
 
-const AuthURL_ROOT = 'http://localhost:3090';
+const AuthURL_ROOT = 'http://localhost:3001/api';
 
 export function signinUser({ email, password }, history){
 
@@ -261,4 +264,46 @@ export function authError(error){
 export function signoutUser(){
     localStorage.removeItem('token');
     return{ type: DEAUTH_USER };
+}
+
+export function signupUser({ email, password }, history){
+    return function(dispatch){
+        axios.post(`${AuthURL_ROOT}/signup`, { email, password })
+            .then(response =>{
+                dispatch({ type: AUTH_USER });
+                localStorage.setItem('token', response.data.token);
+                history.push('/mypage');
+            })
+            .catch(error => 
+                dispatch(authError(error.response.data.error))
+            );
+    }
+}
+
+export function fetchMessage(){
+    const request = axios.get(`${AuthURL_ROOT}/mypage`, {
+        headers: { authorization: localStorage.getItem('token')}
+    });
+
+    return {
+        type: FETCH_MESSAGE,
+        payload: request
+    }
+}
+
+export function saveUserSearchQueries(queries){
+
+    return function(dispatch){
+        queries.forEach((query) => {query.topics = []}); // smaller the request size
+        axios.post(`${AuthURL_ROOT}/mypage`,{ queries }, {
+            headers: { authorization: localStorage.getItem('token')}
+        })
+            .then(response =>{
+                // update the user search query info
+                dispatch({ type: QUERY_SAVED, payload:response }) // a string to store the success info
+            })
+            .catch(error => {
+                dispatch({ type: QUERY_SAVE_ERROR, payload:error }) // a string to store the error info
+            })
+    }   
 }

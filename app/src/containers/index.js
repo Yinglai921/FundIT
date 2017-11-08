@@ -28,7 +28,7 @@ class Index extends Component {
   }
 
   searchResultNotice(){
-    if (this.props.searchTerm == ""){
+    if (this.props.searchTerm == "" && this.props.location.search == ""){
       return (
         <div style={{color:"#888"}}><p>Please enter a word to start search...</p></div>
       )
