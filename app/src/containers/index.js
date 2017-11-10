@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Link } from 'react-router-dom';
 
 import SearchBar from './search-bar';
 import TopicsList from './topics-list';
@@ -41,6 +42,16 @@ class Index extends Component {
     }
   }
 
+  howToSearchNotice(){
+    if (this.props.searchedTopics.length == 0){
+      return(
+        <div>
+          <p> Need inspirations of searching keyword? Please check our <Link to="/keywords">keyword dictionary</Link>. </p>
+          <p> Do you want to make the search more efficient? Please read <Link to="/user-guide">advanced search guideline</Link>. </p>
+        </div>
+      )
+    }
+  }
 
   render() {
 
@@ -58,7 +69,7 @@ class Index extends Component {
           <div className="row">
               <div className="col-sm-12">
                 {this.searchResultNotice()}
-                {this.props.searchedTopics.length == 0 ? <Help /> : <TopicsList />}
+                {this.props.searchedTopics.length == 0 ? this.howToSearchNotice() : <TopicsList />}
               </div>
           </div>
 

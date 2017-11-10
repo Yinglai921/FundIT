@@ -15,7 +15,7 @@ export default class Footer extends Component {
                 <div className="container-fluid">
                     <div className="copyright row">
                         <div className="col-md-5 col-md-offset-2" style={{textAlign: "center"}}>
-                            <p>The website in Beta version, please be so kind and give us feedback! </p>
+                            <p>The website is a Beta version, please be so kind and give us feedback! </p>
                         </div>
                         <div className="col-md-4">
                             <a className="btn btn-warning" href="https://goo.gl/forms/fjQ6zwEynPzJBWAF2"> Send Feedback </a>

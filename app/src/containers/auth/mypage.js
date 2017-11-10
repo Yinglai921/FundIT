@@ -16,6 +16,7 @@ class QueryContent extends Component{
         this.delete = this.delete.bind(this);
         this.setQuery = this.setQuery.bind(this);
         this.save = this.save.bind(this);
+        this.renderTopics = this.renderTopics.bind(this);
     }
 
     componentDidMount(){
@@ -50,8 +51,12 @@ class QueryContent extends Component{
     renderTopics(topics){
         return(
             <div>
-                {topics.forEach((topic) => {
-                    return <p><a href="#">{topic.title}</a></p>
+                {topics.map((topic, i) => {
+                    return(
+                    <p key={i}>
+                        <a target="_blank" href={`https://ec.europa.eu/research/participants/portal/desktop/en/opportunities/h2020/topics/${topic.identifier.toLowerCase()}.html`}>{topic.title}</a>
+                    </p>
+                    )
                 })}
             </div>
         )
@@ -63,16 +68,14 @@ class QueryContent extends Component{
                 <div className="row">
                     <form className="form-inline">
                         <div className="form-group">
-                            <label> Query </label>
+                            <label> Search query: </label>
                             <input type="text" className="form-control" onChange={this.setQuery} value={this.state.query}/>
                         </div>
                         <button type="submit" className="btn btn-default" onClick={this.save}> Save </button>
                         <button className="btn btn-default" onClick={this.delete}> Delete </button>
                     </form>
                     <div className="col-sm-12">
-                        {this.props.query.topics.map((topic) => {
-                            return <p><a href="#">{topic.title}</a></p>
-                        })}
+                        {this.renderTopics(this.props.query.topics)}
                     </div>
                 </div>
             )
@@ -80,18 +83,16 @@ class QueryContent extends Component{
             return(
                 <div className="row">
                     <div className="col-sm-4">
-                        {this.props.query.query}
+                        Search query: {this.props.query.query}
                     </div>
                     <div className="col-sm-4">
-                        {this.props.query.topics.length}
+                        Number of open and forthcoming topics: {this.props.query.topics.length}
                     </div>
                     <div className="col-sm-4">
                         <button className="btn btn-default" onClick={this.toggleEdit}> Edit </button>
                     </div>
                     <div className="col-sm-12">
-                        {this.props.query.topics.map((topic) => {
-                            return <p><a href="#">{topic.title}</a></p>
-                        })}
+                        {this.renderTopics(this.props.query.topics)}
                     </div>
                 </div>
             )
@@ -177,16 +178,8 @@ class MyPage extends Component{
                         <Navigation />
                     </div>
                     <div className="row">
-                        <p> My page </p>
-                        <p> Email address: {user.message.email} </p>
-                    </div>
-                    <div className="row">
-                        <div className="col-sm-4">
-                            Search Queries
-                        </div>
-                        <div className="col-sm-2">
-                            Open topics
-                        </div>
+                        <h1> My page </h1>
+                        <h4> Welcome! {user.message.email} </h4>
                     </div>
                     {queries.map((query, i) => {
                         return <QueryContent query={query} key={i} index={i} deleteRow={this.deleteQueryRow} saveRow={this.saveQueryRow}/>

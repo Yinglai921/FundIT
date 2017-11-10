@@ -43,7 +43,7 @@ class Navigation extends Component {
             <div className="container-fluid">
                 <div className="navbar-header">
                     
-                    <a className="navbar-brand" href="#"><span><img alt="Brand" src={logo} style={{width: "25%"}}/></span>FundIT</a>
+                    <a className="navbar-brand" href="#"><span><img alt="Brand" src={logo} style={{width: "25%"}}/></span>FUNDIT</a>
                 </div>
                 <div>
                     <ul className="nav navbar-nav nav-tabs">
@@ -51,7 +51,7 @@ class Navigation extends Component {
                             <Link  to="/" > Search Topics </Link>
                         </li>
                         <li className={ this.props.active == "keyword" ? "active" : "" }>
-                            <Link  to="/keywords" > Keyword Tree Graph</Link>
+                            <Link  to="/keywords" > Keyword Dictionary</Link>
                         </li>
                         <li className={ this.props.active == "user-guide" ? "active" : "" }>
                             <Link  to="/user-guide" > User Guide </Link>
