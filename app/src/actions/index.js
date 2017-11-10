@@ -26,13 +26,13 @@ export const QUERY_SAVE_ERROR = 'query_save_error';
 
 
 // fetch all the topics from the start
-// const TOPICS_URL = 'https://fundit.proj.kth.se/api/search';
-// const ADVANCED_SEARCH_URL = 'https://fundit.proj.kth.se/api/advancedsearch';
-// const KEYWORDTREE_URL = 'https://fundit.proj.kth.se/api/keywordtree';
+const TOPICS_URL = 'https://fundit.proj.kth.se/api/search';
+const ADVANCED_SEARCH_URL = 'https://fundit.proj.kth.se/api/advancedsearch';
+const KEYWORDTREE_URL = 'https://fundit.proj.kth.se/api/keywordtree';
 
-const TOPICS_URL = 'http://localhost:3001/api/search';
-const ADVANCED_SEARCH_URL = 'http://localhost:3001/api/advancedsearch';
-const KEYWORDTREE_URL = 'http://localhost:3001/api/keywordtree';
+// const TOPICS_URL = 'http://localhost:3001/api/search';
+// const ADVANCED_SEARCH_URL = 'http://localhost:3001/api/advancedsearch';
+// const KEYWORDTREE_URL = 'http://localhost:3001/api/keywordtree';
 
 function dateFormatCovert(time){
     let currTime = new Date(time);
@@ -228,7 +228,7 @@ export function setAdvancedSearchQueries(queries){
 // ********** all about authentication ***************//
 
 
-const AuthURL_ROOT = 'http://localhost:3001/api';
+const AuthURL_ROOT = 'https://fundit.proj.kth.se/api';
 
 export function signinUser({ email, password }, history){
 

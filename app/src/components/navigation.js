@@ -12,20 +12,23 @@ class Navigation extends Component {
   renderLinks(){
     if(this.props.authenticated){
         // show a link to sign out
-        return(
-            <p className="navbar-text navbar-right">
-                 <Link to="/signout" className="navbar-link">Sign out</Link>
+        return[
+            <p className="navbar-text" key={1}>
+                <Link to="/mypage" className="navbar-link">My page</Link>
+            </p>,
+            <p className="navbar-text" key={2}>
+                 <Link to="/signout" className="navbar-link">Log out</Link>
             </p>
-        )
+        ];
     } else {
         // show sign in or sign up
 
         return [
-            <p className="navbar-text navbar-right" key={1}>
+            <p className="navbar-text" key={1}>
                 <Link to="/signup" className="navbar-link">Sign up</Link>
             </p>,
-            <p className="navbar-text navbar-right" key={2}>
-                <Link to="/signin" className="navbar-link">Sign in</Link>
+            <p className="navbar-text" key={2}>
+                <Link to="/signin" className="navbar-link">Log in</Link>
             </p>
         ];
     }
@@ -36,15 +39,14 @@ class Navigation extends Component {
       //const currentLocation = this.props.location.pathname
       //const navLinkClassName = `nav-item nav-link ${touched && error ? 'has-danger' : ''}`;
     return (
-        <nav className="navbar navbar-inverse navbar-fixed-top">
+        <nav className="navbar navbar-fixed-top" style={{backgroundColor: 'white'}}>
             <div className="container-fluid">
                 <div className="navbar-header">
-                    <a className="navbar-brand" href="#">FundIT</a>
-
-                    <img alt="Brand" src={logo} style={{width: "25%"}}/>
+                    
+                    <a className="navbar-brand" href="#"><span><img alt="Brand" src={logo} style={{width: "25%"}}/></span>FundIT</a>
                 </div>
                 <div>
-                    <ul className="nav navbar-nav">
+                    <ul className="nav navbar-nav nav-tabs">
                         <li className={ this.props.active == "index" ? "active" : "" }>
                             <Link  to="/" > Search Topics </Link>
                         </li>
@@ -55,9 +57,10 @@ class Navigation extends Component {
                             <Link  to="/user-guide" > User Guide </Link>
                         </li>
                     </ul>
+                </div>
+                <div className="navbar-right">
                     {this.renderLinks()}
                 </div>
-               
             </div>
         </nav>
     );

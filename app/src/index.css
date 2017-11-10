@@ -208,8 +208,9 @@ b{
   color:  rgb(255, 75, 20);
 }
 
-.copyright { min-height:40px; color:#000;}
-.copyright p { text-align:left; color:#000; padding:10px 0; margin-bottom:0px;}
+.copyright { min-height:40px; color:#FFF; background-color: #41B0C6 ;}
+.copyright p { text-align:left; color:#FFF; padding:10px 0; margin-bottom:0px;}
+.copyright button {padding:10px; margin-bottom:0px; } 
 
 .bottom_ul { list-style-type:none; float:right; margin-bottom:0px;}
 .bottom_ul li { float:left; line-height:40px;}
