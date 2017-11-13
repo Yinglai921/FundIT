@@ -117,6 +117,17 @@ export function searchTopics(term, scopes, history){
 
         axios.get(`${TOPICS_URL}?q=${term}&intitle=${inTitle}&inkeywords=${inKeywords}&intags=${inTags}&indescription=${inDescription}&inopen=${inOpen}`)
             .then(response => {
+                response.data.forEach((topic) => {
+                    if(topic.plannedOpeningDate !== null){
+                        topic.plannedOpeningDate = dateFormatCovert(topic.plannedOpeningDate);
+                    }
+                    if(topic.deadlineDates.length !== 0){
+                        for(let i = 0; i < topic.deadlineDates.length; i++){
+                            topic.deadlineDates[i] = dateFormatCovert(topic.deadlineDates[i])
+                        }
+                    }     
+                })
+                console.log(response)
                 dispatch({ type: SEARCH_TOPICS, payload: response });
                 history.push(`/search?term=${term}&title=${inTitle}&keywords=${inKeywords}&tags=${inTags}&desc=${inDescription}&open=${inOpen}`);
             })

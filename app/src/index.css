@@ -3,7 +3,7 @@ body {
   padding: 70px;
   font-family: 'Open Sans', sans-serif;
 }
-h1, h4{
+h1, h2, h3, h4{
   font-family: 'Nunito', sans-serif;
 }
 
@@ -210,7 +210,7 @@ b{
   color:  rgb(255, 75, 20);
 }
 
-.copyright { min-height:40px; color:#FFF; background-color: #41B0C6 ;}
+.copyright { min-height:40px; color:#FFF; background-color: #41B0C6 ; padding-top: 10px;}
 .copyright p { text-align:left; color:#FFF; padding:10px 0; margin-bottom:0px;}
 .copyright button {padding:10px; margin-bottom:0px; } 
 
@@ -221,4 +221,15 @@ b{
 
 .error{
   color: red;
+}
+
+.tooltipExtraStyle {
+  font-size: 12px !important;
+  text-align: center;
+  pointer-events: auto !important;
+}
+
+.tooltipExtraStyle:hover{
+  visibility: visible !important;
+  opacity: 1 !important;
 }

@@ -103,15 +103,9 @@ class KeywordTree extends Component {
               <Navigation active={"keyword"}/>
             </div>
             <div className="row">
-              <div className="col-sm-12">
-                <Alert color="info" isOpen={this.state.alertVisible} toggle={this.onDismiss}>
-                    Double click the graph to recenter it!
-                </Alert>
-              </div>
-            </div>
-            <div className="row">
               <div className="col-sm-12" style={{zIndex: "99"}}>                  
                 <h3>Keyword Dictionary</h3>
+                <h4> Please select keywords in your field: </h4>
                 <KeywordTreeSearch 
                   onChangeKeyword={this.changeKeyword} 
                   onSelectKeywords={this.selectKeywords}
@@ -122,7 +116,6 @@ class KeywordTree extends Component {
             </div>
             <div className="row">
               <div className="col-sm-12">
-
                 <div className="btn-group" role="group" style={{float: "right", top: "10px"}}>
                     <button type="button" className={this.state.colorCheck ? "btn btn-default" : "btn btn-primary active"} onClick={this.onColorCheck}>Default Graph</button>
                     <button type="button" className={this.state.colorCheck ? "btn btn-primary active" : "btn btn-default"} onClick={this.onColorCheck}>Colored Graph</button>
@@ -132,8 +125,12 @@ class KeywordTree extends Component {
                   <p> Number of topics that includes this keyword: </p>
                   <D3KeywordColorLegend />
                 </div>
-                
                 <div id="keyword-tree-graph">
+                    <div className="col-sm-12">
+                        <p>
+                            <span className="label label-info">Tips!</span> Drag to move, scroll to zoom and double click to recenter the graph.
+                        </p>
+                    </div>
                   <D3KeywordThree onChangeKeyword={this.changeKeyword} data={this.props.keywordTree} keywords={this.state.keywords} onSelectKeywords={this.addOneKeyword} colorToggle={this.state.colorCheck}/>
                 </div>
               </div>

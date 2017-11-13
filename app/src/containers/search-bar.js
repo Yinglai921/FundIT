@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { searchTopics, setSearchTerm, changeSearchScope } from '../actions/index';
 import { Link } from 'react-router-dom';
 import queryString from 'query-string';
+import Tooltip from '../components/tools/tooltip';
 
 class SearchBar extends Component{
     constructor(props){
@@ -171,31 +172,43 @@ class SearchBar extends Component{
                         <label className="checkbox-inline">
                             <input type="checkbox" value="title" defaultChecked={this.state.scopes.indexOf("title") == -1 ? false: true}
                                 onChange={this.onSearchScopeChange}
-                            /> In title
+                            /> 
+                            <Tooltip 
+                            term="In title" 
+                            explain="The titles of topics."/>
                         </label>
 
                         <label className="checkbox-inline">
                             <input type="checkbox" value="keywords" defaultChecked={this.state.scopes.indexOf("keywords") == -1 ? false: true}
                                 onChange={this.onSearchScopeChange}
-                            /> In keywords
+                            /> 
+                            <Tooltip 
+                            term="In keywords" 
+                            explain="The official keywords which are used in the proposals, projects and expert profiles in the context of EU grants.</br> Click here to <a> Read more </a>"/>
                         </label>
 
                         <label className="checkbox-inline">
                             <input type="checkbox" value="tags" defaultChecked={this.state.scopes.indexOf("tags") == -1 ? false: true}
                                 onChange={this.onSearchScopeChange}
-                            /> In tags
+                            /> <Tooltip 
+                            term="In tags" 
+                            explain="List of tags associated with the topic."/>
                         </label>
                         <label className="checkbox-inline">
                             <input type="checkbox" value="description" defaultChecked={this.state.scopes.indexOf("description") == -1 ? false: true}
                                 onChange={this.onSearchScopeChange}
-                            /> In descriptions
+                            /> <Tooltip 
+                            term="In descriptions" 
+                            explain="The descriptions of the topics."/>
                         </label>
                 </div>
                     <span> Limit the search results: </span>
                             <label className="checkbox-inline">
                                 <input type="checkbox" value="open" defaultChecked={this.state.scopes.indexOf("open") == -1 ? false: true}
                                     onChange={this.onSearchScopeChange}
-                                /> In open and forthcoming topics
+                                /> <Tooltip 
+                                term="In open and forthcoming topics" 
+                                explain="The topic status is associated with call status, the call has open, forthcoming and closed status."/>
                             </label>
                 <div>
                 </div>

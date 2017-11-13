@@ -43,7 +43,7 @@ class Navigation extends Component {
             <div className="container-fluid">
                 <div className="navbar-header">
                     
-                    <a className="navbar-brand" href="#"><span><img alt="Brand" src={logo} style={{width: "25%"}}/></span>FUNDIT</a>
+                    <h4><span><img alt="Brand" src={logo} style={{width: "25%"}}/></span>FUNDIT</h4>
                 </div>
                 <div>
                     <ul className="nav navbar-nav nav-tabs">

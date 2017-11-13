@@ -46,8 +46,8 @@ class Index extends Component {
     if (this.props.searchedTopics.length == 0){
       return(
         <div>
-          <p> Need inspirations of searching keyword? Please check our <Link to="/keywords">keyword dictionary</Link>. </p>
-          <p> Do you want to make the search more efficient? Please read <Link to="/user-guide">advanced search guideline</Link>. </p>
+          <p> Need inspirations of searching keyword? Please check our <Link to="/keywords">keyword Dictionary</Link>. </p>
+          <p> Do you want to make the search more efficient? Please read <Link to="/user-guide">Search Guideline</Link>. </p>
         </div>
       )
     }

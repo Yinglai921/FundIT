@@ -6,6 +6,7 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import { Collapse, Button, CardBlock, Card } from 'reactstrap';
 import { changeColumnSettings, setFilterNumber } from '../actions/index';
 import TopicsNumber from './topics-number';
+import Tooltip from '../components/tools/tooltip';
 
 class BSTable extends React.Component {
     render() {
@@ -167,7 +168,6 @@ class TopicsList extends Component {
 
     // in order to get nested data from 'actions', use dataFormatter
     actionsFormatter(cell, row){
-
         return (`${cell[0].types}`)
     }
 
@@ -314,45 +314,59 @@ class TopicsList extends Component {
                         <div id="settingBtn">
                             <span>Table columns: </span>
                             <label className="checkbox-inline">
-                                <input type="checkbox" value="mainSpecificProgrammeLevelDesc" 
+                                <input type="checkbox" value="mainSpecificProgrammeLevelDesc" style={{marginLeft: '-50px'}}
                                     onChange={this.onColumnHeaderChange}
-                                /> Pillar
+                                /> <Tooltip 
+                                    term="Pillar" 
+                                    explain="H2020 is built around three pillars: Excellent Science, Industrial Leadership and Societal Challenges.</br> Click here to <a> Read more </a>"/>
                             </label>
 
                             <label className="checkbox-inline">
-                                <input type="checkbox" value="actions" defaultChecked={this.state.cols.indexOf('actions')}
+                                <input type="checkbox" value="actions" defaultChecked={this.state.cols.indexOf('actions')} style={{marginLeft: '-115px'}}
                                     onChange={this.onColumnHeaderChange}
-                                /> Types of actions
+                                /> <Tooltip 
+                                    term="Type of actions" 
+                                    explain="H2020 has three types of actions: RIA, IA and CSA.</br> Click here to <a> Read more </a>"/>
                             </label>
 
                             <label className="checkbox-inline">
-                                <input type="checkbox" value="callTitle" defaultChecked={this.state.cols.indexOf('callTitle')}
+                                <input type="checkbox" value="callTitle" defaultChecked={this.state.cols.indexOf('callTitle')} style={{marginLeft: '-70px'}}
                                     onChange={this.onColumnHeaderChange}
-                                /> Call Title
+                                /> <Tooltip 
+                                    term="Call title" 
+                                    explain="call summary that describes the common scientific field or societal challenge or innovation that the topics of this call are tackling."/>
                             </label>
     
                             <label className="checkbox-inline">
-                                <input type="checkbox" value="plannedOpeningDate" 
+                                <input type="checkbox" value="plannedOpeningDate" style={{marginLeft: '-160px'}}
                                     onChange={this.onColumnHeaderChange}
-                                /> Planned Opening Date
+                                /> <Tooltip 
+                                    term="Planned opening date" 
+                                    explain="The planned opening date of a specific topic."/>
                             </label>
     
                             <label className="checkbox-inline">
-                                <input type="checkbox" value="budget"
+                                <input type="checkbox" value="budget" style={{marginLeft: '-113px'}}
                                     onChange={this.onColumnHeaderChange}
-                                /> Budget
+                                /> <Tooltip 
+                                    term="Budget history" 
+                                    explain="The budget history of a specific topic, this topic was opened before."/>
                             </label>
     
                             <label className="checkbox-inline">
-                                <input type="checkbox" value="keywords" 
+                                <input type="checkbox" value="keywords" style={{marginLeft: '-80px'}}
                                     onChange={this.onColumnHeaderChange}
-                                /> Keywords
+                                /> <Tooltip 
+                                    term="Keywords" 
+                                    explain="The official keywords which are used in the proposals, projects and expert profiles in the context of EU grants.</br> Click here to <a> Read more </a>"/>
                             </label>
     
                             <label className="checkbox-inline">
-                                <input type="checkbox" value="tags" 
+                                <input type="checkbox" value="tags" style={{marginLeft: '-46px'}}
                                     onChange={this.onColumnHeaderChange}
-                                /> Tags
+                                /> <Tooltip 
+                                    term="Tags" 
+                                    explain="List of tags associated with the topic."/>
                             </label>
                         </div>
                         <BootstrapTable 
