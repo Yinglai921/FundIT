@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import { Alert } from 'reactstrap';
+import { saveSvgAsPng } from 'save-svg-as-png';
 //import SwitchButton from 'react-switch-button';
 
 import D3KeywordThree from './d3-keyword-tree';
@@ -12,7 +13,6 @@ import Navigation from './navigation';
 import Footer from './footer';
 import { changeFilterTerm, setNavigationToggle, selectKeywords, setColorToggle, fetchKeywordTree } from '../actions';
 
-import ToggleColorButton from '../components/buttons/toggle-color-button';
 import KeywordTreeSearch from '../containers/keyword-tree-search';
 
 
@@ -92,6 +92,12 @@ class KeywordTree extends Component {
     this.props.setColorToggle(!this.state.colorCheck);
   }
 
+  saveToPng(){
+    let svgWidth = document.getElementById("svgGroup").getBoundingClientRect().width + 200;
+    let svgHeight = document.getElementById("svgGroup").getBoundingClientRect().height + 200;
+    saveSvgAsPng(document.getElementById("diagram"),'chart.png', {width: svgWidth, height: svgHeight});
+  }
+
 
   render() {
     if (this.props.keywordTree.length === 0){
@@ -105,7 +111,8 @@ class KeywordTree extends Component {
             <div className="row">
               <div className="col-sm-12" style={{zIndex: "99"}}>                  
                 <h3>Keyword Dictionary</h3>
-                <h4> Please select keywords in your field: </h4>
+                <h4> Please select keywords in your field:</h4>
+                <p><span className="label label-info">Tips!</span> The values after each keyword: the number of <b> open topics/topics </b> that contain this keyword.</p>
                 <KeywordTreeSearch 
                   onChangeKeyword={this.changeKeyword} 
                   onSelectKeywords={this.selectKeywords}
@@ -126,9 +133,10 @@ class KeywordTree extends Component {
                   <D3KeywordColorLegend />
                 </div>
                 <div id="keyword-tree-graph">
-                    <div className="col-sm-12">
+                    <div className="col-sm-12" style={{textAlign: 'center'}}>
                         <p>
-                            <span className="label label-info">Tips!</span> Drag to move, scroll to zoom and double click to recenter the graph.
+                            <span className="label label-info">Tips!</span> Drag to move, scroll to zoom and double click to recenter the graph.You could also 
+                            <span> <button type="button" className="btn btn-default" onClick={this.saveToPng}>Download graph to png</button> </span>
                         </p>
                     </div>
                   <D3KeywordThree onChangeKeyword={this.changeKeyword} data={this.props.keywordTree} keywords={this.state.keywords} onSelectKeywords={this.addOneKeyword} colorToggle={this.state.colorCheck}/>

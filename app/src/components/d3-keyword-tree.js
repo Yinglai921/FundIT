@@ -5,6 +5,7 @@ import { hierarchy, tree} from 'd3-hierarchy';
 import * as d3 from "d3";
 import * as d3Chromatic from 'd3-scale-chromatic';
 import $ from 'jquery';
+import { selectAll } from 'd3-selection';
 
 
 class D3KeywordTree extends Component{
@@ -45,7 +46,11 @@ class D3KeywordTree extends Component{
 
    createTreeChart(svgDomNode, onChangeKeyword, data, selectedKeywords, onSelectKeywords, colorToggle) {
 
-	    d3.select("#keyword-tree-graph svg").html("");
+		d3.select("#keyword-tree-graph svg").html(`  
+		<text x="10" y="20" >Horizon 2020 Keyword Tree
+			<tspan x="10" y="45">Selected keywords:</tspan>
+			<tspan x="10" y="70">${selectedKeywords}</tspan>
+	    </text>`);
 
 		function searchTree(obj,search,path){
 			var name;
@@ -80,7 +85,7 @@ class D3KeywordTree extends Component{
         // Set the dimensions and margins of the diagram
 		var margin = {top: this.state.graphHeight * 0.05, right: this.state.graphWidth * 0.1, bottom: this.state.graphHeight * 0.05, left: this.state.graphWidth * 0.1},
 			width = this.state.graphWidth - margin.left - margin.right,
-			height = this.state.graphHeight - margin.top - margin.bottom + 150;
+			height = this.state.graphHeight - margin.top - margin.bottom;
 
 		var zoom = d3.zoom()
 		.scaleExtent([0.7, 2])
@@ -119,6 +124,7 @@ class D3KeywordTree extends Component{
 			.call(zoom)
 			.on('dblclick.zoom', reset)
 			.append("g")
+				.attr("id", "svgGroup")
 				.attr("transform", "translate("
 				+ margin.left + "," + margin.top * 0.5 + ")");
 
@@ -177,6 +183,26 @@ class D3KeywordTree extends Component{
 
 		function update(source) {
 
+			// compute the new height
+			// from https://stackoverflow.com/questions/13103748/dynamically-resize-the-d3-tree-layout-based-on-number-of-childnodes
+
+			var levelWidth = [1];
+			var childCount = function(level, n) {
+				
+				if(n.children && n.children.length > 0) {
+				if(levelWidth.length <= level + 1) levelWidth.push(0);
+				
+				levelWidth[level+1] += n.children.length;
+				n.children.forEach(function(d) {
+					childCount(level + 1, d);
+				});
+				}
+			};
+			childCount(0, root);  
+			if(levelWidth.length > 4){ // don't apply it if the tree is not too big
+				var newHeight = d3.max(levelWidth) * 30; // 20 pixels per line  
+				treemap = d3.tree().size([newHeight, width]);
+			}
 			// Assigns the x and y position for the nodes
 			var treeData = treemap(root);
 
@@ -215,7 +241,6 @@ class D3KeywordTree extends Component{
 						}
 						return colorScale(d.data.value)
 					}
-					
 				})
 
 
@@ -403,7 +428,8 @@ class D3KeywordTree extends Component{
    }
     render() {
       return (
-	  		<svg width={this.state.graphWidth} height={this.state.graphHeight}></svg>
+	  		<svg width={this.state.graphWidth} height={this.state.graphHeight} id="diagram">
+			</svg>
 		  )
     }
 }

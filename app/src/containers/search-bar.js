@@ -144,10 +144,10 @@ class SearchBar extends Component{
         return(
 
             <div className={ this.props.searchedTopics.length == 0 ? "search-bar col-sm-12 search-top-margin" : "search-bar col-sm-12" } >
-                <p className={ this.props.searchedTopics.length == 0 ? "text-center" : "hidden" } > 
+                <div className={ this.props.searchedTopics.length == 0 ? "text-center" : "hidden" } > 
                     <h1>FUNDIT</h1>
                     <h4> A smart way to find Horizon H2020 Topics </h4>
-                </p>
+                </div>
                 <form onSubmit={this.onFormSubmit} className={ this.props.searchedTopics.length == 0 ? "top-margin" : " " }>
                     <div className="form-group row">
                         <label className="col-sm-2 col-form-label">Search H2020 topics: </label>
@@ -184,7 +184,7 @@ class SearchBar extends Component{
                             /> 
                             <Tooltip 
                             term="In keywords" 
-                            explain="The official keywords which are used in the proposals, projects and expert profiles in the context of EU grants.</br> Click here to <a> Read more </a>"/>
+                            explain="The official keywords which are used in the proposals, projects and expert profiles in the context of EU grants.</br> Click here to <a href='https://fundit.proj.kth.se/#/user-guide'> Read more </a>"/>
                         </label>
 
                         <label className="checkbox-inline">

@@ -45,9 +45,10 @@ class Index extends Component {
   howToSearchNotice(){
     if (this.props.searchedTopics.length == 0){
       return(
-        <div>
-          <p> Need inspirations of searching keyword? Please check our <Link to="/keywords">keyword Dictionary</Link>. </p>
-          <p> Do you want to make the search more efficient? Please read <Link to="/user-guide">Search Guideline</Link>. </p>
+        <div style={{textAlign: "center", marginBottom: "50px"}}>
+          <p> Need inspirations of searching keyword? Please check <Link to="/keywords">Keyword Dictionary</Link>. </p>
+          <p> Want to make the search more efficient? Please read <Link to="/user-guide">Search Guideline</Link>. </p>
+          <p> Want to have a comprehensive idea of how did the money flow? Please check <a href="http://h2020viz.vinnova.se/#/"> Vinnova H2020 Visualization </a>. </p>
         </div>
       )
     }
@@ -73,12 +74,12 @@ class Index extends Component {
               </div>
           </div>
 
-          <div className="row top-margin">                   
+          {/* <div className="row top-margin">                   
             <div className="col-sm-12" style={{textAlign: "center", marginBottom: "50px"}}>
               <p> If you want to know more about H2020 and how to use the system. Please check <a href="#">User Guide </a><br />
               </p>
             </div>
-          </div>
+          </div> */}
 
           <Footer />
       </div>

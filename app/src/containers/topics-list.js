@@ -318,7 +318,7 @@ class TopicsList extends Component {
                                     onChange={this.onColumnHeaderChange}
                                 /> <Tooltip 
                                     term="Pillar" 
-                                    explain="H2020 is built around three pillars: Excellent Science, Industrial Leadership and Societal Challenges.</br> Click here to <a> Read more </a>"/>
+                                    explain="H2020 is built around three pillars: Excellent Science, Industrial Leadership and Societal Challenges."/>
                             </label>
 
                             <label className="checkbox-inline">
@@ -326,7 +326,7 @@ class TopicsList extends Component {
                                     onChange={this.onColumnHeaderChange}
                                 /> <Tooltip 
                                     term="Type of actions" 
-                                    explain="H2020 has three types of actions: RIA, IA and CSA.</br> Click here to <a> Read more </a>"/>
+                                    explain="H2020 has three types of actions: RIA, IA and CSA.</br> Click here to <a href='https://fundit.proj.kth.se/#/user-guide'> Read more </a>"/>
                             </label>
 
                             <label className="checkbox-inline">
@@ -358,7 +358,7 @@ class TopicsList extends Component {
                                     onChange={this.onColumnHeaderChange}
                                 /> <Tooltip 
                                     term="Keywords" 
-                                    explain="The official keywords which are used in the proposals, projects and expert profiles in the context of EU grants.</br> Click here to <a> Read more </a>"/>
+                                    explain="The official keywords which are used in the proposals, projects and expert profiles in the context of EU grants.</br> Click here to <a href='https://fundit.proj.kth.se/#/user-guide'> Read more </a>"/>
                             </label>
     
                             <label className="checkbox-inline">

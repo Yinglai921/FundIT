@@ -42,11 +42,11 @@ export default class KeywordTreeSearch extends Component{
 
     extract_select2_data(node, leaves, index){ // extract all the nodes for 'select2_data'
         if(node.value){
-            var name = `${node.description} (${node.value})`;
+            var name = `${node.description} (${node.open_value}/${node.value})`;
             //leaves.push({id:++index,text:name});
             leaves.push({label:name, value:name})
         }else{
-            var name = `${node.description} (0)`;
+            var name = `${node.description} (0/0)`;
             //leaves.push({id:++index,text:name});
             leaves.push({label:name, value:name})	
         }
