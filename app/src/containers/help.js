@@ -136,7 +136,17 @@ export default class Help extends Component{
         )
     }
 
-    Pillars(){}
+    KeywordAndTag(){
+        return(
+            <div className="row" id="KeywordAndTag">
+                <div className="col-sl-12">
+                    <h3> Keywords and Tags</h3>
+                    <p> Keywords and tags are both from Horizon 2020 API. H2020 provides the tree of all official keywords which are used in the proposals, projects and expert profiles in the context of EU grants, there are intotal around 3000 keywords.</p>
+                    <p> Tags do not have a hierarchy as what keywords do, there are in total around 20K tags.</p>
+                </div>
+            </div>
+        )
+    }
 
     TRL(){
         return(
@@ -175,6 +185,7 @@ manufacturing in the case of key enabling technologies; or in space) </li>
                 {this.TopicDeadline()}
                 {this.TypesOfActions()}
                 {this.TRL()}
+                {this.KeywordAndTag()}
             </div>
         )
     }

@@ -102,7 +102,15 @@ class TopicsList extends Component {
             cols.push('callTitle');
         }
 
-        this.setState({cols:cols})
+        cols = [...new Set(cols)]; // unique the cols
+
+        // sort the cols in a certain order
+        const columnOrder = ['mainSpecificProgrammeLevelDesc','actions', 'callTitle', 'plannedOpeningDate', 'budget', 'keywords', 'tags'];
+        cols.sort(function(a, b){
+            return columnOrder.indexOf(a) - columnOrder.indexOf(b);
+        });
+
+        this.setState({cols});
         this.props.setFilterNumber(searchedTopics.length)
         
     }
@@ -122,6 +130,7 @@ class TopicsList extends Component {
                 currentCols.splice(currentCols.indexOf(col), 1);
             }
         }
+
 
         const columnOrder = ['mainSpecificProgrammeLevelDesc','actions', 'callTitle', 'plannedOpeningDate', 'budget', 'keywords', 'tags'];
         currentCols.sort(function(a, b){
@@ -282,7 +291,6 @@ class TopicsList extends Component {
     render(){
         const { searchedTopics } = this.props;
         const { cols, filterNumber } = this.state;
-        
 
         if ( searchedTopics == null){
             return(
@@ -314,7 +322,7 @@ class TopicsList extends Component {
                         <div id="settingBtn">
                             <span>Table columns: </span>
                             <label className="checkbox-inline">
-                                <input type="checkbox" value="mainSpecificProgrammeLevelDesc" style={{marginLeft: '-50px'}}
+                                <input type="checkbox" value="mainSpecificProgrammeLevelDesc" checked={this.state.cols.includes('mainSpecificProgrammeLevelDesc')? "checked": ""} style={{marginLeft: '-50px'}}
                                     onChange={this.onColumnHeaderChange}
                                 /> <Tooltip 
                                     term="Pillar" 
@@ -322,7 +330,7 @@ class TopicsList extends Component {
                             </label>
 
                             <label className="checkbox-inline">
-                                <input type="checkbox" value="actions" defaultChecked={this.state.cols.indexOf('actions')} style={{marginLeft: '-115px'}}
+                                <input type="checkbox" value="actions" checked={this.state.cols.includes('actions')? "checked": ""} style={{marginLeft: '-115px'}}
                                     onChange={this.onColumnHeaderChange}
                                 /> <Tooltip 
                                     term="Type of actions" 
@@ -330,7 +338,7 @@ class TopicsList extends Component {
                             </label>
 
                             <label className="checkbox-inline">
-                                <input type="checkbox" value="callTitle" defaultChecked={this.state.cols.indexOf('callTitle')} style={{marginLeft: '-70px'}}
+                                <input type="checkbox" value="callTitle" checked={this.state.cols.includes('callTitle')? "checked": ""} style={{marginLeft: '-70px'}}
                                     onChange={this.onColumnHeaderChange}
                                 /> <Tooltip 
                                     term="Call title" 
@@ -338,7 +346,7 @@ class TopicsList extends Component {
                             </label>
     
                             <label className="checkbox-inline">
-                                <input type="checkbox" value="plannedOpeningDate" style={{marginLeft: '-160px'}}
+                                <input type="checkbox" value="plannedOpeningDate" checked={this.state.cols.includes('plannedOpeningDate')? "checked": ""} style={{marginLeft: '-160px'}}
                                     onChange={this.onColumnHeaderChange}
                                 /> <Tooltip 
                                     term="Planned opening date" 
@@ -346,15 +354,15 @@ class TopicsList extends Component {
                             </label>
     
                             <label className="checkbox-inline">
-                                <input type="checkbox" value="budget" style={{marginLeft: '-113px'}}
+                                <input type="checkbox" value="budget" checked={this.state.cols.includes('budget')? "checked": ""} style={{marginLeft: '-113px'}}
                                     onChange={this.onColumnHeaderChange}
                                 /> <Tooltip 
                                     term="Budget history" 
-                                    explain="The budget history of a specific topic, this topic was opened before."/>
+                                    explain="The budget history of the closed topics."/>
                             </label>
     
                             <label className="checkbox-inline">
-                                <input type="checkbox" value="keywords" style={{marginLeft: '-80px'}}
+                                <input type="checkbox" value="keywords" checked={this.state.cols.includes('keywords')? "checked": ""} style={{marginLeft: '-80px'}}
                                     onChange={this.onColumnHeaderChange}
                                 /> <Tooltip 
                                     term="Keywords" 
@@ -362,7 +370,7 @@ class TopicsList extends Component {
                             </label>
     
                             <label className="checkbox-inline">
-                                <input type="checkbox" value="tags" style={{marginLeft: '-46px'}}
+                                <input type="checkbox" value="tags" checked={this.state.cols.includes('tags')? "checked": ""} style={{marginLeft: '-46px'}}
                                     onChange={this.onColumnHeaderChange}
                                 /> <Tooltip 
                                     term="Tags" 
