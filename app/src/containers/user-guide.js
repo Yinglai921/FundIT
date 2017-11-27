@@ -31,7 +31,7 @@ class UserGuide extends Component {
                     <Help />
                 </div>
             </div>
-
+            <Footer />
       </div>
     )
   }

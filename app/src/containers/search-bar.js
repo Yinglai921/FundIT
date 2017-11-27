@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { searchTopics, setSearchTerm, changeSearchScope } from '../actions/index';
-import { Link } from 'react-router-dom';
 import queryString from 'query-string';
 import Tooltip from '../components/tools/tooltip';
 
@@ -35,19 +34,19 @@ class SearchBar extends Component{
 
             let currentScopes = [];
         
-            if(parsedQueries.title == 'true'){
+            if(parsedQueries.title === 'true'){
                 currentScopes.push('title')
             }
-            if(parsedQueries.keywords == 'true'){
+            if(parsedQueries.keywords === 'true'){
                 currentScopes.push('keywords')
             }
-            if(parsedQueries.tags == 'true'){
+            if(parsedQueries.tags === 'true'){
                 currentScopes.push('tags')
             }
-            if(parsedQueries.desc == 'true'){
+            if(parsedQueries.desc === 'true'){
                 currentScopes.push('description')
             }
-            if(parsedQueries.open == 'true'){
+            if(parsedQueries.open === 'true'){
                 currentScopes.push('open')
             }
 
@@ -103,13 +102,12 @@ class SearchBar extends Component{
 
         // console.log("SCOPES: ", this.props.scopes)
 
-        if(this.props.scopes === {} || this.props.scopes.title == false && this.props.scopes.keywords == false && this.props.scopes.tags == false && this.props.scopes.description == false){
+        if(this.props.scopes === {} || this.props.scopes.title === false && this.props.scopes.keywords == false && this.props.scopes.tags === false && this.props.scopes.description === false){
             alert("Please select at least one search scope");
         }
         // set search term globally 
         this.props.setSearchTerm(this.state.term);
-
-         console.log("scope STATE before search: ", this.state.scopes)
+        
         // search topics
         this.props.searchTopics(this.state.term, this.state.scopes, this.props.history);
     } 
@@ -143,12 +141,12 @@ class SearchBar extends Component{
     render(){
         return(
 
-            <div className={ this.props.searchedTopics.length == 0 ? "search-bar col-sm-12 search-top-margin" : "search-bar col-sm-12" } >
-                <div className={ this.props.searchedTopics.length == 0 ? "text-center" : "hidden" } > 
+            <div className={ this.props.searchedTopics.length === 0 ? "search-bar col-sm-12 search-top-margin" : "search-bar col-sm-12" } >
+                <div className={ this.props.searchedTopics.length === 0 ? "text-center" : "hidden" } > 
                     <h1>FUNDIT</h1>
                     <h4> A smart way to find Horizon H2020 Topics </h4>
                 </div>
-                <form onSubmit={this.onFormSubmit} className={ this.props.searchedTopics.length == 0 ? "top-margin" : " " }>
+                <form onSubmit={this.onFormSubmit} className={ this.props.searchedTopics.length === 0 ? "top-margin" : " " }>
                     <div className="form-group row">
                         <label className="col-sm-2 col-form-label">Search H2020 topics: </label>
                         <div className="col-sm-8">
@@ -170,7 +168,7 @@ class SearchBar extends Component{
                 <div>
                     <span>Search queries: </span>
                         <label className="checkbox-inline">
-                            <input type="checkbox" value="title" defaultChecked={this.state.scopes.indexOf("title") == -1 ? false: true}
+                            <input type="checkbox" value="title" defaultChecked={this.state.scopes.indexOf("title") === -1 ? false: true}
                                 onChange={this.onSearchScopeChange}
                             /> 
                             <Tooltip 
@@ -179,7 +177,7 @@ class SearchBar extends Component{
                         </label>
 
                         <label className="checkbox-inline">
-                            <input type="checkbox" value="keywords" defaultChecked={this.state.scopes.indexOf("keywords") == -1 ? false: true}
+                            <input type="checkbox" value="keywords" defaultChecked={this.state.scopes.indexOf("keywords") === -1 ? false: true}
                                 onChange={this.onSearchScopeChange}
                             /> 
                             <Tooltip 
@@ -188,14 +186,14 @@ class SearchBar extends Component{
                         </label>
 
                         <label className="checkbox-inline">
-                            <input type="checkbox" value="tags" defaultChecked={this.state.scopes.indexOf("tags") == -1 ? false: true}
+                            <input type="checkbox" value="tags" defaultChecked={this.state.scopes.indexOf("tags") === -1 ? false: true}
                                 onChange={this.onSearchScopeChange}
                             /> <Tooltip 
                             term="In tags" 
                             explain="List of tags associated with the topic."/>
                         </label>
                         <label className="checkbox-inline">
-                            <input type="checkbox" value="description" defaultChecked={this.state.scopes.indexOf("description") == -1 ? false: true}
+                            <input type="checkbox" value="description" defaultChecked={this.state.scopes.indexOf("description") === -1 ? false: true}
                                 onChange={this.onSearchScopeChange}
                             /> <Tooltip 
                             term="In descriptions" 
@@ -204,7 +202,7 @@ class SearchBar extends Component{
                 </div>
                     <span> Limit the search results: </span>
                             <label className="checkbox-inline">
-                                <input type="checkbox" value="open" defaultChecked={this.state.scopes.indexOf("open") == -1 ? false: true}
+                                <input type="checkbox" value="open" defaultChecked={this.state.scopes.indexOf("open") === -1 ? false: true}
                                     onChange={this.onSearchScopeChange}
                                 /> <Tooltip 
                                 term="In open and forthcoming topics" 

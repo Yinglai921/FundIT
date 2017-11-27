@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+//import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 
 import SearchBar from './search-bar';
 import TopicsList from './topics-list';
-import Help from './help';
 
 
 import Navigation from '../components/navigation';
 import Footer from '../components/footer';
-
-import { setNavigationToggle } from '../actions/index';
 
 class Index extends Component {
 
@@ -25,16 +22,15 @@ class Index extends Component {
 
   componentDidMount(){
     this.setState({toggle: this.props.navigationToggle});
-    console.log(this.props)
   }
 
   searchResultNotice(){
-    if (this.props.searchTerm == "" && this.props.location.search == ""){
+    if (this.props.searchTerm === "" && this.props.location.search === ""){
       return (
         <div style={{color:"#888"}}><p>Please enter a word to start search...</p></div>
       )
     }else{
-      if (this.props.searchedTopics.length == 0){
+      if (this.props.searchedTopics.length === 0){
         return <div style={{color:"#888"}}><p>No results found...</p></div>
       }else{
         return ""
@@ -43,7 +39,7 @@ class Index extends Component {
   }
 
   howToSearchNotice(){
-    if (this.props.searchedTopics.length == 0){
+    if (this.props.searchedTopics.length === 0){
       return(
         <div style={{textAlign: "center", marginBottom: "50px"}}>
           <p> Need inspirations of searching keyword? Please check <Link to="/keywords">Keyword Dictionary</Link>. </p>
@@ -70,7 +66,7 @@ class Index extends Component {
           <div className="row">
               <div className="col-sm-12">
                 {this.searchResultNotice()}
-                {this.props.searchedTopics.length == 0 ? this.howToSearchNotice() : <TopicsList />}
+                {this.props.searchedTopics.length === 0 ? this.howToSearchNotice() : <TopicsList />}
               </div>
           </div>
 
@@ -98,8 +94,8 @@ function mapStateToProps(state){
 }
 
 
-function mapDispatchToProps(dispatch){
-    return bindActionCreators({setNavigationToggle}, dispatch);
-}
+// function mapDispatchToProps(dispatch){
+//     return bindActionCreators(null, dispatch);
+// }
   
-export default connect(mapStateToProps, mapDispatchToProps)(Index);
+export default connect(mapStateToProps, null)(Index);

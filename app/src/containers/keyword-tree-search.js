@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom'; // render to DOM
-import * as select2 from 'select2';
-import $ from 'jquery';
 
 import VirtualizedSelect from 'react-virtualized-select';
 
@@ -30,7 +27,6 @@ export default class KeywordTreeSearch extends Component{
     }
 
     handleSelectChange (selectValue) {
-        let value = selectValue.value;
 		console.log('You\'ve selected:', selectValue);
         this.setState({ selectValue });
         let list = [];

@@ -10,6 +10,7 @@ class QueryContent extends Component{
         super(props);
         this.state = {
             isEditing: false,
+            validation: true,
             query:this.props.query.query
         }
         this.toggleEdit = this.toggleEdit.bind(this);
@@ -21,13 +22,12 @@ class QueryContent extends Component{
 
     componentDidMount(){
         // if the user want to add a new query, then show the edit mode first
-        if(this.props.query.query == ""){
+        if(this.props.query.query === ""){
             this.setState({isEditing: true})
         }
     }
 
     setQuery(e){
-        console.log(e.target.value);
         this.setState({query: e.target.value});
     }
     toggleEdit(){
@@ -38,8 +38,13 @@ class QueryContent extends Component{
     }
 
     save(){
-        this.props.saveRow(this.state.query, this.props.index);
-        this.setState({ isEditing: !this.state.isEditing })
+        if(this.state.query.length == 0){
+            this.setState({ validation: false});
+        }else{
+            this.setState({ validation: true});
+            this.props.saveRow(this.state.query, this.props.index);
+            this.setState({ isEditing: !this.state.isEditing })
+        }
     }
 
     delete(){
@@ -73,6 +78,7 @@ class QueryContent extends Component{
                         </div>
                         <button type="submit" className="btn btn-default" onClick={this.save}> Save </button>
                         <button className="btn btn-default" onClick={this.delete}> Delete </button>
+                        <p className={this.state.validation ? "alarm-hidden":"alarm-active"}>The query can't be empty!</p>
                     </form>
                     <div className="col-sm-12">
                         {this.renderTopics(this.props.query.topics)}
@@ -169,7 +175,7 @@ class MyPage extends Component{
 
         let { user } = this.props;
         let { queries } = this.state;
-        if (this.props.user.message == undefined){
+        if (this.props.user.message === undefined){
              return(<div> Loading... </div>)
         }else {
             return(

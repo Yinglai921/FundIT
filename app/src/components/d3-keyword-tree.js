@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom'; // render to DOM
-import {scaleLinear, max, select} from 'd3';
-import { hierarchy, tree} from 'd3-hierarchy';
 import * as d3 from "d3";
 import * as d3Chromatic from 'd3-scale-chromatic';
-import $ from 'jquery';
-import { selectAll } from 'd3-selection';
+
 
 
 class D3KeywordTree extends Component{
@@ -22,7 +19,9 @@ class D3KeywordTree extends Component{
 
 
    updateDimensions(){
-	   this.setState({graphWidth: $(window).width() * 0.8, graphHeight: $(window).height() * 0.8})	   
+	   let w = window.innerWidth;
+	   let h = window.innerHeight;
+	   this.setState({graphWidth: w * 0.8, graphHeight: h * 0.8})	   
    }
 
    componentWillMount(){
@@ -372,13 +371,14 @@ class D3KeywordTree extends Component{
 				});
 
 			// Remove any exiting links
-			var linkExit = link.exit().transition()
-				.duration(duration)
-				.attr('d', function(d) {
-					var o = {x: source.x, y: source.y}
-					return diagonal(o, o)
-				})
-				.remove();
+			
+			// var linkExit = link.exit().transition()
+			// 	.duration(duration)
+			// 	.attr('d', function(d) {
+			// 		var o = {x: source.x, y: source.y}
+			// 		return diagonal(o, o)
+			// 	})
+			// 	.remove();
 
 			// Store the old positions for transition.
 			nodes.forEach(function(d){
@@ -417,7 +417,7 @@ class D3KeywordTree extends Component{
 			.duration(500)
 			.style("opacity", 0);
 
-			if (d.data.value == undefined){
+			if (d.data.value === undefined){
 				d.data.value = 0;
 			}
 			let name = `${d.data.description} (${d.data.value})`

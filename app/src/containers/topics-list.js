@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 //import FixedDataTable from 'fixed-data-table';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-import { Collapse, Button, CardBlock, Card } from 'reactstrap';
 import { changeColumnSettings, setFilterNumber } from '../actions/index';
 import TopicsNumber from './topics-number';
 import Tooltip from '../components/tools/tooltip';
@@ -78,7 +77,7 @@ class TopicsList extends Component {
 
     // set the columns according to the columnSettings if has one
     componentDidMount(){
-        const { columnSettings, searchedTopics, scopes } = this.props;
+        const { columnSettings, searchedTopics } = this.props;
         let cols = [];
         if (columnSettings !== null){
             if (columnSettings.plannedOpeningDate)
@@ -97,7 +96,7 @@ class TopicsList extends Component {
                 cols.push('budget')
         }
         
-        if (columnSettings.plannedOpeningDate == undefined){
+        if (columnSettings.plannedOpeningDate === undefined){
             cols.push('actions');
             cols.push('callTitle');
         }
@@ -290,7 +289,7 @@ class TopicsList extends Component {
 
     render(){
         const { searchedTopics } = this.props;
-        const { cols, filterNumber } = this.state;
+        const { cols } = this.state;
 
         if ( searchedTopics == null){
             return(

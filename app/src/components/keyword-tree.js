@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Link } from 'react-router-dom';
-import { Alert } from 'reactstrap';
 import { saveSvgAsPng } from 'save-svg-as-png';
 //import SwitchButton from 'react-switch-button';
 
@@ -11,7 +9,7 @@ import D3KeywordColorLegend from './d3-keyword-color-legend';
 
 import Navigation from './navigation';
 import Footer from './footer';
-import { changeFilterTerm, setNavigationToggle, selectKeywords, setColorToggle, fetchKeywordTree } from '../actions';
+import { changeFilterTerm, selectKeywords, setColorToggle, fetchKeywordTree } from '../actions';
 
 import KeywordTreeSearch from '../containers/keyword-tree-search';
 
@@ -164,7 +162,7 @@ function mapStateToProps(state){
 
 
 function mapDispatchToProps(dispatch){
-    return bindActionCreators({changeFilterTerm, setNavigationToggle, selectKeywords, setColorToggle, fetchKeywordTree}, dispatch);
+    return bindActionCreators({changeFilterTerm, selectKeywords, setColorToggle, fetchKeywordTree}, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(KeywordTree);

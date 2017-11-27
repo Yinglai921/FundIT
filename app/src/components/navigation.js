@@ -5,10 +5,6 @@ import { connect } from 'react-redux';
 
 class Navigation extends Component {
 
-  constructor(props){
-      super(props);
-  }
-
   renderLinks(){
     if(this.props.authenticated){
         // show a link to sign out
@@ -36,24 +32,24 @@ class Navigation extends Component {
 
 
   render() {
-      //const currentLocation = this.props.location.pathname
-      //const navLinkClassName = `nav-item nav-link ${touched && error ? 'has-danger' : ''}`;
     return (
         <nav className="navbar navbar-fixed-top" style={{backgroundColor: 'white'}}>
             <div className="container-fluid">
                 <div className="navbar-header">
                     
-                    <h4><span><img alt="Brand" src={logo} style={{width: "25%"}}/></span>FUNDIT</h4>
+                    <h4><span><img alt="Brand" src={logo} style={{width: "25%"}}/></span>
+                       FUNDIT
+                    </h4>
                 </div>
                 <div>
                     <ul className="nav navbar-nav nav-tabs">
-                        <li className={ this.props.active == "index" ? "active" : "" }>
+                        <li className={ this.props.active === "index" ? "active" : "" }>
                             <Link  to="/" > Search Topics </Link>
                         </li>
-                        <li className={ this.props.active == "keyword" ? "active" : "" }>
+                        <li className={ this.props.active === "keyword" ? "active" : "" }>
                             <Link  to="/keywords" > Keyword Dictionary</Link>
                         </li>
-                        <li className={ this.props.active == "user-guide" ? "active" : "" }>
+                        <li className={ this.props.active === "user-guide" ? "active" : "" }>
                             <Link  to="/user-guide" > User Guide </Link>
                         </li>
                     </ul>

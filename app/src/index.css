@@ -233,3 +233,12 @@ b{
   visibility: visible !important;
   opacity: 1 !important;
 }
+
+.alarm-active{
+  display: block;
+  color: red;
+}
+
+.alarm-hidden{
+  display: none;
+}
