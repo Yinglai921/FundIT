@@ -20,10 +20,22 @@ export default class KeywordTreeSearch extends Component{
         super(props);
         this.state={
             multi: true,
-            selectValue: [...new Set(this.props.keywords)], // get the unique array 
+            //selectValue: [...new Set(this.props.keywords)], // get the unique array
+            selectValue: [] 
         }
         this.handleSelectChange = this.handleSelectChange.bind(this);
         this.extract_select2_data = this.extract_select2_data.bind(this);
+    }
+
+    componentDidMount(){
+        let keywordsArray = [];
+        if (this.props.keywords.length > 0){
+            keywordsArray = this.props.keywords.map((word) => {
+                let formatWord = {label: word, value: word};
+                return formatWord;
+            });
+            this.setState({ selectValue: keywordsArray });
+        }
     }
 
     handleSelectChange (selectValue) {

@@ -144,7 +144,7 @@ class SearchBar extends Component{
             <div className={ this.props.searchedTopics.length === 0 ? "search-bar col-sm-12 search-top-margin" : "search-bar col-sm-12" } >
                 <div className={ this.props.searchedTopics.length === 0 ? "text-center" : "hidden" } > 
                     <h1>FUNDIT</h1>
-                    <h4> A smart way to find Horizon H2020 Topics </h4>
+                    <h4> Find Horizon H2020 Topics </h4>
                 </div>
                 <form onSubmit={this.onFormSubmit} className={ this.props.searchedTopics.length === 0 ? "top-margin" : " " }>
                     <div className="form-group row">

@@ -22,13 +22,13 @@ export const QUERY_SAVE_ERROR = 'query_save_error';
 
 
 // fetch all the topics from the start
-// const API_ROOT = 'https://fundit.proj.kth.se/api';
-const API_ROOT = 'http://localhost:3001/api';
+const API_ROOT = 'https://fundit.proj.kth.se/api';
+// const API_ROOT = 'http://localhost:3001/api';
 
 function dateFormatCovert(time){
     let currTime = new Date(time);
     let date = currTime.getDate();
-    let month = currTime.getMonth();
+    let month = currTime.getMonth() + 1; // January is converted to 0
     let year = currTime.getFullYear();
     let newTime = `${year}-${month}-${date}`;
     return newTime;
