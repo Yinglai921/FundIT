@@ -372,13 +372,13 @@ class D3KeywordTree extends Component{
 
 			// Remove any exiting links
 			
-			// var linkExit = link.exit().transition()
-			// 	.duration(duration)
-			// 	.attr('d', function(d) {
-			// 		var o = {x: source.x, y: source.y}
-			// 		return diagonal(o, o)
-			// 	})
-			// 	.remove();
+			var linkExit = link.exit().transition()
+				.duration(duration)
+				.attr('d', function(d) {
+					var o = {x: source.x, y: source.y}
+					return diagonal(o, o)
+				})
+				.remove();
 
 			// Store the old positions for transition.
 			nodes.forEach(function(d){

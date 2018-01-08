@@ -216,7 +216,7 @@ b{
 
 .bottom_ul { list-style-type:none; float:right; margin-bottom:0px;}
 .bottom_ul li { float:left; line-height:40px;}
-.bottom_ul li:after { content:"/"; color:#000; margin-right:8px; margin-left:8px;}
+/* .bottom_ul li:after { content:"/"; color:#000; margin-right:8px; margin-left:8px;} */
 .bottom_ul li a { color:#000;  font-size:12px;}
 
 .error{
@@ -241,4 +241,12 @@ b{
 
 .alarm-hidden{
   display: none;
+}
+
+.footerBtn{
+  border-color: transparent;
+  background: transparent;
+}
+.jumbotron{
+  background-color: #f0f3f6;
 }

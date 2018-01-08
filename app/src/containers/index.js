@@ -25,7 +25,7 @@ class Index extends Component {
   }
 
   searchResultNotice(){
-    if (this.props.searchTerm === "" && this.props.location.search === ""){
+    if (this.props.searchTerm === "" || this.props.location.search === ""){
       return (
         <div style={{color:"#888"}}><p>Please enter a word to start search...</p></div>
       )
@@ -42,6 +42,9 @@ class Index extends Component {
     if (this.props.searchedTopics.length === 0){
       return(
         <div style={{textAlign: "center", marginBottom: "50px"}}>
+          <h4> 
+            Please, observe, that this tool is powered by KTH server and therefore the search might sometimes not be available during technical problems like a system overloading. If such problem occurs – just wait and try again later. Sorry for this inconvenience! 
+          </h4> 
           <p> Need inspirations of searching keyword? Please check <Link to="/keywords">Keyword Dictionary</Link>. </p>
           <p> Want to make the search more efficient? Please read <Link to="/user-guide">Search Guideline</Link>. </p>
           <p> Want to have a comprehensive idea of how did the money flow? Please check <a href="http://h2020viz.vinnova.se/#/"> Vinnova H2020 Visualization </a>. </p>
@@ -89,7 +92,6 @@ function mapStateToProps(state){
         searchedTopics: state.searchedTopics,
         navigationToggle: state.navigationToggle,
         searchTerm: state.searchTerm,
-
     };
 }
 

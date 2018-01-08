@@ -9,6 +9,8 @@ import ColorToggle from './reducer_colorToggle';
 import KeywordTree from './reducer_keywordTree';
 import AuthReducer from './reducer_auth';
 import UserReducer from './reducer_user';
+import TopicReducer from './reducer_topic';
+import CallsReducer from './reducer_calls';
 
 // import redux-form reducer 
 import { reducer as formReducers } from 'redux-form';
@@ -25,6 +27,8 @@ const rootReducer = combineReducers({
   keywordTree: KeywordTree,
   auth: AuthReducer,
   user: UserReducer,
+  topic: TopicReducer,
+  calls: CallsReducer,
   
   form: formReducers // this is for redux-form
 });

@@ -24,6 +24,7 @@ import Signout from './containers/auth/signout'
 import Signup from './containers/auth/signup'
 import MyPage from './containers/auth/mypage'
 import RequireAuth from './containers/auth/require_auth'
+import TopicDetail from './containers/topic-detail'
 
 const createStoreWithMiddleware = applyMiddleware(promise, reduxThunk, logger)(createStore);
 const store = createStoreWithMiddleware(reducers);
@@ -46,6 +47,7 @@ ReactDOM.render(
                     <Route path="/signout" component={Signout} />
                     <Route path="/signup" component={Signup} />
                     <Route path="/mypage" component={RequireAuth(MyPage)} />
+                    <Route path="/topics/:id" component={TopicDetail} />
                     <Route path="/:search" component={Index} />
                     <Route path="/" component={Index} />
                 </Switch>

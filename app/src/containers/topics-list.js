@@ -276,7 +276,8 @@ class TopicsList extends Component {
     }
 
     linkFormatter(cell, row) {
-        return <a target="_blank" href={`https://ec.europa.eu/research/participants/portal/desktop/en/opportunities/h2020/topics/${row.identifier.toLowerCase()}.html`}>{cell}</a>
+        //return <a target="_blank" href={`https://ec.europa.eu/research/participants/portal/desktop/en/opportunities/h2020/topics/${row.identifier.toLowerCase()}.html`}>{cell}</a>
+        return <a target="_blank" href={`#/topics/${row._id}`}> {cell} </a>
     }
 
     afterColumnFilter(filterConds, result) {
@@ -378,6 +379,7 @@ class TopicsList extends Component {
                         </div>
                         <BootstrapTable 
                             data={ results }
+                            hover
                             replace
                             pagination
                             options={ options }
@@ -385,7 +387,7 @@ class TopicsList extends Component {
                             expandComponent={ this.expandComponent }
                             >
                             <TableHeaderColumn 
-                                dataField='topicId' 
+                                dataField='_id' 
                                 isKey
                                 hidden
                                 >

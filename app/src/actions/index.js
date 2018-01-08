@@ -17,13 +17,15 @@ export const AUTH_ERROR = 'auth_error';
 export const FETCH_MESSAGE = 'fetch_message';
 export const QUERY_SAVED = 'query_saved';
 export const QUERY_SAVE_ERROR = 'query_save_error';
+export const FETCH_ONE_TOPIC = 'fetch_one_topic';
+export const FETCH_CALLS = 'fetch_calls';
 
 
 
 
 // fetch all the topics from the start
-const API_ROOT = 'https://fundit.proj.kth.se/api';
-// const API_ROOT = 'http://localhost:3001/api';
+// const API_ROOT = 'https://fundit.proj.kth.se/api';
+ const API_ROOT = 'http://localhost:3001/api';
 
 function dateFormatCovert(time){
     let currTime = new Date(time);
@@ -42,7 +44,22 @@ export function fetchKeywordTree(){
         type: FETCH_KEYWORDTREE, 
         payload: request
     }
-    
+}
+
+export function fetchOneTopic(_id){
+    let request = axios.get(`${API_ROOT}/topics/${_id}`);
+    return {
+        type: FETCH_ONE_TOPIC,
+        payload: request
+    }
+}
+
+export function fetchCalls(){
+    let request = axios.get(`${API_ROOT}/calls`);
+    return {
+        type: FETCH_CALLS,
+        payload: request
+    }
 }
 
 export function setSearchTerm(term){
@@ -63,6 +80,7 @@ export function searchTopics(term, scopes, history){
         let query = {
             term,
             in_title: true,
+            in_identifier: true,
             in_keywords: true,
             in_tags: true,
             in_descriptions: true,
@@ -71,6 +89,9 @@ export function searchTopics(term, scopes, history){
     
         if (scopes.indexOf("title") == -1 )
             query.in_title = false;
+        
+        if (scopes.indexOf("identifier") == -1 )
+            query.in_identifier = false;
     
         if (scopes.indexOf("keywords") == -1 )
             query.in_keywords = false;
@@ -97,7 +118,7 @@ export function searchTopics(term, scopes, history){
                     }     
                 })
                 dispatch({ type: SEARCH_TOPICS, payload: response });
-                history.push(`/search?term=${query.term}&title=${query.in_title}&keywords=${query.in_keywords}&tags=${query.in_tags}&desc=${query.in_descriptions}&open=${query.in_open}`);
+                history.push(`/search?term=${query.term}&title=${query.in_title}&identifier=${query.in_identifier}&keywords=${query.in_keywords}&tags=${query.in_tags}&desc=${query.in_descriptions}&open=${query.in_open}`);
             })
             .catch(() => {
                 // if request is bad...
@@ -108,9 +129,11 @@ export function searchTopics(term, scopes, history){
 }
 
 
+
 export function changeSearchScope(list){
     let scopes = {
         "title": false,
+        "identifier": false,
         "keywords": false,
         "tags": false,
         "description": false,
@@ -174,6 +197,7 @@ export function setColorToggle(toggle){
         payload: toggle
     }
 }
+
 
 
 // ********** all about authentication ***************//

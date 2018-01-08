@@ -11,8 +11,7 @@ class SearchBar extends Component{
 
         this.state = {
             term: this.props.searchTerm,
-            scopes: ["title", "keywords", "tags", "description", "open"],
-            
+            scopes: ["title", "identifier", "keywords", "tags", "description", "open"]
         };
 
         this.onInputChange = this.onInputChange.bind(this);
@@ -23,8 +22,7 @@ class SearchBar extends Component{
 
     // get all the topics after the render
     componentWillMount(){
-       // this.props.fetchTopics();
-
+       // detect if the search works
        if (this.props.queries !== ""){
             const parsedQueries = queryString.parse(this.props.queries);
             console.log(parsedQueries)
@@ -36,6 +34,9 @@ class SearchBar extends Component{
         
             if(parsedQueries.title === 'true'){
                 currentScopes.push('title')
+            }
+            if(parsedQueries.identifier === 'true'){
+                currentScopes.push('identifier')
             }
             if(parsedQueries.keywords === 'true'){
                 currentScopes.push('keywords')
@@ -64,6 +65,9 @@ class SearchBar extends Component{
                 if(scopes.title){
                     currentScopes.push('title')
                 }
+                if(scopes.identifier){
+                    currentScopes.push('identifier')
+                }
                 if(scopes.keywords){
                     currentScopes.push('keywords')
                 }
@@ -91,6 +95,7 @@ class SearchBar extends Component{
         console.log(this.state.scopes)
         this.props.searchTopics(this.state.term, this.state.scopes, this.props.history);
         this.props.changeSearchScope(this.state.scopes);
+
     }
 
     onInputChange(event){
@@ -102,7 +107,7 @@ class SearchBar extends Component{
 
         // console.log("SCOPES: ", this.props.scopes)
 
-        if(this.props.scopes === {} || this.props.scopes.title === false && this.props.scopes.keywords == false && this.props.scopes.tags === false && this.props.scopes.description === false){
+        if(this.props.scopes === {} || this.props.scopes.title === false && this.props.scopes.identifier === false && this.props.scopes.keywords == false && this.props.scopes.tags === false && this.props.scopes.description === false){
             alert("Please select at least one search scope");
         }
         // set search term globally 
@@ -141,7 +146,7 @@ class SearchBar extends Component{
     render(){
         return(
 
-            <div className={ this.props.searchedTopics.length === 0 ? "search-bar col-sm-12 search-top-margin" : "search-bar col-sm-12" } >
+            <div className={ this.props.searchedTopics.length === 0 ? "search-bar col-sm-12 search-top-margin jumbotron" : "search-bar col-sm-12" } >
                 <div className={ this.props.searchedTopics.length === 0 ? "text-center" : "hidden" } > 
                     <h1>FUNDIT</h1>
                     <h4> Find Horizon H2020 Topics </h4>
@@ -174,6 +179,15 @@ class SearchBar extends Component{
                             <Tooltip 
                             term="In title" 
                             explain="The titles of topics."/>
+                        </label>
+
+                        <label className="checkbox-inline">
+                            <input type="checkbox" value="identifier" defaultChecked={this.state.scopes.indexOf("identifier") === -1 ? false: true}
+                                onChange={this.onSearchScopeChange}
+                            /> 
+                            <Tooltip 
+                            term="In topic identifier" 
+                            explain="The identifier of topics."/>
                         </label>
 
                         <label className="checkbox-inline">
