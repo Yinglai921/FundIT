@@ -171,8 +171,8 @@ class D3KeywordTree extends Component{
 		console.log("selectedKeywords: ", selectedKeywords)
 		if(selectedKeywords.length !== 0){
 			selectedKeywords.forEach((keyword) =>{
-				let lastOccuranceIndex = keyword.lastIndexOf("(") - 1;
-		    	keyword = keyword.substring(0, lastOccuranceIndex);
+				//let lastOccuranceIndex = keyword.lastIndexOf("(") - 1;
+		    	//keyword = keyword.substring(0, lastOccuranceIndex);
 				var paths = searchTree(root, keyword, []);
 				openPaths(paths);
 			});
@@ -420,7 +420,7 @@ class D3KeywordTree extends Component{
 			if (d.data.value === undefined){
 				d.data.value = 0;
 			}
-			let name = `${d.data.description} (${d.data.value})`
+			let name = `${d.data.description}`
 			console.log(name)
 			//onChangeKeyword(d.data.name);
 			onSelectKeywords(name, onChangeKeyword);

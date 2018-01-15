@@ -42,8 +42,8 @@ class KeywordTree extends Component {
   // when clicking a node of the tree graph, get the keyword
   changeKeyword(keyword){
 
-    let lastOccuranceIndex = keyword.lastIndexOf("(") - 1;
-    keyword = keyword.substring(0, lastOccuranceIndex);
+    //let lastOccuranceIndex = keyword.lastIndexOf("(") - 1;
+    //keyword = keyword.substring(0, lastOccuranceIndex);
     if(keyword.length > 50){
       keyword = keyword.substring(0, 50);
     }
@@ -63,9 +63,9 @@ class KeywordTree extends Component {
        newKeywordsList.push(word);
     })
 
-    console.log("keywordsList: ", keywordsList)
-    this.props.selectKeywords(keywordsList);
-    this.setState({keywords: keywordsList});
+    console.log("keywordsList: ", newKeywordsList)
+    this.props.selectKeywords(newKeywordsList);
+    this.setState({keywords: newKeywordsList});
   }
 
   addOneKeyword(keyword, callback){

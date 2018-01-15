@@ -26,7 +26,7 @@ import MyPage from './containers/auth/mypage'
 import RequireAuth from './containers/auth/require_auth'
 import TopicDetail from './containers/topic-detail'
 
-const createStoreWithMiddleware = applyMiddleware(promise, reduxThunk, logger)(createStore);
+const createStoreWithMiddleware = applyMiddleware(promise, reduxThunk)(createStore);
 const store = createStoreWithMiddleware(reducers);
 
 const token = localStorage.getItem('token');
